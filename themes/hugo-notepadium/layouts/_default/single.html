@@ -1,0 +1,95 @@
+{{- define "main" -}}
+
+{{- $justify := false -}}
+{{- if eq .Params.justify true -}} {{- $justify = true -}} {{- end -}}
+<!-- 記事のコンテンツ -->
+<div id="top" class="article-container">
+  {{- partial "article-header.html" . -}}
+    <article class="article markdown-body" {{- if $justify -}}style="text-align: justify;" {{- end -}}>
+      {{- with .Params.cover -}}<p><img class="cover" src="{{- . | safeURL -}}" alt></p>{{- end -}}
+      {{- .Content -}}
+    </article>
+  {{- partial "article-labels.html" . -}}
+  {{- partial "article-share.html" . -}}
+  {{- partial "article-license.html" . -}}
+  {{- partial "article-author.html" . -}}
+  {{- partial "article-extra.html" . -}}
+</div>
+<!-- 目次 -->
+<button id="toggle-button" class="nomal-style">
+  <h2>目次</h2>
+</button>
+<div id="toc-container" class="toc-container">
+  {{ if .TableOfContents }}
+      <h2><a href="#top">目次</a></h2>
+      <div id="toc" class="toc">
+          {{ .TableOfContents }}
+      </div>
+  {{ end }}
+</div>
+
+<script>
+  // 画面幅が1600px未満の場合にのみ、目次リンクをクリックしたときに toc-container を非表示にする
+  document.querySelectorAll('.toc-container a').forEach(link => {
+    link.addEventListener('click', function() {
+      // 画面幅が1600px未満の場合に処理を実行
+      if (window.innerWidth < 1600) {
+        // 目次の非表示処理
+        const tocContainer = document.querySelector('.toc-container');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  // ボタンがクリックされたときの処理
+  document.getElementById('toggle-button').addEventListener('click', function() {
+    var toc = document.getElementById('toc-container');
+    var button = document.getElementById('toggle-button');
+    
+    // 目次の表示/非表示を切り替え
+    if (toc.style.display === 'none') {
+      toc.style.display = 'block';
+      button.innerHTML = '<h2>目次</h2>';  // ボタンのテキストを変更
+    } else {
+      toc.style.display = 'none';
+      button.innerHTML = '<h2>目次</h2>';  // ボタンのテキストを元に戻す
+    }
+  });
+
+  function highlightActiveTocItem() {
+    const tocItems = document.querySelectorAll('.toc a');
+
+    tocItems.forEach(item => {
+      const targetId = item.getAttribute('href').substring(1); // #を削除してIDを取得
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        
+        // 目次項目のトップが画面上端に来たかどうかを判定
+        const isInViewport = rect.top <= 200 && rect.bottom > 0;
+
+        if (isInViewport) {
+          // すべての目次項目から 'active' クラスを削除
+          tocItems.forEach(item => {
+            item.classList.remove('active');
+          });
+          // 現在の目次項目に 'active' クラスを追加
+          item.classList.add('active');
+        }
+      }
+    });
+  }
+
+  // スクロール時とページ読み込み時にアクティブ項目を更新
+  window.addEventListener('scroll', highlightActiveTocItem);
+  document.addEventListener('DOMContentLoaded', highlightActiveTocItem);  // ページ読み込み時にも最初のハイライト
+</script>
+
+<div class="article bottom">
+  {{- partial "article-bottom-navigation.html" . -}}
+  {{- partial "article-comments.html" . -}}
+</div>
+{{- end -}}
