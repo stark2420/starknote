@@ -22,7 +22,7 @@ SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加と�
 結果は，137 人中 9 位ということで，初めての Top 10 入りを果たすことができた．めっちゃ嬉しい．
 ということで，初心者ながらWriteupを書いていく．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im00.jpg) 
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im00.jpg) 
 
 ## Web
 ### SQL寿司 (240 *easy*)
@@ -36,15 +36,15 @@ SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加と�
 
 URLにアクセスすると以下の画面が表示された．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im01.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im01.png)
 
 試しに`id = 50`と入力すると，idは使用できないようになっていることがわかる．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im02.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im02.png)
 
 試しに`ID = 50`と入力すると，フラグが表示された．なぜか大文字だといけるみたい．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im03.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im03.png)
 
 `asusn{3b1_1kur4_m46ur0_h4m4ch1}`
 
@@ -57,7 +57,7 @@ URLにアクセスすると以下の画面が表示された．
 
 URLにChromeでアクセスすると以下の画面が表示された．入力フォームなどもなく，ソースコードにも特に変わった部分はない．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im04.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im04.png)
 
 試しにEdgeでアクセスすると，5つ目の吹き出しの文章が変化した．
 
@@ -236,7 +236,7 @@ def index():
 そこで，それぞれ`id`, `name`, `price`キーに全て`.`の要素を入れてみると，
 画面からはみ出してはいるが`data`を全て出力できている．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im05.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im05.png)
 
 あとはページのソースコードを表示して，右の方にスクロールすると，フラグが得られた．
 
@@ -263,7 +263,7 @@ def index():
 
 URLにアクセスすると以下の画面が表示された．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im06.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im06.png)
 
 以下のような会話を行った．
 
@@ -289,8 +289,8 @@ https://chatgpt.com/g/g-6766ac299ed08191a234e2ff917b0041-kahakahasuntamon
 
 以下のように会話することで，フラグが得られた．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im07.png)
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im08.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im07.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im08.png)
 
 `asusn{Zundamon-Injection-Attack!!!}`
 
@@ -315,11 +315,11 @@ sshしてサーバーに接続してください。 （参考までにソース�
 
 まずは，画像を取得する．Discordで:flag:を送信したメッセージを右クリックし，リンクを開くで画像を表示できる．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im10.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im10.png)
 
 取得した[画像](https://cdn.discordapp.com/emojis/1322351213018353725.webp)は読めないので，ペイントで横に引き延ばした．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im09.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im09.png)
 
 `asusn{looks_amazing_to_me}`
 
@@ -347,7 +347,7 @@ sshしてサーバーに接続してください。
 
 以上でフラグを得ることができる．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im11.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im11.png)
 
 `asusn{Em4c5_1S_541kO_L1Sp_In73rpr373R!}`
 
@@ -373,7 +373,7 @@ raxの値はなに?: ad1d
 遅い! (経過時間: 11秒)
 ```
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im12.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im12.png)
 
 ```
 $ nc (略)
@@ -413,15 +413,15 @@ asusn{48B8343D686F6E6F5F6E48B96F5F676F626C6574}
 ・Linux (RHEL系)  
 ※音が鳴るので注意してください
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im13.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im13.png)
 
 秘密のコマンドがどこかにあるらしい．とりあえず，`flag.txt`や`.hidden`ファイルなどを開いてみたが見つからず．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im14.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im14.png)
 
 すると`View`-> `Toggle Developer Tools`を発見．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im15.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im15.png)
 
 ソースコードの中に，秘密のコマンド`linuX_h4_s4iko_daZe!`を発見した．
 
@@ -494,7 +494,7 @@ asusn{El3cTr0n_M0_S41k0Ud4Z3~!!}
 ※フラグフォーマット：asusn{nの値(10進数)}  
 手書き手入力はミスが多いので、SSH公開鍵バリデーションを使わせてもらおう。
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im16.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im16.png)
 
 動画冒頭の写真をGeminiに投げて，文字起こしをしてもらった．
 
@@ -602,10 +602,10 @@ def main():
 
 対象の花火の1~4フレームの花火は以下のようになっている．おそらく，それ以降は繰り返しになっていそう．
 
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im17.png)
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im18.png)
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im19.png)
-![This is a image](https://github.com/stark2420/starknote/static/image/asusn-ctf-2/im20.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im17.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im18.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im19.png)
+![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im20.png)
 
 この文字の規則性に関して，ソースコードの以下の部分で定義されている．
 変数 x は 0 から順にインクリメントされていく．
