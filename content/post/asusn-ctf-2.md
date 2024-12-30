@@ -22,7 +22,7 @@ SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加と�
 結果は，137 人中 9 位ということで，初めての Top 10 入りを果たすことができた．めっちゃ嬉しい．
 ということで，初心者ながらWriteupを書いていく．
 
-![This is a image](https://github.com/stark2420/starknote/tree/main/static/image/asusn-ctf-2/im00.jpg) 
+![This is a image](https://stark2420.github.io/starknote/static/image/asusn-ctf-2/im00.jpg) 
 
 ## Web
 ### SQL寿司 (240 *easy*)
