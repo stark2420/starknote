@@ -621,8 +621,8 @@ b {
   top: 100px;
   right: 30px;
   width:350px;
-  max-width: 90vh;
-  max-height: 90vh; /* コンテナの最大高さを画面の90%に設定 */
+  max-width: 80vh;
+  max-height: 70vh; /* コンテナの最大高さを画面の90%に設定 */
   overflow-y: auto; /* 垂直方向にスクロール可能に */
 }
 
