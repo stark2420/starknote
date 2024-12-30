@@ -58,6 +58,30 @@ samp {
   background-color: rgba(240, 246, 252, 0.05);
 }
 
+/* @media (min-width: 1600px) {
+  #toggle-button {
+      display: none;  /* 画面幅が1600px以上の場合、目次を非表示にする */
+
+/* ボタンのスタイル */
+#toggle-button {
+  background-color: #595e66;
+  color: #d8dde2;
+}
+/* 目次のスタイル */
+.toc-container {
+  background-color: #595e66;
+  color: #d8dde2;
+}
+/* リンクのスタイル */
+.toc-container a {
+  color: #d8dde2;
+  text-decoration: none;
+}
+.toc-container a.active {
+  font-weight: bold;  /* 強調表示: 現在位置の項目を太字に */
+  color: #f00;  /* 強調表示: 色を赤に */
+}
+
 a {
   color: #2997ff;
 }
