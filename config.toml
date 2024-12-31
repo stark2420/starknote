@@ -13,8 +13,8 @@ enableRobotsTXT = true
 # Enable relativeURLs if your site hosted on GitHub.io
 #relativeURLs = true
 
-# [services.disqus]
-# shortname = 'starknote' # Disqus shortname
+[services.disqus]
+shortname = "starknote" # Disqus shortname
 
 # [services.googleAnalytics]
 # id = '' # Google tag ID
