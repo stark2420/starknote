@@ -12,6 +12,7 @@ categories = [
     "Security",
     "Programming",
 ]
+comments = true
 +++
 <!-- series = ["Themes Guide"] -->
 <!-- aliases = ["migrate-from-jekyl"] -->
