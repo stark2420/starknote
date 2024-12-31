@@ -1,6 +1,13 @@
-:root {
+/* :root {
   color-scheme: light dark;
   supported-color-schemes: light dark;
+} */
+:root {
+  color-scheme: light dark;
+}
+
+iframe {
+  color-scheme: light dark;
 }
 
 /* Works on Firefox */
