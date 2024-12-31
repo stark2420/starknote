@@ -41,7 +41,7 @@ ipv6ready = true
 css = ["css/fonts.css"]
 
 [params.comments]
-enable = false  # En/Disable comments globally, default: false. You can always enable comments on per page.
+enable = true  # En/Disable comments globally, default: false. You can always enable comments on per page.
 
 [params.share]
 enable = false  # En/Disable share globally, default: false. You can always enable share on per page.
