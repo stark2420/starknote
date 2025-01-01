@@ -59,9 +59,9 @@ $ hugo server または $ hugo server -D
 画像は`static\image`に入れる．  
 こうすると，  
 ```
-![This is a image](/image/asusn-ctf-2/im13.png)  
+![This is a image](image/asusn-ctf-2/im13.png)  
 ```
-![This is a image](/image/asusn-ctf-2/im13.png)  
+![This is a image](image/asusn-ctf-2/im13.png)  
 で表示できる．ただし，GitHub Pages でサイトを公開する場合は，画像のパスに注意が必要．  
 githubで画像を開き，画像を右クリックして新しいタブで画像を開くで，開いたURLをそのままコピーするのが確実である．  
 ```
