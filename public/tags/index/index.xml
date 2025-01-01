@@ -627,6 +627,137 @@ ASUSN{y020r4_n1_54ku_h0n0u_n0_h4n4!}
     </item>
     
     <item>
+      <title>導入手順と改良・維持の手引き</title>
+      <link>http://localhost:1313/starknote/post/initialization/</link>
+      <pubDate>Mon, 30 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/starknote/post/initialization/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://vii5ard.github.io/whitespace/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://vii5ard.github.io/whitespace/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;hugoのインストール&#34;&gt;Hugoのインストール&lt;/h2&gt;
+&lt;p&gt;以下のサイトからZIPでダウンロードをして任意の場所に解凍．&lt;br&gt;
+&lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://github.com/gohugoio/hugo/releases&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ここでは，最新版の&lt;code&gt;hugo_extended_0.140.2_windows-amd64.zip&lt;/code&gt;にした．&lt;br&gt;
+場所は，&lt;code&gt;C:\Program Files (x86)\Hugo_extended_0.140.1_windows-amd64&lt;/code&gt;にした．&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Pathを通す．&lt;br&gt;
+Windowsキーを右クリック\システム\システムの詳細設定\環境変数(N)…\システム環境変数(S)のPathを選び，編集(I)…\新規&lt;br&gt;
+先ほどのファイルの場所&lt;code&gt;C:\Program Files (x86)\Hugo_extended_0.140.1_windows-amd64&lt;/code&gt;を入力．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ hugo -help
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;が正しければ成功．&lt;/p&gt;
+&lt;h2 id=&#34;hugoでsiteを作成&#34;&gt;Hugoでsiteを作成&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ hugo new site example
+$ cd example
+$ hugo server または $ hugo server -D
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;http://localhost:1313/&lt;/code&gt; にページが真っ白なページが表示される&lt;/p&gt;
+&lt;h2 id=&#34;hugoテーマのインストール&#34;&gt;Hugoテーマのインストール&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://themes.gohugo.io/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Hugo Themes&lt;/a&gt; から選ぶ．しかし，&lt;a href=&#34;https://github.com/cntrump/hugo-notepadium&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Notepadium&lt;/a&gt; のようにそこにないものもある．&lt;br&gt;
+結局githubからダウンロードするので，githubにあるものであれば何でもよい．&lt;/p&gt;
+&lt;p&gt;ダウンロードしたファイル（今回は&lt;code&gt;hugo-notepadium&lt;/code&gt;）を&lt;code&gt;example\themes&lt;/code&gt;の中へ入れる．&lt;br&gt;
+ダウンロードしたファイルの中の&lt;code&gt;exampleSite&lt;/code&gt;（今回は&lt;code&gt;hugo-notepadium\exampleSite&lt;/code&gt;）の中のファイルを全て&lt;code&gt;example\&lt;/code&gt;にコピーする．&lt;/p&gt;
+&lt;p&gt;これでテーマの適用が完了．&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&#34;https://qiita.com/utibori1/items/46fde79958ec9202d6c4&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;公式に載っていないHugoのインストール方法&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;サイト編集&#34;&gt;サイト編集&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;config.toml&lt;/code&gt;が設定ファイルになる．サイトのタイトルなどの設定を行う．&lt;br&gt;
+ブログの記事は&lt;code&gt;content/post/&lt;/code&gt;の中にマークダウンファイル&lt;code&gt;○○.md&lt;/code&gt;を作成する．&lt;/p&gt;
+&lt;p&gt;ブログの記事のhtmlは&lt;code&gt;themes\hugo-notepadium\layouts\_default\single.html&lt;/code&gt;である．&lt;br&gt;
+スタイルファイルは&lt;code&gt;themes\hugo-notepadium\assets\css\style.css&lt;/code&gt;である．&lt;br&gt;
+ダークモードは&lt;code&gt;themes\hugo-notepadium\assets\css\dark-style.css&lt;/code&gt;．&lt;/p&gt;
+&lt;p&gt;画像は&lt;code&gt;static\image&lt;/code&gt;に入れる．&lt;br&gt;
+こうすると，&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;![This is a image](/image/asusn-ctf-2/im13.png)  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img  src=&#34;http://localhost:1313/starknote/image/asusn-ctf-2/im13.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;br&gt;
+で表示できる．ただし，GitHub Pages でサイトを公開する場合は，画像のパスに注意が必要．&lt;br&gt;
+githubで画像を開き，画像を右クリックして新しいタブで画像を開くで，開いたURLをそのままコピーするのが確実である．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/im13.png)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/im13.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;h3 id=&#34;フォント変更&#34;&gt;フォント変更&lt;/h3&gt;
+&lt;p&gt;参考：&lt;a href=&#34;https://natsu-dev.github.io/posts/2021-02-28/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;GitHub PagesとHugoを使ってブログを作ってみた&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;themes\hugo-notepadium\assets\css\style.css&lt;/code&gt;で変更．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;@import url(&amp;#39;https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&amp;amp;display=swap&amp;#39;);
+html {
+  font-family: &amp;#39;Noto Sans JP&amp;#39;, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+code,
+tt,
+kbd,
+samp {
+  font-family: &amp;#34;Lucida Console&amp;#34;;
+  font-weight: 400;
+  font-size: 85%;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;見出しの調整&#34;&gt;見出しの調整&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;h2 {
+	font-size: 1.2em;
+	border-left: solid 5px #D0D0D0;
+	padding: 0.1em 0.5em;
+}
+
+h3 {
+	font-size: 1.1em;
+	border-left: solid 5px #E0E0E0;
+	padding: 0.1em 0.5em;
+}
+
+h4 {
+	font-size: 1.0em;
+	border-left: solid 5px #F0F0F0;
+	padding: 0.1em 0.5em;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;notepadiumのバグ修正&#34;&gt;Notepadiumのバグ修正&lt;/h3&gt;
+&lt;p&gt;ブログ記事の一番下のカテゴリとタグのリンクがおかしかったので，以下で修正．&lt;br&gt;
+&lt;code&gt;print &amp;quot;/categories/&amp;quot;&lt;/code&gt;の/を削除して，&lt;code&gt;print &amp;quot;categories/&amp;quot;&lt;/code&gt;にする．&lt;br&gt;
+&lt;code&gt;print &amp;quot;/tags/&amp;quot;&lt;/code&gt;の/を削除して，&lt;code&gt;print &amp;quot;tags/&amp;quot;&lt;/code&gt;にする．&lt;br&gt;
+相対パスであるべきところが絶対パスになっていて，正しくなかったので．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{{- if or .Params.categories .Params.tags -}}
+&amp;lt;section class=&amp;#34;article labels&amp;#34;&amp;gt;
+    {{- range .Params.categories -}}
+      {{- $category := replace . &amp;#34;#&amp;#34; &amp;#34;%23&amp;#34; -}}
+      {{- $category = replace $category &amp;#34;.&amp;#34; &amp;#34;%2e&amp;#34; -}}
+      {{- $url := print &amp;#34;categories/&amp;#34; ($category | urlize) &amp;#34;/&amp;#34; -}}
+      &amp;lt;a class=&amp;#34;category&amp;#34; href=&amp;#34;{{- $url | relLangURL -}}&amp;#34;&amp;gt;{{- . -}}&amp;lt;/a&amp;gt;
+    {{- end -}}
+    {{- range .Params.tags -}}
+      {{- $tag := replace . &amp;#34;#&amp;#34; &amp;#34;%23&amp;#34; -}}
+      {{- $tag = replace $tag &amp;#34;.&amp;#34; &amp;#34;%2e&amp;#34; -}}
+      {{- $url := print &amp;#34;tags/&amp;#34; ($tag | urlize) &amp;#34;/&amp;#34; -}}
+      &amp;lt;a class=&amp;#34;tag&amp;#34; href=&amp;#34;{{- $url | relLangURL -}}&amp;#34;&amp;gt;{{- . -}}&amp;lt;/a&amp;gt;
+    {{- end -}}
+&amp;lt;/section&amp;gt;
+{{- end -}}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;目次の追加&#34;&gt;目次の追加&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;themes\hugo-notepadium\layouts\_default\single.html&lt;/code&gt;&lt;br&gt;
+&lt;code&gt;themes\hugo-notepadium\assets\css\style.css&lt;/code&gt;&lt;br&gt;
+を修正．画面幅が1600px以下の場合は，最初は目次を非表示にするようにした．&lt;/p&gt;
+&lt;h3 id=&#34;横幅を広げた&#34;&gt;横幅を広げた&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#content {
+  display: block;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a href=&#34;https://sat8bit.github.io/posts/hugo-with-github-pages/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://sat8bit.github.io/posts/hugo-with-github-pages/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;github-pages&#34;&gt;GitHub Pages&lt;/h2&gt;
+&lt;p&gt;先に，レポジトリを作成し，作ったサイト&lt;code&gt;example\&lt;/code&gt;の中を全てpushしておく．&lt;br&gt;
+その後，GitHubリポジトリの「Settings」の「Pages」でBuild and deploymentのSourceを、GitHub Actionsに設定．&lt;br&gt;
+&amp;ldquo;Configure&amp;rdquo; ボタンを押すと、ワークフローの作成画面になります。特に変更せず、そのまま &amp;ldquo;main&amp;rdquo; ブランチにコミットします。&lt;/p&gt;
+&lt;p&gt;GitHubリポジトリの「Settings」の「Pages」でVisit site でサイトへ行ける．&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://note.com/hideki_ikemoto/n/n97a61f1ead6b&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://note.com/hideki_ikemoto/n/n97a61f1ead6b&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;githubコマンド&#34;&gt;GitHubコマンド&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ git init
+$ git add .
+$ git commit -m &amp;#34;message&amp;#34;
+($ git status) しなくてよい．確認のため．
+$ git push
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;リモートだけ変更した場合，&lt;code&gt;git pull&lt;/code&gt;でローカルに，リモートの更新を反映できる．&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title></title>
       <link>http://localhost:1313/starknote/archives/</link>
       <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>

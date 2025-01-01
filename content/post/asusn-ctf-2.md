@@ -12,7 +12,7 @@ categories = [
     "Security",
     "Programming",
 ]
-comments = true
+cover = "https://raw.githubusercontent.com/stark2420/starknoterefs/heads/main/static/image/asusn-ctf-2/cover.png"
 +++
 <!-- series = ["Themes Guide"] -->
 <!-- aliases = ["migrate-from-jekyl"] -->

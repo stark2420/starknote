@@ -4,7 +4,7 @@ theme = "hugo-notepadium"
 copyright = "©2020 Notepadium."
 
 languageCode = "ja"  # for the RSS generation
-defaultContentLanguage = "ja"
+defaultContentLanguage = "en"
 
 hasCJKLanguage = true
 

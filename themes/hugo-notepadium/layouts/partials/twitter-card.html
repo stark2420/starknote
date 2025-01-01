@@ -13,5 +13,5 @@
   {{- if and (not (hasPrefix $imgurl "http://")) (not (hasPrefix $imgurl "https://")) -}}
     {{- $imgurl = print .Permalink $imgurl -}}
   {{- end -}}
-<meta name="twitter:image" content="{{- $imgurl -}}" />
+  <meta name="twitter:image" content="{{- $imgurl -}}" />
 {{- end -}}

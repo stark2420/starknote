@@ -639,7 +639,11 @@ b {
 
 /* リストアイテムのスタイル */
 .toc-container li {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+}
+
+.toc-container li ul {
+  margin-left: 20px; /* サブ項目にインデントを追加 */
 }
 
 /* リンクのスタイル */
