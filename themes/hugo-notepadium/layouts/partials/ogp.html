@@ -3,8 +3,8 @@
 <meta property="og:site_name" content="{{- site.Title -}}" />
 {{- $imgurl := "" -}}
 
-{{- if .Params.cover -}}
-  {{- $imgurl = .Params.cover -}}
+{{- if .Params.image -}}
+  {{- $imgurl = .Params.image -}}
 {{- end -}}
 
 {{- if gt (len $imgurl) 0 -}}

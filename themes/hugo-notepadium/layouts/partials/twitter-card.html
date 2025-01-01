@@ -2,8 +2,8 @@
 <meta name="twitter:title" content="{{- .Title -}}" />
 {{- $imgurl := "" -}}
 
-{{- if .Params.cover -}}
-  {{- $imgurl = .Params.cover -}}
+{{- if .Params.image -}}
+  {{- $imgurl = .Params.image -}}
 {{- else if .Params.imgs -}}
   {{- $imgurl = index .Params.imgs 0 -}}
 {{- end -}}

@@ -12,7 +12,7 @@ categories = [
     "Security",
     "Programming",
 ]
-cover = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/cover.png"
+image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/cover.png"
 +++
 <!-- series = ["Themes Guide"] -->
 <!-- aliases = ["migrate-from-jekyl"] -->
