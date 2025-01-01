@@ -6,10 +6,56 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Mon, 30 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="http://localhost:1313/starknote/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>stable-diffusionの使い方(オリジナルキャラの作成)</title>
+      <link>http://localhost:1313/starknote/post/stable-diffusion/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/starknote/post/stable-diffusion/</guid>
+      <description>&lt;h2 id=&#34;stable-diffusionのインストール&#34;&gt;stable-diffusionのインストール&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://romptn.com/article/5211&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://romptn.com/article/5211&lt;/a&gt; を参照．&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Python 3.10.6&lt;/li&gt;
+&lt;li&gt;git&lt;/li&gt;
+&lt;li&gt;Stable Diffusion&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;使うときは，作成したフォルダ→「stable-diffusion-webui」→下から２番目の「webui-user.bat」をクリックしてコマンドを実行．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;http://127.0.0.1:7860/
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;stable-diffusionにcontrolnetを導入する&#34;&gt;Stable Diffusionに『ControlNet』を導入する&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://romptn.com/article/7868#toc4&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://romptn.com/article/7868#toc4&lt;/a&gt; を参照．&lt;/p&gt;
+&lt;h2 id=&#34;ip-adapterモデルをダウンロード似た画像のみを作成するため&#34;&gt;IP-Adapterモデルをダウンロード(似た画像のみを作成するため)&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://romptn.com/article/33719&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://romptn.com/article/33719&lt;/a&gt; を参照．&lt;/p&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;p&gt;おすすめのモデル10選
+&lt;a href=&#34;https://romptn.com/article/6236&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://romptn.com/article/6236&lt;/a&gt;&lt;br&gt;
+MeinaMixの使い方&lt;br&gt;
+&lt;a href=&#34;https://romptn.com/article/14898&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://romptn.com/article/14898&lt;/a&gt;&lt;br&gt;
+モデルをダウンロード後は，&lt;code&gt;stable-diffusion-webui\models\Stable-diffusion&lt;/code&gt;に入れる．&lt;/p&gt;
+&lt;p&gt;まず，左上のモデルを設定．meinamix_v12Final.safetensors [a5e5a941a3]&lt;br&gt;
+プロンプト&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;male child, boy, very short hair, detailed beautiful blue eyes, detailed beautiful face, very short brown hair, best quality, highly detailed, light brown hair, blue hair ornaments, hasp, different-dimension world
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ネガティブプロンプト&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;(worst quality, low quality:1.4)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Generateで画像生成．&lt;/p&gt;
+&lt;p&gt;IP-Adapterの使い方は，
+下の方のControlNet v1.1.455を開き，画像を入力．&lt;br&gt;
+Enableにチェック．&lt;br&gt;
+Control Typeを&lt;code&gt;IP-Adapter&lt;/code&gt;にする．&lt;br&gt;
+Preprocessorを&lt;code&gt;ip-adapter_clip_sdxl_plus_vith&lt;/code&gt;，Modelを&lt;code&gt;ip-adapter_sd15 [6a3f6166]&lt;/code&gt;などにする．&lt;br&gt;
+Generateで画像生成．&lt;/p&gt;
+&lt;h3 id=&#34;元画像の作成&#34;&gt;元画像の作成&lt;/h3&gt;
+&lt;p&gt;Copilotで「萌え系の可愛い男の子のアイコンを作ってほしい」という．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy-original.jpg&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;この画像に対して，IP-Adapterを使用．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>About</title>

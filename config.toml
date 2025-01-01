@@ -59,7 +59,7 @@ darkTheme = "dracula"
 
 [params.profile]
   enable = true
-  avatar = ""
+  avatar = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png"
   name = "しゅたるく (Stark)"
   bio = ""  # support markdown syntax
   twitter = "stark_puyo"  # https://twitter.com/stark_puyo
