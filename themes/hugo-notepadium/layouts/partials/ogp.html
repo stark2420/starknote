@@ -1,0 +1,12 @@
+<meta property="og:type" content=" ページの種類" />
+<meta property="og:title" content="{{- .Title -}}" />
+<meta property="og:site_name" content="{{- site.Title -}}" />
+{{- $imgurl := "" -}}
+
+{{- if .Params.cover -}}
+  {{- $imgurl = .Params.cover -}}
+{{- end -}}
+
+{{- if gt (len $imgurl) 0 -}}
+  <meta property="og:image" content="{{- $imgurl -}}" />
+{{- end -}}
