@@ -244,16 +244,17 @@ fuel-deal.tar.gz
 よって，「754 bus route」と検索．
 
 その結果，以下のサイトを発見．  
+754 Rowville - Glen Waverley via Caulfield Grammar & Wheelers Hill  
 https://www.ptv.vic.gov.au/route/960/754-rowville-glen-waverley-via-caulfield-grammar-and-wheelers-hill/
 
 ![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im12.png)
 
 問題の画像にガソリンスタンドの「Shell」のマークがあるので，このバスのルートにおけるShellをGoogleマップで検索．
-すると，該当のガソリンスタンドは１件のみであることがわかる．
+すると，該当のガソリンスタンドは左上の１件のみであることがわかる．
 
 ![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im13.png)
 
-ここが画像の場所であることが分かった．住所は「203 Gallaghers Rd, Glen Waverley VIC 3150 オーストラリア」である．VICのVは「Victoria」である．
+ストリートビューで確認すると，ここが画像の場所であることが分かった．住所は「203 Gallaghers Rd, Glen Waverley VIC 3150 オーストラリア」である．VICのVは「Victoria」である．
 
 ![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im14.png)
 
