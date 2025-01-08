@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja"><script src="/starknote/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=starknote/livereload" data-no-instant defer></script><meta charset="utf-8"><meta name="generator" content="Hugo 0.140.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>IrisCTF 2025 Writeup&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.743d0b5fa83cb21fc363353289b816785e9515a81eac0c34b89642f14085d8ee648e6014e07884c988209b33e9d20171.css" integrity="sha384-dD0LX6g8sh/DYzUyibgWeF6VFagerAw0uJZC8UCF2O5kjmAU4HiEyYggmzPp0gFx"><meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="IrisCTF 2025 Writeup" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/cover.png" /><meta property="og:type" content="article" />
+<meta property="og:title" content="IrisCTF 2025 Writeup" />
+<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/cover.png" /><body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/starknote/"><span class="site name">しゅたるくの備忘録</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/starknote/categories/">カテゴリ</a><a class="nav item" href="/starknote/tags/">タグ</a><a class="nav item" href="/starknote/about/">About</a><a class="nav item" href=""></a></nav></div></span></div></section><section id="content">
+<div id="top" class="article-container"><section class="article header">
+    <h1 class="article title">IrisCTF 2025 Writeup</h1><p class="article date">Jan 08, 2025</p></section><article class="article markdown-body"><p>2025/1/4 09:00(JST) - 2025/1/6 09:00(JST)で開催された IrisCTF 2025 に参加した．</p>
+<p>個人で参加し，結果は，450 点で 1064 チーム中 241 位だった．以下大会期間中に自分で解けた問題には✔をつけている．</p>
+<p><a href="https://2025.irisc.tf"target="_blank" rel="noopener noreferrer">https://2025.irisc.tf</a></p>
+<h2 id="binary-exploitation">Binary Exploitation</h2>
+<h3 id="sqlate-50-easy">sqlate (50 <em>easy</em>)</h3>
+<blockquote>
+<p>World‘s most secure paste app.<br>
+nc ~<br>
+sqlate.tar.gz</p>
+</blockquote>
+<p>ソースコードより，flagはログイン認証後，7番を実行すれば得られることがわかる．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="err">省略</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="sc">&#39;6&#39;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="sc">&#39;7&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">check_permissions</span><span class="p">(</span><span class="n">permission_root</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="nf">action_sys</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">action_sys</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">system</span><span class="p">(</span><span class="s">&#34;/usr/bin/cat flag&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>ソースコードより，ncでアクセスすると，init_admin()でadminのパスワードがランダムに作成される．
+&ldquo;/dev/urandom&quot;は，Unix系OSにおける擬似デバイスであり，可変長の擬似乱数文字列を生成するものである．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">init_admin</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span><span class="o">*</span> <span class="n">rng</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="s">&#34;/dev/urandom&#34;</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">rng</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">errx</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&#34;Failed to open /dev/urandom&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span><span class="o">*</span> <span class="n">result</span> <span class="o">=</span> <span class="nf">fgets</span><span class="p">(</span><span class="n">line_buffer</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">),</span> <span class="n">rng</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">errx</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&#34;Failed to read from /dev/urandom&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span><span class="o">*</span> <span class="n">pass</span> <span class="o">=</span> <span class="nf">base64_encode</span><span class="p">(</span><span class="n">line_buffer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">admin_password</span><span class="p">,</span> <span class="n">pass</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">pass</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">DEBUG</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Generated random admin password: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">admin_password</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>ログイン認証の際には，action_login()で入力文字列とパスワードが比較される．
+このとき，strlen(line_buffer)で<strong>入力文字列の文字数分</strong>しか比較されないようになっている．
+fgets(・)では，最後にEnterを押したとき，改行文字も入力されるので，
+何も入力せずEnterを押すと，文字数 1 で改行文字のみとなる．<br>
+よって，改行文字から始まるadminパスワードがランダムに生成されるまでブルートフォース攻撃を行うことで，
+ログイン認証を突破できる．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">action_login</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Currently only admin login
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">read_to_buffer</span><span class="p">(</span><span class="s">&#34;Password?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">line_buffer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">512</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">line_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">admin_password</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Wrong password!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">current_user</span><span class="p">.</span><span class="n">username</span><span class="p">,</span> <span class="s">&#34;admin&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">current_user</span><span class="p">.</span><span class="n">userId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">current_user</span><span class="p">.</span><span class="n">flags</span> <span class="o">=</span> <span class="mh">0xFFFFFFFF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">read_to_buffer</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">description</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Enter %s: &#34;</span><span class="p">,</span> <span class="n">description</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fgets</span><span class="p">(</span><span class="n">line_buffer</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>つまり，adminパスワードが改行文字から始まらない場合は，Wrong password!となるが，
+adminパスワードが改行文字から始まる場合は，Enterのみでログイン認証が成功する．</p>
+<pre tabindex="0"><code>$ nc ~
+== proof-of-work: disabled ==
+
+===== Service =====
+1) Create new Paste
+2) Update a Paste
+3) Show a Paste
+4) List all Pastes
+5) Login / Register
+6) Exit
+
+&gt; 5
+Registration is currently closed.
+
+Enter Password?:
+Wrong password!
+
+===== Service =====
+1) Create new Paste
+2) Update a Paste
+3) Show a Paste
+4) List all Pastes
+5) Login / Register
+6) Exit
+
+&gt; 6
+
+$ nc ~
+== proof-of-work: disabled ==
+
+===== Service =====
+1) Create new Paste
+2) Update a Paste
+3) Show a Paste
+4) List all Pastes
+5) Login / Register
+6) Exit
+
+&gt; 5
+Registration is currently closed.
+
+Enter Password?:
+
+===== Service =====
+1) Create new Paste
+2) Update a Paste
+3) Show a Paste
+4) List all Pastes
+5) Login / Register
+6) Exit
+
+&gt; 7
+irisctf{classic_buffer_issues}
+</code></pre><p>そして，7番を実行すればflagが得られる．</p>
+<p><code>irisctf{classic_buffer_issues}</code></p>
+<h2 id="open-source-intelligence">Open-Source Intelligence</h2>
+<h3 id="-osint-disclaimer-50-freebie">✔ OSINT DISCLAIMER (50 <em>freebie</em>)</h3>
+<blockquote>
+<p>The challenges this year does not require you to contact anyone. There will be no social media accounts needed to solve these challenges. Please refrain from reaching out to individuals on social media or contacting restaurants to inquire about further details. Such actions are unnecessary and will result in consequences leading to disqualification. Solving this challenge will unlock the rest of the Open-Source Intelligence category<br>
+flag: irisctf{sp01l_f00d_1s_b4d_mk4y}</p>
+</blockquote>
+<h3 id="-checking-out-of-winter-50-easy">✔ Checking Out of Winter (50 <em>easy</em>)</h3>
+<blockquote>
+<p>CHALLENGE&rsquo;S DISCLAIMER: Please do not include any accent markings or special characters into the flag. Apply proper capitalization to the flag. Here&rsquo;s an example of the flag irisctf{Iris_Hotel} if there is a special symbol like &lsquo;&amp;&rsquo; please type out the word &lsquo;and&rsquo;.<br>
+We took our annual road trip to Baja California Sur to visit the beach and play some golf. I like how this location is farther from the city compared to other resorts. I really enjoyed the sweet and savory sauce on the pizza with shredded chicken. After eating, I fell asleep, and half of my legs ended up getting tanned.<br>
+Question: Which hotel did Adam stay at?<br>
+<a href="https://osint-food-blog-web.chal.irisc.tf/"target="_blank" rel="noopener noreferrer">https://osint-food-blog-web.chal.irisc.tf/</a></p>
+</blockquote>
+<p>該当の記事へアクセスすると次の画像が表示された．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/Pizza_by_Pool.png"
+        alt="This is a image"/></p>
+<p>この画像の上1/3程度をGoogleレンズで検索を行うと，類似の画像が見つかり，以下のウェブサイトを発見．<br>
+<a href="https://blog.goo.ne.jp/oceanpaddler/e/9cd1c2555440ddc86a23fce3d12921ae"target="_blank" rel="noopener noreferrer">ロスカボスのタイムシェア　ラ・パシフィカ　プール＆ビーチ編</a></p>
+<p>Googleマップで「ロスカボスのタイムシェア　ラ・パシフィカ　プール＆ビーチ」と検索すると，以下の場所がヒット．
+<img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im01.png"
+        alt="This is a image"/></p>
+<p>このホテル名がflagである．</p>
+<p><code>irisctf{Hilton_Los_Cabos_Beach_and_Golf_Resort}</code></p>
+<h3 id="-sleuths-and-sweets-50-easy">✔ Sleuths and Sweets (50 <em>easy</em>)</h3>
+<blockquote>
+<p>CHALLENGE&rsquo;S DISCLAIMER: Here’s an example of the address format irisctf{3_Chome_12_8_Azabu_Minato}. Please do not include any accent markings or special characters into the flag. Apply proper capitalization to the flag.<br>
+I visited my friend in Japan, and we had some alright crepes! The area had a lot of foot traffic, so we expected a long wait, but it was worth it. I’m usually not a fan of yogurt in my crepe, but it still tasted pretty alright.<br>
+Question: What is the address of this location?<br>
+<a href="https://osint-food-blog-web.chal.irisc.tf/"target="_blank" rel="noopener noreferrer">https://osint-food-blog-web.chal.irisc.tf/</a></p>
+</blockquote>
+<p>該当の記事へアクセスすると次の画像が表示された．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/Crepe_Diorama.png"
+        alt="This is a image"/>
+<img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/Crepe_Station.png"
+        alt="This is a image"/></p>
+<p>１枚目の画像をGoogleレンズで検索を行うと，類似の画像が見つかり，お店は「マリオンクレープ」であるとわかった．
+Googleマップで「マリオンクレープ」と検索すると，10件ほどヒット．
+２枚目の画像で背景に「日本銀行」が写り込んでいることから，Googleマップで「日本銀行」と検索．
+マリオンクレープと日本銀行が隣接するような場所は，左下の方の「マリオンクレープ 渋谷モディ店」のみである．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im03.png"
+        alt="This is a image"/>
+<img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im04.png"
+        alt="This is a image"/>
+<img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im05.png"
+        alt="This is a image"/></p>
+<p>よって，渋谷区神南１丁目２１−３がflagである．</p>
+<p><code>irisctf{1_Chome_21_3_Jinnan_Shibuya}</code></p>
+<h3 id="-not-eelaborate-50-easy">✔ Not Eelaborate (50 <em>easy</em>)</h3>
+<blockquote>
+<p>CHALLENGE&rsquo;S DISCLAIMER: Please do not include any accent markings or special characters into the flag. Apply proper capitalization to the flag. Here&rsquo;s an example of the flag irisctf{Restaurant_Name}<br>
+After my long train ride, I visited a deer park and got to feed the wildlife. There were so many restaurants to choose from but I was craving eel. I really like the soup mixed in with the rice and fish. The wasabi threw me off since I don’t normally have it served this way.<br>
+I would recommend this place if you want to find a quiet restaurant to eat at, and wouldn’t mind finding a few small fish bones. Eels are known to carry lots of tiny bones it’s inevitable that you’ll find it in a lot of places.<br>
+Question: What is the full name of the restaurant?<br>
+<a href="https://osint-food-blog-web.chal.irisc.tf/"target="_blank" rel="noopener noreferrer">https://osint-food-blog-web.chal.irisc.tf/</a></p>
+</blockquote>
+<p>該当の記事へアクセスすると次の画像が表示された．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/Unagi_Bowl.png"
+        alt="This is a image"/></p>
+<p>問題文に「deer park」とあるので，奈良公園だろう．
+Googleマップで「奈良公園　うなぎ」と検索すると，７件ヒット．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im06.png"
+        alt="This is a image"/></p>
+<p>この中から，画像と同じお盆を利用している店を目視で探すと，「うなぎのねどこ えどがわ近鉄奈良駅前店」であると特定．
+しかし問題は，この店の英語での<strong>full nameがわからない点</strong>．調べても出てこない．
+そこで，Googleマップの左上の３本線 &gt; 言語 &gt; English に変更すると，「Edogawa Kintetsu Nara」と出てきた．</p>
+<p><code>irisctf{Edogawa_Kintetsu_Nara}</code></p>
+<h3 id="-fuel-deal-50-medium">✔ fuel deal (50 <em>medium</em>)</h3>
+<blockquote>
+<p>My friend spotted this really good fuel deal for his car, but he won&rsquo;t tell me where he got it. He sent this picture to make me mad and he even blurred out the road signs! Can you find this deal for me?<br>
+The flag is the address of the gas station, omitting the post code and any symbols including commas, replacing spaces with underscores (_), and with all abbreviations expanded.<br>
+For example, if the building is located at 1888 Big Eddy Rd (address), Revelstoke (city/suburb), BC (state/territory) V0E 3K0 (post code), Canada (country), the flag would be:<br>
+irisctf{1888_Big_Eddy_Road_Revelstoke_British_Columbia_Canada}<br>
+fuel-deal.tar.gz</p>
+</blockquote>
+<p>添付のファイルの中身は以下の画像であった．
+<img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/fuel-deal.png"
+        alt="This is a image"/></p>
+<p>画像の右上の方の看板に754という数字がある．おそらくこれはバスの番号である．
+よって，「754 bus route」と検索．</p>
+<p>その結果，以下のサイトを発見．<br>
+<a href="https://www.ptv.vic.gov.au/route/960/754-rowville-glen-waverley-via-caulfield-grammar-and-wheelers-hill/"target="_blank" rel="noopener noreferrer">https://www.ptv.vic.gov.au/route/960/754-rowville-glen-waverley-via-caulfield-grammar-and-wheelers-hill/</a></p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im12.png"
+        alt="This is a image"/></p>
+<p>問題の画像にガソリンスタンドの「Shell」のマークがあるので，このバスのルートにおけるShellをGoogleマップで検索．
+すると，該当のガソリンスタンドは１件のみであることがわかる．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im13.png"
+        alt="This is a image"/></p>
+<p>ここが画像の場所であることが分かった．住所は「203 Gallaghers Rd, Glen Waverley VIC 3150 オーストラリア」である．VICのVは「Victoria」である．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im14.png"
+        alt="This is a image"/></p>
+<p><code>irisctf{203_Gallaghers_Road_Glen_Waverley_Victoria_Australia}</code></p>
+<h3 id="-wheres-bobby-2-50-medium">✔ where&rsquo;s bobby 2 (50 <em>medium</em>)</h3>
+<blockquote>
+<p>I took this picture while I was on a trip, somewhere, and I saw this beautiful wall art. However, in a shocking turn of events, I don&rsquo;t know where it was! Can you find it for me?<br>
+The flag is the coordinates of the building which contains this wall art, in decimal format and correct to 3 decimal places, and seperated by an underscore (<em>).<br>
+For example, if the building was located at 50°59'52.934&quot;N, 118°13'28.792&quot;W the flag would be irisctf{50.998</em>-118.225}.<br>
+files</p>
+</blockquote>
+<p>添付のファイルの中身は以下の画像であった．
+<img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/wheres-bobby-2.jpg"
+        alt="This is a image"/></p>
+<p>画像をGoogleレンズで検索を行うと，類似の画像が見つかり，以下のwebサイトから，「地铁7号线 百子湾＜百子嬉戏＞吉祥画」だとわかった．<br>
+<a href="https://ameblo.jp/yorinoto/entry-12733913890.html"target="_blank" rel="noopener noreferrer">https://ameblo.jp/yorinoto/entry-12733913890.html</a></p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im07.png"
+        alt="This is a image"/></p>
+<p>Googleマップで「百子湾駅」と検索し，緯度と経度を調べた．しかし，<code>irisctf{39.893_116.500}</code>または四捨五入して<code>irisctf{39.893_116.501}</code>とするも正解できず．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im08.png"
+        alt="This is a image"/></p>
+<p>Wikipediaで百子湾駅をみても同じ座標である．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im09.png"
+        alt="This is a image"/></p>
+<p>試しに英語版を見てみると，座標が異なることに気づく．しかしこちらでもダメ．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im10.png"
+        alt="This is a image"/></p>
+<p>中文版を見てみると，またしても違う座標になっている．そして，これが正解だった．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im11.png"
+        alt="This is a image"/></p>
+<p><code>irisctf{39.891_116.492}</code></p></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a><a class="tag" href="/starknote/tags/writeup/">writeup</a><a class="tag" href="/starknote/tags/iris/">iris</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+</section>
+</div>
+
+<button id="toggle-button" class="nomal-style">
+  <h1>目次</h1>
+</button>
+<div id="toc-container" class="toc-container">
+  
+      <h2><a href="#top">目次</a></h2>
+      <div id="toc" class="toc">
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#binary-exploitation">Binary Exploitation</a>
+      <ul>
+        <li><a href="#sqlate-50-easy">sqlate (50 <em>easy</em>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#open-source-intelligence">Open-Source Intelligence</a>
+      <ul>
+        <li><a href="#-osint-disclaimer-50-freebie">✔ OSINT DISCLAIMER (50 <em>freebie</em>)</a></li>
+        <li><a href="#-checking-out-of-winter-50-easy">✔ Checking Out of Winter (50 <em>easy</em>)</a></li>
+        <li><a href="#-sleuths-and-sweets-50-easy">✔ Sleuths and Sweets (50 <em>easy</em>)</a></li>
+        <li><a href="#-not-eelaborate-50-easy">✔ Not Eelaborate (50 <em>easy</em>)</a></li>
+        <li><a href="#-fuel-deal-50-medium">✔ fuel deal (50 <em>medium</em>)</a></li>
+        <li><a href="#-wheres-bobby-2-50-medium">✔ where&rsquo;s bobby 2 (50 <em>medium</em>)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+  
+</div>
+
+<script>
+  
+  document.querySelectorAll('.toc-container a').forEach(link => {
+    link.addEventListener('click', function() {
+      
+      if (window.innerWidth < 1600) {
+        
+        const tocContainer = document.querySelector('.toc-container');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  
+  document.getElementById('toggle-button').addEventListener('click', function() {
+    var toc = document.getElementById('toc-container');
+    var button = document.getElementById('toggle-button');
+    
+    
+    if (toc.style.display === 'none') {
+      toc.style.display = 'block';
+      button.innerHTML = '<h1>目次</h1>';  
+    } else {
+      toc.style.display = 'none';
+      button.innerHTML = '<h1>目次</h1>';  
+    }
+  });
+
+  function highlightActiveTocItem() {
+    const tocItems = document.querySelectorAll('.toc a');
+
+    tocItems.forEach(item => {
+      const targetId = item.getAttribute('href').substring(1); 
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        
+        
+        const isInViewport = rect.top <= 200 && rect.bottom > 0;
+
+        if (isInViewport) {
+          
+          tocItems.forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          item.classList.add('active');
+        }
+      }
+    });
+  }
+
+  
+  window.addEventListener('scroll', highlightActiveTocItem);
+  document.addEventListener('DOMContentLoaded', highlightActiveTocItem);  
+</script>
+
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/starknote/post/stable-diffusion/"><span class="iconfont icon-article"></span>stable-diffusionの使い方(オリジナルキャラの作成)</a></p></section><section class="article discussion"><div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "starknote" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered&nbsp;by&nbsp;</span><a href="https://gohugo.io" 
+        target="_blank" rel="noopener noreferrer">Hugo</a><span>&nbsp;&amp;&nbsp;</span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank" rel="noopener noreferrer">Notepadium</a>
+<a href='https://ipv6-test.com/validate.php?url=referer'
+  ><img src='https://ipv6-test.com/button-ipv6-80x15.png' 
+        alt='ipv6 ready' title='ipv6 ready' border='0' 
+/></a>
+</p></div></section></body>
+
+</html>

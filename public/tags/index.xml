@@ -6,10 +6,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jan 2025 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="http://localhost:1313/starknote/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>IrisCTF 2025 Writeup</title>
+      <link>http://localhost:1313/starknote/post/irisctf-2025/</link>
+      <pubDate>Wed, 08 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/starknote/post/irisctf-2025/</guid>
+      <description>&lt;p&gt;2025/1/4 09:00(JST) - 2025/1/6 09:00(JST)で開催された IrisCTF 2025 に参加した．&lt;/p&gt;
+&lt;p&gt;個人で参加し，結果は，450 点で 1064 チーム中 241 位だった．以下大会期間中に自分で解けた問題には✔をつけている．&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://2025.irisc.tf&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://2025.irisc.tf&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;sqlate-50-easy&#34;&gt;sqlate (50 &lt;em&gt;easy&lt;/em&gt;)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;World‘s most secure paste app.&lt;br&gt;
+nc ~&lt;br&gt;
+sqlate.tar.gz&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
     
     <item>
       <title>stable-diffusionの使い方(オリジナルキャラの作成)</title>
@@ -75,10 +92,11 @@ Generateで画像生成．&lt;/p&gt;
       <guid>http://localhost:1313/starknote/post/asusn-ctf-2/</guid>
       <description>&lt;!-- series = [&#34;Themes Guide&#34;] --&gt;
 &lt;!-- aliases = [&#34;migrate-from-jekyl&#34;] --&gt;
-&lt;p&gt;12/28 - 12/30 で開催された ASUSN CTF 2 に参加した．&lt;/p&gt;
-&lt;p&gt;SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加となった．
+&lt;p&gt;2024/12/28 09:00(JST) - 2024/12/30 09:00(JST)で開催された ASUSN CTF 2 に参加した．&lt;/p&gt;
+&lt;!-- SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加となった．
 結果は，137 人中 9 位ということで，初めての Top 10 入りを果たすことができた．めっちゃ嬉しい．
-ということで，拙いながらも Writeup を書いていく．&lt;/p&gt;
+ということで，拙いながらも Writeup を書いていく． --&gt;
+&lt;p&gt;結果は，8015 点で 137 人中 9 位だった．&lt;/p&gt;
 &lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/im00.jpg&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;h2 id=&#34;web&#34;&gt;Web&lt;/h2&gt;
@@ -711,8 +729,8 @@ $ hugo server または $ hugo server -D
 ダークモードは&lt;code&gt;themes\hugo-notepadium\assets\css\dark-style.css&lt;/code&gt;．&lt;/p&gt;
 &lt;p&gt;画像は&lt;code&gt;static\image&lt;/code&gt;に入れる．&lt;br&gt;
 こうすると，&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;![This is a image](/image/asusn-ctf-2/im13.png)  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img  src=&#34;http://localhost:1313/starknote/image/asusn-ctf-2/im13.png&#34;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;![This is a image](image/asusn-ctf-2/im13.png)  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img  src=&#34;image/asusn-ctf-2/im13.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;br&gt;
 で表示できる．ただし，GitHub Pages でサイトを公開する場合は，画像のパスに注意が必要．&lt;br&gt;
 githubで画像を開き，画像を右クリックして新しいタブで画像を開くで，開いたURLをそのままコピーするのが確実である．&lt;/p&gt;

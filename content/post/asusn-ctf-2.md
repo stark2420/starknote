@@ -17,11 +17,12 @@ image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/s
 <!-- series = ["Themes Guide"] -->
 <!-- aliases = ["migrate-from-jekyl"] -->
 
-12/28 - 12/30 で開催された ASUSN CTF 2 に参加した．
+2024/12/28 09:00(JST) - 2024/12/30 09:00(JST)で開催された ASUSN CTF 2 に参加した．
 <!--more-->
-SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加となった．
+<!-- SECCON Beginners CTF 2024，Wani CTF 2024 に続いて3回目の ctf 参加となった．
 結果は，137 人中 9 位ということで，初めての Top 10 入りを果たすことができた．めっちゃ嬉しい．
-ということで，拙いながらも Writeup を書いていく．
+ということで，拙いながらも Writeup を書いていく． -->
+結果は，8015 点で 137 人中 9 位だった．
 
 ![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/im00.jpg) 
 
