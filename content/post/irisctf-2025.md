@@ -266,6 +266,65 @@ if __name__ == "__main__":
 
 `irisctf{s0m371m3s_bY735_4r3n7_wh47_y0i_3xp3c7}`
 
+## Forensics
+### deldeldel (50 *easy*)
+I managed to log more than just keys... perhaps it was too much data to capture?  
+deldeldel.tar.gz
+
+添付ファイルの中身は，`klogger.pcapng`というpcapngファイル．
+wiresharkで開くとUSB通信であることがわかる．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im16.png)
+
+USBデバイスからhostへの通信を見たいので，"URB_INTERRUPT in"のものをフィルタするために，`usb.transfer_type == 0x01`を指定．
+さらに，Sourceが1.3.2の通信データが8bytes固定だったので，`usb.data_len == 8`を指定．
+よって，以下のフィルタを指定．
+```
+usb.capdata && usb.transfer_type == 0x01 && usb.data_len == 8
+```
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im17.png)
+
+このデータを USB keyboard parser を用いてキーボード入力を取得する．いくつかあるが，  
+・[ctf-usb-keyboard-parser](https://github.com/TeamRocketIst/ctf-usb-keyboard-parser?tab=readme-ov-file)  
+・[USB Keyboard Parser](https://github.com/5h4rrk/CTF-Usb_Keyboard_Parser/tree/main)　　
+参考：[Decoding Mixed Case USB Keystrokes from PCAP](https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html)
+
+今回は１つ目のものを使用．READMEの通りに実行する．
+```
+$ tshark -r klogger.pcapng -Y 'usb.capdata && usb.data_len == 8' -T fields -e usb.capdata | sed 's/../:&/g2' > usbPcapData
+$ python3 usbkeyboard.py usbPcapData
+Traceback (most recent call last):
+  File "usbkeyboard.py", line 128, in <module>
+    sys.stdout.write(read_use(sys.argv[1]))
+  File "usbkeyboard.py", line 91, in read_use
+    if KEY_CODES[key][shift] == u'↑':
+KeyError: 3 
+```
+エラーが出た．KEY_CODESに0x03がないということで，適当に0x01-0x03を以下のように追加した．
+{{< code lang="python" title="usbkeyboard.py" hl_lines="3-5">}}
+import sys
+KEY_CODES = {
+    0x01:[' ', ' '],
+    0x02:[' ', ' '],
+    0x03:[' ', ' '],
+    0x04:['a', 'A'],
+    0x05:['b', 'B'],
+    0x06:['c', 'C'],
+{{< /code >}}
+
+再度実行する．
+```
+$ tshark -r klogger.pcapng -Y 'usb.capdata && usb.data_len == 8' -T fields -e usb.capdata | sed 's/../:&/g2' > usbPcapData
+$ python3 usbkeyboard.py usbPcapData
+Hey  Alice! I think  I'm supposed to give you is flag:
+
+irisctfF{this_keylogger_isS_too_hard_to_use}
+GABABCABBABBBCCCCCCCBCAAA A AABAAACCCA       CA  BCBC      
+```
+なぜか余分な文字が入っているが，flagが得られる．
+
+`irisctf{this_keylogger_is_too_hard_to_use}`
+
 ## Web Exploitation
 ### Political (50 *easy*)
 > My new enterprise policy ensures you will remain flag-free.  

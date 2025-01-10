@@ -260,6 +260,20 @@ Hint! example_output and flag_output use the same keys!&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;flag&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;irisctf{s0m371m3s_bY735_4r3n7_wh47_y0i_3xp3c7}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;forensics&#34;&gt;Forensics&lt;/h2&gt;
+&lt;h3 id=&#34;deldeldel-50-easy&#34;&gt;deldeldel (50 &lt;em&gt;easy&lt;/em&gt;)&lt;/h3&gt;
+&lt;p&gt;I managed to log more than just keys&amp;hellip; perhaps it was too much data to capture?&lt;br&gt;
+deldeldel.tar.gz&lt;/p&gt;
+&lt;p&gt;添付ファイルの中身は，&lt;code&gt;klogger.pcapng&lt;/code&gt;というpcapngファイル．
+wiresharkで開くとUSB通信であることがわかる．&lt;/p&gt;
+&lt;p&gt;USBデバイスからhostへの通信を見たいので，&amp;ldquo;URB_INTERRUPT in&amp;quot;のものをフィルタするために，&lt;code&gt;usb.transfer_type == 0x01&lt;/code&gt;を指定．
+さらに，Sourceが1.3.2の通信データが8bytes固定だったので，&lt;code&gt;usb.data_len == 8&lt;/code&gt;を指定．
+よって，以下のフィルタを指定．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;usb.capdata &amp;amp;&amp;amp; usb.transfer_type == 0x01 &amp;amp;&amp;amp; usb.data_len == 8
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;このデータを USB keyboard parser を用いてキーボード入力を取得する．　　
+・&lt;a href=&#34;https://github.com/TeamRocketIst/ctf-usb-keyboard-parser?tab=readme-ov-file&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;ctf-usb-keyboard-parser&lt;/a&gt;&lt;br&gt;
+・&lt;a href=&#34;https://github.com/5h4rrk/CTF-Usb_Keyboard_Parser/tree/main&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;USB Keyboard Parser&lt;/a&gt;　　&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&#34;https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Decoding Mixed Case USB Keystrokes from PCAP&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;web-exploitation&#34;&gt;Web Exploitation&lt;/h2&gt;
 &lt;h3 id=&#34;political-50-easy&#34;&gt;Political (50 &lt;em&gt;easy&lt;/em&gt;)&lt;/h3&gt;
 &lt;blockquote&gt;

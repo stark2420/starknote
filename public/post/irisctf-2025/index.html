@@ -252,6 +252,57 @@ Hint! example_output and flag_output use the same keys!</p>
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">flag</span><span class="p">))</span></span></span></code></pre></div></div>
 </figure></p>
 <p><code>irisctf{s0m371m3s_bY735_4r3n7_wh47_y0i_3xp3c7}</code></p>
+<h2 id="forensics">Forensics</h2>
+<h3 id="deldeldel-50-easy">deldeldel (50 <em>easy</em>)</h3>
+<p>I managed to log more than just keys&hellip; perhaps it was too much data to capture?<br>
+deldeldel.tar.gz</p>
+<p>添付ファイルの中身は，<code>klogger.pcapng</code>というpcapngファイル．
+wiresharkで開くとUSB通信であることがわかる．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im16.png"
+        alt="This is a image"/></p>
+<p>USBデバイスからhostへの通信を見たいので，&ldquo;URB_INTERRUPT in&quot;のものをフィルタするために，<code>usb.transfer_type == 0x01</code>を指定．
+さらに，Sourceが1.3.2の通信データが8bytes固定だったので，<code>usb.data_len == 8</code>を指定．
+よって，以下のフィルタを指定．</p>
+<pre tabindex="0"><code>usb.capdata &amp;&amp; usb.transfer_type == 0x01 &amp;&amp; usb.data_len == 8
+</code></pre><p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im17.png"
+        alt="This is a image"/></p>
+<p>このデータを USB keyboard parser を用いてキーボード入力を取得する．いくつかあるが，<br>
+・<a href="https://github.com/TeamRocketIst/ctf-usb-keyboard-parser?tab=readme-ov-file"target="_blank" rel="noopener noreferrer">ctf-usb-keyboard-parser</a><br>
+・<a href="https://github.com/5h4rrk/CTF-Usb_Keyboard_Parser/tree/main"target="_blank" rel="noopener noreferrer">USB Keyboard Parser</a>　　
+参考：<a href="https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html"target="_blank" rel="noopener noreferrer">Decoding Mixed Case USB Keystrokes from PCAP</a></p>
+<p>今回は１つ目のものを使用．READMEの通りに実行する．</p>
+<pre tabindex="0"><code>$ tshark -r klogger.pcapng -Y &#39;usb.capdata &amp;&amp; usb.data_len == 8&#39; -T fields -e usb.capdata | sed &#39;s/../:&amp;/g2&#39; &gt; usbPcapData
+$ python3 usbkeyboard.py usbPcapData
+Traceback (most recent call last):
+  File &#34;usbkeyboard.py&#34;, line 128, in &lt;module&gt;
+    sys.stdout.write(read_use(sys.argv[1]))
+  File &#34;usbkeyboard.py&#34;, line 91, in read_use
+    if KEY_CODES[key][shift] == u&#39;↑&#39;:
+KeyError: 3 
+</code></pre><p>エラーが出た．KEY_CODESに0x03がないということで，適当に0x01-0x03を以下のように追加した．
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">usbkeyboard.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="n">KEY_CODES</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line hl"><span class="cl">    <span class="mh">0x01</span><span class="p">:[</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">],</span>
+</span></span><span class="line hl"><span class="cl">    <span class="mh">0x02</span><span class="p">:[</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">],</span>
+</span></span><span class="line hl"><span class="cl">    <span class="mh">0x03</span><span class="p">:[</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x04</span><span class="p">:[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x05</span><span class="p">:[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x06</span><span class="p">:[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span></span></span></code></pre></div></div>
+</figure></p>
+<p>再度実行する．</p>
+<pre tabindex="0"><code>$ tshark -r klogger.pcapng -Y &#39;usb.capdata &amp;&amp; usb.data_len == 8&#39; -T fields -e usb.capdata | sed &#39;s/../:&amp;/g2&#39; &gt; usbPcapData
+$ python3 usbkeyboard.py usbPcapData
+Hey  Alice! I think  I&#39;m supposed to give you is flag:
+
+irisctfF{this_keylogger_isS_too_hard_to_use}
+GABABCABBABBBCCCCCCCBCAAA A AABAAACCCA       CA  BCBC      
+</code></pre><p>なぜか余分な文字が入っているが，flagが得られる．</p>
+<p><code>irisctf{this_keylogger_is_too_hard_to_use}</code></p>
 <h2 id="web-exploitation">Web Exploitation</h2>
 <h3 id="political-50-easy">Political (50 <em>easy</em>)</h3>
 <blockquote>
@@ -446,6 +497,11 @@ files</p>
     <li><a href="#cryptography">Cryptography</a>
       <ul>
         <li><a href="#-kittycrypt-50-easy">✔ KittyCrypt (50 <em>easy</em>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#forensics">Forensics</a>
+      <ul>
+        <li><a href="#deldeldel-50-easy">deldeldel (50 <em>easy</em>)</a></li>
       </ul>
     </li>
     <li><a href="#web-exploitation">Web Exploitation</a>
