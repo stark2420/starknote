@@ -2,10 +2,10 @@
 <html lang="ja"><script src="/starknote/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=starknote/livereload" data-no-instant defer></script><meta charset="utf-8"><meta name="generator" content="Hugo 0.140.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
-<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>IrisCTF 2025 Writeup&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.743d0b5fa83cb21fc363353289b816785e9515a81eac0c34b89642f14085d8ee648e6014e07884c988209b33e9d20171.css" integrity="sha384-dD0LX6g8sh/DYzUyibgWeF6VFagerAw0uJZC8UCF2O5kjmAU4HiEyYggmzPp0gFx"><meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="IrisCTF 2025 Writeup" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/cover.png" /><meta property="og:type" content="article" />
+<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>IrisCTF 2025 Writeup&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.964363afdd281b37186e8f4572a119b584b5c489e7df05c552d5060e2b193d16058787359b6405833d43f4fe66a8263f.css" integrity="sha384-lkNjr90oGzcYbo9FcqEZtYS1xInn3wXFUtUGDisZPRYFh4c1m2QFgz1D9P5mqCY/"><meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="IrisCTF 2025 Writeup" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/cover.png" /><meta property="og:type" content="article" />
 <meta property="og:title" content="IrisCTF 2025 Writeup" />
-<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/asusn-ctf-2/cover.png" /><body><section id="header">
+<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/cover.png" /><body><section id="header">
     <div class="header wrap"><span class="header left-side"><a class="site home" href="/starknote/"><span class="site name">しゅたるくの備忘録</span></a></span>
         <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/starknote/categories/">カテゴリ</a><a class="nav item" href="/starknote/tags/">タグ</a><a class="nav item" href="/starknote/about/">About</a><a class="nav item" href=""></a></nav></div></span></div></section><section id="content">
 <div id="top" class="article-container"><section class="article header">
@@ -133,6 +133,180 @@ Enter Password?:
 irisctf{classic_buffer_issues}
 </code></pre><p>そして，7番を実行すればflagが得られる．</p>
 <p><code>irisctf{classic_buffer_issues}</code></p>
+<h2 id="cryptography">Cryptography</h2>
+<h3 id="-kittycrypt-50-easy">✔ KittyCrypt (50 <em>easy</em>)</h3>
+<blockquote>
+<p>You managed to get access to the KittyCorp encryption system code! But it seems like it requires some sort of keycode in order to decode the catnip storage password.<br>
+Thankfully, you managed to find a test file with both an input and an output! How handy! Maybe you can use this to find the key?<br>
+kittycrypt.tar.gz<br>
+Hint! example_output and flag_output use the same keys!</p>
+</blockquote>
+<p>添付のファイルを見ると，平文が猫の絵文字で暗号化されていることがわかる．
+ある平文と暗号文のペアが与えられているので，それらから秘密鍵を復元することになる．
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">example_input.txt</figcaption>
+<div class="xCodeBlock_code"><pre tabindex="0"><code>You fools! You will never get my catnip!!!!!!!</code></pre></div>
+</figure></p>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">example_output.txt</figcaption>
+<div class="xCodeBlock_code"><pre tabindex="0"><code>🐱‍👓🐱‍🏍🐱‍👤😸😾😹🐱‍👓🐱‍🏍🙀🐱‍👤😾😺🐱‍👓🐈😿🐱‍👤🐱‍👤🐱🐱‍👓🐈🐱‍👤🐱‍🏍🙀😾🐱‍👓🐱‍🏍🙀🐱‍🚀😿😽🐱‍👓🐱‍👓😾😹😾🐱🐱‍👓😽😿🐱‍🏍🙀🐱‍👓🐱‍👓🐱‍👓😾😺😾🐱‍💻🐱‍👓😸😾😸😾🐱‍🏍🐱‍👓😼🙀🙀🐱‍👤😼🐱‍👓🐈🐱‍👤😿🙀😾🐱‍👓😼🐱‍👤😺😾🐱‍💻🐱‍👓🙀😿🐱‍🚀😾😿🐱‍👓😽🙀🐱‍🏍🙀😼🐱‍👓😸🙀🐱‍👓🐱‍👤😿🐱‍💻🐱‍🚀😾😸🐱‍👓🙀😿🐱😿😸🐱‍👓😼🙀🐱‍🏍🐱‍👤🐱‍👤🐱‍👓😼🐱‍👤😸😾😹🐱‍👓😸🐱‍👤😸🐱‍👤🐱‍👤🐱‍👓😽🐱‍👤😾🙀😻🐱‍👓😽😾😻🐱‍👤🐱‍💻🐱‍👓😼🐱‍👤😿😿🐱🐱‍👓🐈😿😽😿😽🐱‍👓😽🙀😻😾😿🐱‍👓😺😾🐱🐱‍👤🙀🐱‍👓🐱‍👤😾🐈😿🐱‍👤🐱‍👓🐱🙀😺😿🙀🐱‍👓😼🙀🙀🐱‍👤🙀🐱‍👓🙀😾😺🙀😾🐱‍👓😹🐱‍👤😻😾😸🐱‍👓😻😿😺🙀🐈🐱‍👓😼😿😸🐱‍👤😸🐱‍👓🐈😾🐱‍💻😿😸🐱‍👓🐈😾🐱‍💻😿😹🐱‍👓🐱‍👤😾🐈🙀😸🐱‍👓🐱‍🏍😾🐈🙀😸🐱‍👓🐱‍🚀🐱‍👤🐱‍🚀🐱‍👤🐱‍💻🐱‍👓😸😾😸😾😿🐱‍👓🐱‍👓🙀😺🐱‍👤🐱🐱‍👓😾😾😽🐱‍👤😿🐱‍👓😸😿🐱‍👤😿🐱‍🚀🐱‍👓🐱‍🏍🙀🙀🙀🙀🐱‍👓🐱‍👤😿🐱‍👤🙀😻🐱‍👓😾🙀😻🙀😾🐱‍👓😾😾😿🐱‍👤😿</code></pre></div>
+</figure>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">flag_output.txt</figcaption>
+<div class="xCodeBlock_code"><pre tabindex="0"><code>🐱‍👓🐱‍🏍🐱‍👤😸😿😹🐱‍👓🐱‍🏍🙀🐱‍👤😾😽🐱‍👓🐈😿🐱‍👤🙀😺🐱‍👓🐈🐱‍👤🐱‍💻🐱‍👤🐱‍👤🐱‍👓🐱‍🏍🙀🐱‍🚀😿😺🐱‍👓🐱‍👓😾😹😾😻🐱‍👓😽😿🐱‍🏍🙀😻🐱‍👓🐱‍👓😾😺😿🐱‍🏍🐱‍👓😸😾😸😾🐱‍🏍🐱‍👓😼🙀🐱‍👤😾😻🐱‍👓🐈🐱‍👤🙀🐱‍👤😻🐱‍👓😼🐱‍👤😹🙀😽🐱‍👓🙀😿🐱‍👓😿🐈🐱‍👓😽🙀🐱‍👤🙀😸🐱‍👓😸🐱‍👤🐱😾😼🐱‍💻🐱‍💻🐱‍👤🐱‍👓🐱‍👓🙀😿🐱😿🐱‍🏍🐱‍👓😼🙀🐱‍🏍🙀🐱‍👓🐱‍👓😼🐱‍👤🐈🐱‍👤😿🐱‍👓😸🐱‍👤😹🐱‍👤😺🐱‍👓😽🐱‍👤😽🙀🐱‍👓🐱‍👓😽😾😻😾🐱‍👤🐱‍👓😼🐱‍👤😾😾🐱‍🚀🐱‍👓🐈😿😽😿🐈🐱‍👓😽🙀😺😾🐱‍👤🐱‍👓😺😾😸😾🐱‍🏍🐱‍👓🐱‍👤😾🐱🙀😽🐱‍👓🐱🙀😺🙀😹🐱‍👓😼🙀😿🐱‍👤🐱‍💻🐱‍👓🙀😾😻🙀😽🐱‍👓😹🐱‍👤😻😾🐱‍🏍🐱‍👓😻😿😺😿🐱🐱‍👓😼😿😹😾😼🐱‍👓🐈😾🐱‍🏍🙀😼🐱‍👓🐈😾🐱‍💻😿🐈🐱‍👓🐱‍👤😾🐈🙀😽🐱‍👓🐱‍🏍😾🐱🙀😺🐱‍👓🐱‍🚀🐱‍👤🐱‍🚀🐱‍👤🐱‍💻🐱‍👓😸😾🐈🐱‍👤😾🐱‍👓🐱‍👓🙀😻😾😸🐱‍👓😾😾😿😿🐱🐱‍👓😸😿🐱‍🏍🙀🐱‍👓🐱‍👓🐱‍🏍🙀🙀🐱‍👤🐱‍🏍🐱‍👓🐱‍👤😿🐱‍🏍🙀😽🐱‍👓😾🙀😻🐱‍👤🐱‍👓🐱‍👓😾😾🐱‍👤😿😻</code></pre></div>
+</figure>
+<p>暗号化の流れは，ソースコードより，文字列に鍵を加算したものを16進文字列にして，対応する猫文字に変換している．</p>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">main.go</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">CharSet</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">rune</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="sc">&#39;0&#39;</span><span class="p">:</span> <span class="s">&#34;🐱&#34;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">:</span> <span class="s">&#34;🐈&#34;</span><span class="p">,</span> <span class="sc">&#39;2&#39;</span><span class="p">:</span> <span class="s">&#34;😸&#34;</span><span class="p">,</span> <span class="sc">&#39;3&#39;</span><span class="p">:</span> <span class="s">&#34;😹&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="sc">&#39;4&#39;</span><span class="p">:</span> <span class="s">&#34;😺&#34;</span><span class="p">,</span> <span class="sc">&#39;5&#39;</span><span class="p">:</span> <span class="s">&#34;😻&#34;</span><span class="p">,</span> <span class="sc">&#39;6&#39;</span><span class="p">:</span> <span class="s">&#34;😼&#34;</span><span class="p">,</span> <span class="sc">&#39;7&#39;</span><span class="p">:</span> <span class="s">&#34;😽&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="sc">&#39;8&#39;</span><span class="p">:</span> <span class="s">&#34;😾&#34;</span><span class="p">,</span> <span class="sc">&#39;9&#39;</span><span class="p">:</span> <span class="s">&#34;😿&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">:</span> <span class="s">&#34;🙀&#34;</span><span class="p">,</span> <span class="sc">&#39;B&#39;</span><span class="p">:</span> <span class="s">&#34;🐱‍👤&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="sc">&#39;C&#39;</span><span class="p">:</span> <span class="s">&#34;🐱‍🏍&#34;</span><span class="p">,</span> <span class="sc">&#39;D&#39;</span><span class="p">:</span> <span class="s">&#34;🐱‍💻&#34;</span><span class="p">,</span> <span class="sc">&#39;E&#39;</span><span class="p">:</span> <span class="s">&#34;🐱‍👓&#34;</span><span class="p">,</span> <span class="sc">&#39;F&#39;</span><span class="p">:</span> <span class="s">&#34;🐱‍🚀&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">catify</span><span class="p">(</span><span class="nx">input</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">keys</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">keyedText</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">result</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">char</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">input</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">keyedText</span> <span class="o">+=</span> <span class="nb">string</span><span class="p">(</span><span class="nb">rune</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="o">+</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;I2Keyed: %s\n&#34;</span><span class="p">,</span> <span class="nx">keyedText</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">hexEncoded</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">ToUpper</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">keyedText</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;K2Hex: %s\n&#34;</span><span class="p">,</span> <span class="nx">hexEncoded</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="kt">rune</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">hexEncoded</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">result</span> <span class="o">+=</span> <span class="nx">CharSet</span><span class="p">[</span><span class="kt">rune</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">result</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+</figure>
+<p>ちなみに，猫文字のB~FはNinja Cat(猫忍者)と呼ばれるものであり，絵文字と絵文字とをゼロ幅接合子(zero width joiner,ZWJ)で繋いだものである．
+すなわち，&quot;🐱‍🏍&ldquo;はUnicode では，&ldquo;U+1F431 U+200D U+1F3CD&quot;であり，&ldquo;U+200D&quot;は，ゼロ幅接合子である．<br>
+参考：<a href="https://0g0.org/topic/zero-width-joiner/"target="_blank" rel="noopener noreferrer">ゼロ幅接合子(zero width joiner,ZWJ)による絵文字の組み合わせ・合体</a></p>
+<p>以上より，復号を以下のようにPythonで作成．実行すると，flagが得られる．
+
+
+
+<figure class="xCodeBlock">
+
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">binascii</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">CharSet</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;🐱&#34;</span><span class="p">:</span> <span class="s2">&#34;0&#34;</span><span class="p">,</span> <span class="s2">&#34;🐈&#34;</span><span class="p">:</span> <span class="s2">&#34;1&#34;</span><span class="p">,</span> <span class="s2">&#34;😸&#34;</span><span class="p">:</span> <span class="s2">&#34;2&#34;</span><span class="p">,</span> <span class="s2">&#34;😹&#34;</span><span class="p">:</span> <span class="s2">&#34;3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;😺&#34;</span><span class="p">:</span> <span class="s2">&#34;4&#34;</span><span class="p">,</span> <span class="s2">&#34;😻&#34;</span><span class="p">:</span> <span class="s2">&#34;5&#34;</span><span class="p">,</span> <span class="s2">&#34;😼&#34;</span><span class="p">:</span> <span class="s2">&#34;6&#34;</span><span class="p">,</span> <span class="s2">&#34;😽&#34;</span><span class="p">:</span> <span class="s2">&#34;7&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;😾&#34;</span><span class="p">:</span> <span class="s2">&#34;8&#34;</span><span class="p">,</span> <span class="s2">&#34;😿&#34;</span><span class="p">:</span> <span class="s2">&#34;9&#34;</span><span class="p">,</span> <span class="s2">&#34;🙀&#34;</span><span class="p">:</span> <span class="s2">&#34;A&#34;</span><span class="p">,</span> <span class="s2">&#34;🐱‍👤&#34;</span><span class="p">:</span> <span class="s2">&#34;B&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;🐱‍🏍&#34;</span><span class="p">:</span> <span class="s2">&#34;C&#34;</span><span class="p">,</span> <span class="s2">&#34;🐱‍💻&#34;</span><span class="p">:</span> <span class="s2">&#34;D&#34;</span><span class="p">,</span> <span class="s2">&#34;🐱‍👓&#34;</span><span class="p">:</span> <span class="s2">&#34;E&#34;</span><span class="p">,</span> <span class="s2">&#34;🐱‍🚀&#34;</span><span class="p">:</span> <span class="s2">&#34;F&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">split_cats</span><span class="p">(</span><span class="n">cat_string</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cat_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_string</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># len(&#34;🐱‍👤&#34;) = 3, len(&#34;🐱&#34;) = 1 である（ゼロ幅接合子）．</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">char</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cat_string</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">length</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">CharSet</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cat_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">i</span> <span class="o">+=</span> <span class="n">length</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">cat_list</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">decryption</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cat_string</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 1. 猫文字を16進数の文字列に変換</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cat_list</span> <span class="o">=</span> <span class="n">split_cats</span><span class="p">(</span><span class="n">cat_string</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hex_str</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CharSet</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">cat_list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 2. 16進数文字列をバイト列に変換</span>
+</span></span><span class="line"><span class="cl">    <span class="n">decoded_bytes</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">hex_str</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 3. 元の文字列に復号</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_or_dt</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># key_or_decoded_text</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">db</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">decoded_bytes</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key_or_dt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span> <span class="k">else</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">key_or_dt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example_input</span> <span class="o">=</span> <span class="s2">&#34;You fools! You will never get my catnip!!!!!!!&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example_output</span> <span class="o">=</span> <span class="s2">&#34;🐱‍👓🐱‍🏍🐱‍👤😸😾😹🐱‍👓🐱‍🏍🙀🐱‍👤😾😺🐱‍👓🐈😿🐱‍👤🐱‍👤🐱🐱‍👓🐈🐱‍👤🐱‍🏍🙀😾🐱‍👓🐱‍🏍🙀🐱‍🚀😿😽🐱‍👓🐱‍👓😾😹😾🐱🐱‍👓😽😿🐱‍🏍🙀🐱‍👓🐱‍👓🐱‍👓😾😺😾🐱‍💻🐱‍👓😸😾😸😾🐱‍🏍🐱‍👓😼🙀🙀🐱‍👤😼🐱‍👓🐈🐱‍👤😿🙀😾🐱‍👓😼🐱‍👤😺😾🐱‍💻🐱‍👓🙀😿🐱‍🚀😾😿🐱‍👓😽🙀🐱‍🏍🙀😼🐱‍👓😸🙀🐱‍👓🐱‍👤😿🐱‍💻🐱‍🚀😾😸🐱‍👓🙀😿🐱😿😸🐱‍👓😼🙀🐱‍🏍🐱‍👤🐱‍👤🐱‍👓😼🐱‍👤😸😾😹🐱‍👓😸🐱‍👤😸🐱‍👤🐱‍👤🐱‍👓😽🐱‍👤😾🙀😻🐱‍👓😽😾😻🐱‍👤🐱‍💻🐱‍👓😼🐱‍👤😿😿🐱🐱‍👓🐈😿😽😿😽🐱‍👓😽🙀😻😾😿🐱‍👓😺😾🐱🐱‍👤🙀🐱‍👓🐱‍👤😾🐈😿🐱‍👤🐱‍👓🐱🙀😺😿🙀🐱‍👓😼🙀🙀🐱‍👤🙀🐱‍👓🙀😾😺🙀😾🐱‍👓😹🐱‍👤😻😾😸🐱‍👓😻😿😺🙀🐈🐱‍👓😼😿😸🐱‍👤😸🐱‍👓🐈😾🐱‍💻😿😸🐱‍👓🐈😾🐱‍💻😿😹🐱‍👓🐱‍👤😾🐈🙀😸🐱‍👓🐱‍🏍😾🐈🙀😸🐱‍👓🐱‍🚀🐱‍👤🐱‍🚀🐱‍👤🐱‍💻🐱‍👓😸😾😸😾😿🐱‍👓🐱‍👓🙀😺🐱‍👤🐱🐱‍👓😾😾😽🐱‍👤😿🐱‍👓😸😿🐱‍👤😿🐱‍🚀🐱‍👓🐱‍🏍🙀🙀🙀🙀🐱‍👓🐱‍👤😿🐱‍👤🙀😻🐱‍👓😾🙀😻🙀😾🐱‍👓😾😾😿🐱‍👤😿&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">keys</span> <span class="o">=</span> <span class="n">decryption</span><span class="p">(</span><span class="n">example_input</span><span class="p">,</span> <span class="n">example_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">flag_output</span> <span class="o">=</span> <span class="s2">&#34;🐱‍👓🐱‍🏍🐱‍👤😸😿😹🐱‍👓🐱‍🏍🙀🐱‍👤😾😽🐱‍👓🐈😿🐱‍👤🙀😺🐱‍👓🐈🐱‍👤🐱‍💻🐱‍👤🐱‍👤🐱‍👓🐱‍🏍🙀🐱‍🚀😿😺🐱‍👓🐱‍👓😾😹😾😻🐱‍👓😽😿🐱‍🏍🙀😻🐱‍👓🐱‍👓😾😺😿🐱‍🏍🐱‍👓😸😾😸😾🐱‍🏍🐱‍👓😼🙀🐱‍👤😾😻🐱‍👓🐈🐱‍👤🙀🐱‍👤😻🐱‍👓😼🐱‍👤😹🙀😽🐱‍👓🙀😿🐱‍👓😿🐈🐱‍👓😽🙀🐱‍👤🙀😸🐱‍👓😸🐱‍👤🐱😾😼🐱‍💻🐱‍💻🐱‍👤🐱‍👓🐱‍👓🙀😿🐱😿🐱‍🏍🐱‍👓😼🙀🐱‍🏍🙀🐱‍👓🐱‍👓😼🐱‍👤🐈🐱‍👤😿🐱‍👓😸🐱‍👤😹🐱‍👤😺🐱‍👓😽🐱‍👤😽🙀🐱‍👓🐱‍👓😽😾😻😾🐱‍👤🐱‍👓😼🐱‍👤😾😾🐱‍🚀🐱‍👓🐈😿😽😿🐈🐱‍👓😽🙀😺😾🐱‍👤🐱‍👓😺😾😸😾🐱‍🏍🐱‍👓🐱‍👤😾🐱🙀😽🐱‍👓🐱🙀😺🙀😹🐱‍👓😼🙀😿🐱‍👤🐱‍💻🐱‍👓🙀😾😻🙀😽🐱‍👓😹🐱‍👤😻😾🐱‍🏍🐱‍👓😻😿😺😿🐱🐱‍👓😼😿😹😾😼🐱‍👓🐈😾🐱‍🏍🙀😼🐱‍👓🐈😾🐱‍💻😿🐈🐱‍👓🐱‍👤😾🐈🙀😽🐱‍👓🐱‍🏍😾🐱🙀😺🐱‍👓🐱‍🚀🐱‍👤🐱‍🚀🐱‍👤🐱‍💻🐱‍👓😸😾🐈🐱‍👤😾🐱‍👓🐱‍👓🙀😻😾😸🐱‍👓😾😾😿😿🐱🐱‍👓😸😿🐱‍🏍🙀🐱‍👓🐱‍👓🐱‍🏍🙀🙀🐱‍👤🐱‍🏍🐱‍👓🐱‍👤😿🐱‍🏍🙀😽🐱‍👓😾🙀😻🐱‍👤🐱‍👓🐱‍👓😾😾🐱‍👤😿😻&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="n">decryption</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">flag_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">flag</span><span class="p">))</span></span></span></code></pre></div></div>
+</figure></p>
+<p><code>irisctf{s0m371m3s_bY735_4r3n7_wh47_y0i_3xp3c7}</code></p>
+<h2 id="web-exploitation">Web Exploitation</h2>
+<h3 id="political-50-easy">Political (50 <em>easy</em>)</h3>
+<blockquote>
+<p>My new enterprise policy ensures you will remain flag-free.<br>
+<a href="https://political-web.chal.irisc.tf"target="_blank" rel="noopener noreferrer">https://political-web.chal.irisc.tf</a><br>
+nc ~ <br>
+political.tar.gz<br>
+Hint! The admin bot replying with &ldquo;timeout&rdquo; does not mean the bot is malfunctioning; just that the page render timed out after the defined time limit.</p>
+</blockquote>
+<p>URLにアクセスすると，以下の画面が表示される．</p>
+<p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im15.png"
+        alt="This is a image"/></p>
+<p>また，ncで記載のサーバにアクセスすると，URLの入力を受け付けている．
+このbotは自分のTokenを有効にしてくれるみたいである．</p>
+<pre tabindex="0"><code>$ nc ~
+== proof-of-work: disabled ==
+Please send me a URL to open.
+</code></pre><p>添付ファイルの<code>chal.py</code>を見ると，<code>request.args[&quot;token&quot;]</code>があるので，
+botに送るURLは<a href="https://apidog.com/jp/blog/url-parameter-introduction/"target="_blank" rel="noopener noreferrer">クエリパラメータ</a>を用いればよい．</p>
+<pre tabindex="0"><code>https://political-web.chal.irisc.tf/giveflag?token=e6c3985772f86cf7ab9a01fe2e944ec2
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># chal.py</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/giveflag&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="s2">&#34;token&#34;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="s2">&#34;admin&#34;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;Who are you?&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s2">&#34;token&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">admin</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&#34;admin&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">token</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_tokens</span> <span class="ow">or</span> <span class="n">admin</span> <span class="o">!=</span> <span class="n">ADMIN</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;Why are you?&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">valid_tokens</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;GG&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/redeem&#34;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;POST&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">redeem</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="s2">&#34;token&#34;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;Give me token&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&#34;token&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">token</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_tokens</span> <span class="ow">or</span> <span class="n">valid_tokens</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;Nice try.&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">FLAG</span>
+</span></span></code></pre></div><p>しかしながら，botの<code>policy.json</code>で以下の単語はブロックされているため，そのままでは上手くいかない．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&#34;URLBlocklist&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;*/giveflag&#34;</span><span class="p">,</span> <span class="s2">&#34;*?token=*&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>そこで，<a href="https://tool.hiofd.com/ja/url-hex-online/"target="_blank" rel="noopener noreferrer">URLエンコード(16進数)</a>を行い，botへ送信する．
+（参考：<a href="https://www.eso.org/~ndelmott/url_encode.html"target="_blank" rel="noopener noreferrer">HTML URL-encoding Reference</a>）</p>
+<pre tabindex="0"><code>https://political-web.chal.irisc.tf/giveflag?token=e6c3985772f86cf7ab9a01fe2e944ec2
+=&gt;
+https://political-web.chal.irisc.tf/%67%69%76%65%66%6c%61%67?%74%6f%6b%65%6e=e6c3985772f86cf7ab9a01fe2e944ec2
+</code></pre><p>webサイトへ戻り，Redeemボタンを押すとflagが得られる．</p>
+<p><code>irisctf{flag_blocked_by_admin}</code></p>
 <h2 id="open-source-intelligence">Open-Source Intelligence</h2>
 <h3 id="-osint-disclaimer-50-freebie">✔ OSINT DISCLAIMER (50 <em>freebie</em>)</h3>
 <blockquote>
@@ -213,14 +387,15 @@ fuel-deal.tar.gz</p>
 <p>画像の右上の方の看板に754という数字がある．おそらくこれはバスの番号である．
 よって，「754 bus route」と検索．</p>
 <p>その結果，以下のサイトを発見．<br>
+754 Rowville - Glen Waverley via Caulfield Grammar &amp; Wheelers Hill<br>
 <a href="https://www.ptv.vic.gov.au/route/960/754-rowville-glen-waverley-via-caulfield-grammar-and-wheelers-hill/"target="_blank" rel="noopener noreferrer">https://www.ptv.vic.gov.au/route/960/754-rowville-glen-waverley-via-caulfield-grammar-and-wheelers-hill/</a></p>
 <p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im12.png"
         alt="This is a image"/></p>
 <p>問題の画像にガソリンスタンドの「Shell」のマークがあるので，このバスのルートにおけるShellをGoogleマップで検索．
-すると，該当のガソリンスタンドは１件のみであることがわかる．</p>
+すると，該当のガソリンスタンドは左上の１件のみであることがわかる．</p>
 <p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im13.png"
         alt="This is a image"/></p>
-<p>ここが画像の場所であることが分かった．住所は「203 Gallaghers Rd, Glen Waverley VIC 3150 オーストラリア」である．VICのVは「Victoria」である．</p>
+<p>ストリートビューで確認すると，ここが画像の場所であることが分かった．住所は「203 Gallaghers Rd, Glen Waverley VIC 3150 オーストラリア」である．VICのVは「Victoria」である．</p>
 <p><img  src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im14.png"
         alt="This is a image"/></p>
 <p><code>irisctf{203_Gallaghers_Road_Glen_Waverley_Victoria_Australia}</code></p>
@@ -266,6 +441,16 @@ files</p>
     <li><a href="#binary-exploitation">Binary Exploitation</a>
       <ul>
         <li><a href="#sqlate-50-easy">sqlate (50 <em>easy</em>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#cryptography">Cryptography</a>
+      <ul>
+        <li><a href="#-kittycrypt-50-easy">✔ KittyCrypt (50 <em>easy</em>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#web-exploitation">Web Exploitation</a>
+      <ul>
+        <li><a href="#political-50-easy">Political (50 <em>easy</em>)</a></li>
       </ul>
     </li>
     <li><a href="#open-source-intelligence">Open-Source Intelligence</a>

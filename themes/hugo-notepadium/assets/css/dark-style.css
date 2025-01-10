@@ -58,6 +58,15 @@ samp {
   background-color: rgba(240, 246, 252, 0.05);
 }
 
+/* ************ */
+figcaption {
+  background-color: rgb(94, 94, 94);
+}
+.xCodeBlock {
+  background-color: #282a36;
+}
+/* ************ */
+
 /* @media (min-width: 1600px) {
   #toggle-button {
       display: none;  /* 画面幅が1600px以上の場合、目次を非表示にする */

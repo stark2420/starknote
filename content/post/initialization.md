@@ -154,6 +154,62 @@ h4 {
 
 https://sat8bit.github.io/posts/hugo-with-github-pages/
 
+### コードブロックにキャプションを付けられるシューコードの作成
+
+{{< code lang="" title="themes\hugo-notepadium\layouts\shortcodes\code.html" hl_lines="">}}
+{{ $title := .Get "title" }}
+{{ $lang := or (.Get "lang") "" }}
+{{ $line := or (.Get "hl_lines") "" }}
+<figure class="xCodeBlock">
+{{ with $title }}<figcaption class="xCodeBlock_title">{{ . }}</figcaption>{{ end }}
+<div class="xCodeBlock_code">{{ highlight (trim .Inner "\r\n") $lang (dict "hl_lines" $line) }}</div>
+</figure>
+{{< /code >}}
+
+{{< code lang="css" title="themes\hugo-notepadium\assets\css\style.css" hl_lines="">}}
+figure{
+  line-height: 18px;
+  letter-spacing: 0;
+} 
+figcaption {
+  font-size: 12px;
+  line-height: 22px;
+  padding: 3px 6px 0 6px;;
+  margin-left: 13px;
+  letter-spacing: 0;
+  display: inline-block;
+  border-radius: 0 0 3px 3px;
+  background-color: rgb(253, 226, 226);
+}
+.xCodeBlock {
+  margin: 10px 0;
+  border-radius: 3px;
+  background-color: #f9f6f6;
+}
+.codeblock {
+  margin: 0;
+}
+pre {
+  margin: 0px;
+}
+{{< /code >}}
+
+{{< code lang="" title="themes\hugo-notepadium\assets\css\dark-style.css" hl_lines="">}}
+figcaption {
+  background-color: rgb(94, 94, 94);
+}
+.xCodeBlock {
+  background-color: #282a36;
+}
+{{< /code >}}
+
+を追加．以下のようにすることで，タイトルを付けられる．
+<pre><code>
+&#123;&#123;&#60; code lang="" title="" hl_lines="" &#125;&#125;&#62;
+
+&#123;&#123;&#60; /code &#125;&#125;&#62;
+</code></pre>
+
 
 ## GitHub Pages
 先に，レポジトリを作成し，作ったサイト`example\`の中を全てpushしておく．  
