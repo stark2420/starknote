@@ -6,7 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Wed, 08 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2025 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="http://localhost:1313/starknote/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -262,18 +262,57 @@ Hint! example_output and flag_output use the same keys!&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;irisctf{s0m371m3s_bY735_4r3n7_wh47_y0i_3xp3c7}&lt;/code&gt;&lt;/p&gt;
 &lt;h2 id=&#34;forensics&#34;&gt;Forensics&lt;/h2&gt;
 &lt;h3 id=&#34;deldeldel-50-easy&#34;&gt;deldeldel (50 &lt;em&gt;easy&lt;/em&gt;)&lt;/h3&gt;
+&lt;blockquote&gt;
 &lt;p&gt;I managed to log more than just keys&amp;hellip; perhaps it was too much data to capture?&lt;br&gt;
 deldeldel.tar.gz&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;添付ファイルの中身は，&lt;code&gt;klogger.pcapng&lt;/code&gt;というpcapngファイル．
 wiresharkで開くとUSB通信であることがわかる．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im16.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;p&gt;USBデバイスからhostへの通信を見たいので，&amp;ldquo;URB_INTERRUPT in&amp;quot;のものをフィルタするために，&lt;code&gt;usb.transfer_type == 0x01&lt;/code&gt;を指定．
 さらに，Sourceが1.3.2の通信データが8bytes固定だったので，&lt;code&gt;usb.data_len == 8&lt;/code&gt;を指定．
 よって，以下のフィルタを指定．&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;usb.capdata &amp;amp;&amp;amp; usb.transfer_type == 0x01 &amp;amp;&amp;amp; usb.data_len == 8
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;このデータを USB keyboard parser を用いてキーボード入力を取得する．　　
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/im17.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;このデータを USB keyboard parser を用いてキーボード入力を取得する．いくつかあるが，&lt;br&gt;
 ・&lt;a href=&#34;https://github.com/TeamRocketIst/ctf-usb-keyboard-parser?tab=readme-ov-file&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;ctf-usb-keyboard-parser&lt;/a&gt;&lt;br&gt;
-・&lt;a href=&#34;https://github.com/5h4rrk/CTF-Usb_Keyboard_Parser/tree/main&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;USB Keyboard Parser&lt;/a&gt;　　&lt;/p&gt;
-&lt;p&gt;参考：&lt;a href=&#34;https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Decoding Mixed Case USB Keystrokes from PCAP&lt;/a&gt;&lt;/p&gt;
+・&lt;a href=&#34;https://github.com/5h4rrk/CTF-Usb_Keyboard_Parser/tree/main&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;USB Keyboard Parser&lt;/a&gt;　　
+参考：&lt;a href=&#34;https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Decoding Mixed Case USB Keystrokes from PCAP&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回は１つ目のものを使用．READMEの通りに実行する．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ tshark -r klogger.pcapng -Y &amp;#39;usb.capdata &amp;amp;&amp;amp; usb.data_len == 8&amp;#39; -T fields -e usb.capdata | sed &amp;#39;s/../:&amp;amp;/g2&amp;#39; &amp;gt; usbPcapData
+$ python3 usbkeyboard.py usbPcapData
+Traceback (most recent call last):
+  File &amp;#34;usbkeyboard.py&amp;#34;, line 128, in &amp;lt;module&amp;gt;
+    sys.stdout.write(read_use(sys.argv[1]))
+  File &amp;#34;usbkeyboard.py&amp;#34;, line 91, in read_use
+    if KEY_CODES[key][shift] == u&amp;#39;↑&amp;#39;:
+KeyError: 3 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;エラーが出た．KEY_CODESに0x03がないということで，適当に0x01-0x03を以下のように追加した．
+
+
+
+&lt;figure class=&#34;xCodeBlock&#34;&gt;
+&lt;figcaption class=&#34;xCodeBlock_title&#34;&gt;usbkeyboard.py&lt;/figcaption&gt;
+&lt;div class=&#34;xCodeBlock_code&#34;&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sys&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;KEY_CODES&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line hl&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;mh&#34;&gt;0x01&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line hl&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;mh&#34;&gt;0x02&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line hl&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;mh&#34;&gt;0x03&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;mh&#34;&gt;0x04&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;A&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;mh&#34;&gt;0x05&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;B&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;mh&#34;&gt;0x06&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;C&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;再度実行する．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ tshark -r klogger.pcapng -Y &amp;#39;usb.capdata &amp;amp;&amp;amp; usb.data_len == 8&amp;#39; -T fields -e usb.capdata | sed &amp;#39;s/../:&amp;amp;/g2&amp;#39; &amp;gt; usbPcapData
+$ python3 usbkeyboard.py usbPcapData
+Hey  Alice! I think  I&amp;#39;m supposed to give you is flag:
+
+irisctfF{this_keylogger_isS_too_hard_to_use}
+GABABCABBABBBCCCCCCCBCAAA A AABAAACCCA       CA  BCBC      
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;なぜか余分な文字が入っているが，flagが得られる．&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;irisctf{this_keylogger_is_too_hard_to_use}&lt;/code&gt;&lt;/p&gt;
 &lt;h2 id=&#34;web-exploitation&#34;&gt;Web Exploitation&lt;/h2&gt;
 &lt;h3 id=&#34;political-50-easy&#34;&gt;Political (50 &lt;em&gt;easy&lt;/em&gt;)&lt;/h3&gt;
 &lt;blockquote&gt;
@@ -1229,7 +1268,10 @@ h4 {
   max-width: 1000px;
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a href=&#34;https://sat8bit.github.io/posts/hugo-with-github-pages/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://sat8bit.github.io/posts/hugo-with-github-pages/&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;コードブロックにキャプションを付けられるシューコードの作成&#34;&gt;コードブロックにキャプションを付けられるシューコードの作成&lt;/h3&gt;
+&lt;h3 id=&#34;コードブロックにキャプションを付けられるショーコードの作成&#34;&gt;コードブロックにキャプションを付けられるショーコードの作成&lt;/h3&gt;
+&lt;p&gt;参考：&lt;br&gt;
+・ &lt;a href=&#34;https://maku77.github.io/p/gxk6qat/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://maku77.github.io/p/gxk6qat/&lt;/a&gt;&lt;br&gt;
+・ &lt;a href=&#34;https://discourse.gohugo.io/t/topic/31065&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://discourse.gohugo.io/t/topic/31065&lt;/a&gt;&lt;/p&gt;
 
 
 

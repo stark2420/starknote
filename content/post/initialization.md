@@ -154,7 +154,10 @@ h4 {
 
 https://sat8bit.github.io/posts/hugo-with-github-pages/
 
-### コードブロックにキャプションを付けられるシューコードの作成
+### コードブロックにキャプションを付けられるショーコードの作成
+参考：  
+・ https://maku77.github.io/p/gxk6qat/  
+・ https://discourse.gohugo.io/t/topic/31065  
 
 {{< code lang="" title="themes\hugo-notepadium\layouts\shortcodes\code.html" hl_lines="">}}
 {{ $title := .Get "title" }}

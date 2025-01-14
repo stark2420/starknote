@@ -268,7 +268,7 @@ if __name__ == "__main__":
 
 ## Forensics
 ### deldeldel (50 *easy*)
-I managed to log more than just keys... perhaps it was too much data to capture?  
+> I managed to log more than just keys... perhaps it was too much data to capture?  
 deldeldel.tar.gz
 
 添付ファイルの中身は，`klogger.pcapng`というpcapngファイル．
