@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja"><script src="/starknote/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=starknote/livereload" data-no-instant defer></script><meta charset="utf-8"><meta name="generator" content="Hugo 0.140.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>New Year CTF 2025 Writeup&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.964363afdd281b37186e8f4572a119b584b5c489e7df05c552d5060e2b193d16058787359b6405833d43f4fe66a8263f.css" integrity="sha384-lkNjr90oGzcYbo9FcqEZtYS1xInn3wXFUtUGDisZPRYFh4c1m2QFgz1D9P5mqCY/"><meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="New Year CTF 2025 Writeup" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/cover.png" /><meta property="og:type" content="article" />
+<meta property="og:title" content="New Year CTF 2025 Writeup" />
+<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/irisctf-2025/cover.png" /><body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/starknote/"><span class="site name">しゅたるくの備忘録</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/starknote/categories/">カテゴリ</a><a class="nav item" href="/starknote/tags/">タグ</a><a class="nav item" href="/starknote/about/">About</a><a class="nav item" href=""></a></nav></div></span></div></section><section id="content">
+<div id="top" class="article-container"><section class="article header">
+    <h1 class="article title">New Year CTF 2025 Writeup</h1><p class="article date">Jan 14, 2025</p></section><article class="article markdown-body"><p>2025/1/13 02:00(JST) - 2025/1/15 02:00(JST)で開催された New Year CTF 2025 に参加した．</p>
+<p>個人で参加し，結果は，- 点で - チーム中 - 位だった．</p>
+<p><a href="http://ctf-spcs.mf.grsu.by/"target="_blank" rel="noopener noreferrer">http://ctf-spcs.mf.grsu.by/</a></p>
+<h2 id="crypto">Crypto</h2>
+<h3 id="the-hacker-sent-100">The hacker sent (100)</h3>
+<blockquote>
+<p>The hacker sent a mysterious message. I don&rsquo;t understand anything&hellip;<br>
+¥☐ü_ç☐<em>☐∏</em>∲Λ┏<em>Λ</em>₪Λ¥<em>Λ⊥</em>↻┏¥þ⊥☐<br>
+Answer in the form of grodno{plaintext}</p>
+</blockquote></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a><a class="tag" href="/starknote/tags/writeup/">writeup</a><a class="tag" href="/starknote/tags/grodno/">grodno</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+</section>
+</div>
+
+<button id="toggle-button" class="nomal-style">
+  <h1>目次</h1>
+</button>
+<div id="toc-container" class="toc-container">
+  
+      <h2><a href="#top">目次</a></h2>
+      <div id="toc" class="toc">
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#crypto">Crypto</a>
+      <ul>
+        <li><a href="#the-hacker-sent-100">The hacker sent (100)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+  
+</div>
+
+<script>
+  
+  document.querySelectorAll('.toc-container a').forEach(link => {
+    link.addEventListener('click', function() {
+      
+      if (window.innerWidth < 1600) {
+        
+        const tocContainer = document.querySelector('.toc-container');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  
+  document.getElementById('toggle-button').addEventListener('click', function() {
+    var toc = document.getElementById('toc-container');
+    var button = document.getElementById('toggle-button');
+    
+    
+    if (toc.style.display === 'none') {
+      toc.style.display = 'block';
+      button.innerHTML = '<h1>目次</h1>';  
+    } else {
+      toc.style.display = 'none';
+      button.innerHTML = '<h1>目次</h1>';  
+    }
+  });
+
+  function highlightActiveTocItem() {
+    const tocItems = document.querySelectorAll('.toc a');
+
+    tocItems.forEach(item => {
+      const targetId = item.getAttribute('href').substring(1); 
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        
+        
+        const isInViewport = rect.top <= 200 && rect.bottom > 0;
+
+        if (isInViewport) {
+          
+          tocItems.forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          item.classList.add('active');
+        }
+      }
+    });
+  }
+
+  
+  window.addEventListener('scroll', highlightActiveTocItem);
+  document.addEventListener('DOMContentLoaded', highlightActiveTocItem);  
+</script>
+
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/starknote/post/uoftctf-2025/"><span class="iconfont icon-article"></span>UoftCTF 2025 Writeup</a></p></section><section class="article discussion"><div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "starknote" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered&nbsp;by&nbsp;</span><a href="https://gohugo.io" 
+        target="_blank" rel="noopener noreferrer">Hugo</a><span>&nbsp;&amp;&nbsp;</span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank" rel="noopener noreferrer">Notepadium</a>
+<a href='https://ipv6-test.com/validate.php?url=referer'
+  ><img src='https://ipv6-test.com/button-ipv6-80x15.png' 
+        alt='ipv6 ready' title='ipv6 ready' border='0' 
+/></a>
+</p></div></section></body>
+
+</html>

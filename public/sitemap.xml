@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"><url>
-    <loc>http://localhost:1313/starknote/</loc><lastmod>2025-01-15T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/tags/index/</loc><lastmod>2025-01-15T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/post/</loc><lastmod>2025-01-15T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/tags/</loc><lastmod>2025-01-15T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/categories/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/tags/ctf/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/categories/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/tags/ctf/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/tags/grodno/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/tags/index/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/post/new-year-ctf-2025/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/post/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/categories/programming/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/categories/security/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/tags/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/tags/uoft/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/post/uoftctf-2025/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
+    <loc>http://localhost:1313/starknote/tags/writeup/</loc><lastmod>2025-01-14T00:00:00+00:00</lastmod></url><url>
     <loc>http://localhost:1313/starknote/tags/iris/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
     <loc>http://localhost:1313/starknote/post/irisctf-2025/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/categories/programming/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/categories/security/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
-    <loc>http://localhost:1313/starknote/tags/writeup/</loc><lastmod>2025-01-08T00:00:00+00:00</lastmod></url><url>
     <loc>http://localhost:1313/starknote/post/stable-diffusion/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url>
     <loc>http://localhost:1313/starknote/about/</loc><lastmod>2024-12-30T00:00:00+00:00</lastmod></url><url>
     <loc>http://localhost:1313/starknote/tags/asusn/</loc><lastmod>2024-12-30T00:00:00+00:00</lastmod></url><url>
