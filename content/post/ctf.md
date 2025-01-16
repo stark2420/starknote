@@ -81,3 +81,12 @@ ffuf -w wordlists.txt -u http://example.com/FUZZ
 ```
 https://jpn.nec.com/cybersecurity/blog/210604/index.html  
 https://qiita.com/kk0128/items/5186cbe6062e0f887e3b
+
+### 探索
+- ソースコードのコメント
+- リスポンスヘッダー
+- robots.txt
+- robots.txtのDisallowに指定されたディレクトリ
+- ソースマップ（.mapの拡張子で終わるJSONのファイル）`app.js.map`
+- Cookie
+- Cookieの`user:guest`に対して`user:admin`で制限された特定のディレクトリへアクセス

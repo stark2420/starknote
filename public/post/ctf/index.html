@@ -67,7 +67,17 @@ $ pdftotext file.pdf -
 <p>WEBファジングツール．</p>
 <pre tabindex="0"><code>ffuf -w wordlists.txt -u http://example.com/FUZZ
 </code></pre><p><a href="https://jpn.nec.com/cybersecurity/blog/210604/index.html"target="_blank" rel="noopener noreferrer">https://jpn.nec.com/cybersecurity/blog/210604/index.html</a><br>
-<a href="https://qiita.com/kk0128/items/5186cbe6062e0f887e3b"target="_blank" rel="noopener noreferrer">https://qiita.com/kk0128/items/5186cbe6062e0f887e3b</a></p></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+<a href="https://qiita.com/kk0128/items/5186cbe6062e0f887e3b"target="_blank" rel="noopener noreferrer">https://qiita.com/kk0128/items/5186cbe6062e0f887e3b</a></p>
+<h3 id="探索">探索</h3>
+<ul>
+<li>ソースコードのコメント</li>
+<li>リスポンスヘッダー</li>
+<li>robots.txt</li>
+<li>robots.txtのDisallowに指定されたディレクトリ</li>
+<li>ソースマップ（.mapの拡張子で終わるJSONのファイル）<code>app.js.map</code></li>
+<li>Cookie</li>
+<li>Cookieの<code>user:guest</code>に対して<code>user:admin</code>で制限された特定のディレクトリへアクセス</li>
+</ul></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
 </section>
 </div>
 
@@ -90,6 +100,7 @@ $ pdftotext file.pdf -
     <li><a href="#web">Web</a>
       <ul>
         <li><a href="#ffuf">FFUF</a></li>
+        <li><a href="#探索">探索</a></li>
       </ul>
     </li>
   </ul>

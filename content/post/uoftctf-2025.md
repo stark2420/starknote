@@ -135,11 +135,11 @@ webサイトのどこかに隠された7つのflagの断片を探す問題．以
 
 1. ソースコードに，コメントとして記載．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im01.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im01.png) 
 
 2. レスポンスヘッダーに含まれている．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im02.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im02.png) 
 
 3. `localhost:3000/robots.txt`にアクセス．
 ```
@@ -150,20 +150,20 @@ Disallow: /hidden_admin_panel
 
 4. robots.txtに書かれていた`localhost:3000/hidden_admin_panel`にアクセス．Cookieにフラグが追加される．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im03.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im03.png) 
 
 5. styles.cssに，コメントとして記載．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im04.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im04.png) 
 
 6. Cookieの`user:guest`を`user:admin`に書き換えて，`localhost:3000/hidden_admin_panel`にアクセス．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im07.png) 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im06.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im07.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im06.png) 
 
 7. app.min.jsの最下部にあるように，`localhost:3000/app.min.js.map`へアクセス．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im05.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im05.png) 
 ```
 {
     "version": 3,
@@ -187,3 +187,12 @@ Disallow: /hidden_admin_panel
 ```
 
 `uoftctf{ju57_k33p_c4lm_4nd_1n5p3c7_411_7h3_4pp5_50urc3_c0d3!!}`
+
+補足：開催後にローカルで実行する手順は，[公式Writeup](https://github.com/UofTCTF/uoftctf-2025-chals-public)からソースコードをダウンロードし，
+問題のディレクトリ（Dockerfileのある場所）で以下のコマンドを実行する．
+```
+$ docker build -t scavenger-hunt .
+$ docker run -p 3000:3000 scavenger-hunt
+```
+`http://localhost:3000/`にアクセスできる．
+

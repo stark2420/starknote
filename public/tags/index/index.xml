@@ -587,7 +587,77 @@ spawn nc ~
 Correct 1000/1000
 
 Congratz! Here is the flag uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357}&lt;/code&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;web&#34;&gt;web&lt;/h2&gt;
+&lt;h3 id=&#34;scavenger-hunt-100&#34;&gt;Scavenger Hunt (100)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You know what to do.&lt;br&gt;
+Visit the website here&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;webサイトのどこかに隠された7つのflagの断片を探す問題．以下では，開催後にローカルで実行した画像を使用する．&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;ソースコードに，コメントとして記載．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im01.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;レスポンスヘッダーに含まれている．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im02.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;code&gt;localhost:3000/robots.txt&lt;/code&gt;にアクセス．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;User-agent: *
+Disallow: /hidden_admin_panel
+# part4=411_7h3_
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;robots.txtに書かれていた&lt;code&gt;localhost:3000/hidden_admin_panel&lt;/code&gt;にアクセス．Cookieにフラグが追加される．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im03.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;styles.cssに，コメントとして記載．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im04.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;Cookieの&lt;code&gt;user:guest&lt;/code&gt;を&lt;code&gt;user:admin&lt;/code&gt;に書き換えて，&lt;code&gt;localhost:3000/hidden_admin_panel&lt;/code&gt;にアクセス．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im07.png&#34;
+        alt=&#34;This is a image&#34;/&gt;
+&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im06.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;app.min.jsの最下部にあるように，&lt;code&gt;localhost:3000/app.min.js.map&lt;/code&gt;へアクセス．&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im05.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{
+    &amp;#34;version&amp;#34;: 3,
+    &amp;#34;file&amp;#34;: &amp;#34;app.js.map&amp;#34;,
+    &amp;#34;sources&amp;#34;: [
+        &amp;#34;app.js&amp;#34;
+    ],
+    &amp;#34;names&amp;#34;: [
+        &amp;#34;document&amp;#34;,
+        &amp;#34;addEventListener&amp;#34;,
+        &amp;#34;startButton&amp;#34;,
+        &amp;#34;getElementById&amp;#34;,
+        &amp;#34;scrollIntoView&amp;#34;,
+        &amp;#34;behavior&amp;#34;,
+        &amp;#34;style&amp;#34;,
+        &amp;#34;display&amp;#34;
+    ],
+    &amp;#34;mappings&amp;#34;: &amp;#34;AAAAA,SAASC,iBAAiB,mBAAmB,KAAK,MAAMC,YAAYF,SAASG,eAAe,aAAa,EAAE,GAAGD,YAAY,CACtHA,YAAYD,iBAAiB,QAAQ,KACjCD,SAASG,eAAe,MAAM,EAAEC,eAAe,CAACC,SAAS,QAAQ,CAAC,EAClEL,SAASG,eAAe,eAAe,EAAEG,MAAMC,QAAU,OAC7D,CAAC,CACL,CAAC,CAAC&amp;#34;,
+    &amp;#34;part7&amp;#34;: &amp;#34;c0d3!!}&amp;#34;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;uoftctf{ju57_k33p_c4lm_4nd_1n5p3c7_411_7h3_4pp5_50urc3_c0d3!!}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;補足：開催後にローカルで実行する手順は，&lt;a href=&#34;https://github.com/UofTCTF/uoftctf-2025-chals-public&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;公式Writeup&lt;/a&gt;からソースコードをダウンロードし，
+問題のディレクトリ（Dockerfileのある場所）で以下のコマンドを実行する．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ docker build -t scavenger-hunt .
+$ docker run -p 3000:3000 scavenger-hunt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;http://localhost:3000/&lt;/code&gt;にアクセスできる．&lt;/p&gt;</description>
     </item>
     
     <item>
