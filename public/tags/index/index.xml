@@ -6,15 +6,30 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Tue, 14 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2025 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="http://localhost:1313/starknote/tags/index/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>CTF ツール まとめ</title>
+      <link>http://localhost:1313/starknote/post/ctf/</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/starknote/post/ctf/</guid>
+      <description>&lt;p&gt;CTFで利用できるツールをまとめる．&lt;/p&gt;
+&lt;h2 id=&#34;forensics&#34;&gt;Forensics&lt;/h2&gt;
+&lt;h3 id=&#34;exiftool&#34;&gt;exiftool&lt;/h3&gt;
+&lt;p&gt;画像や動画のExif情報．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ sudo apt-get install exiftool
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ exiftool image.png
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
       <title>New Year CTF 2025 Writeup</title>
       <link>http://localhost:1313/starknote/post/new-year-ctf-2025/</link>
-      <pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
       
       <guid>http://localhost:1313/starknote/post/new-year-ctf-2025/</guid>
       <description>&lt;p&gt;2025/1/13 02:00(JST) - 2025/1/15 02:00(JST)で開催された New Year CTF 2025 に参加した．&lt;/p&gt;
@@ -64,11 +79,7 @@ crashme.c&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;/figure&gt;
-&lt;p&gt;ncでサーバにアクセスし，適当に文字を入力すると以下のようになった．&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ nc ~
-Give me some data: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-Wrong answer ...
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;問題文の通り，bufferの大きさを超える長い文字列を与えるとflagが得られた．&lt;/p&gt;
+&lt;p&gt;ncでサーバにアクセスし，問題文の通り，バッファオーバーフローを起こすとflagが得られた．&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ nc ~
 Give me some data: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 You entered: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -100,6 +111,52 @@ QR-with-fingers.png&lt;/p&gt;
 &lt;p&gt;適当な読み取りサイトに投げるとflagが得られる．&lt;br&gt;
 ・QRコード読み取り: &lt;a href=&#34;https://qrcode.onl.jp/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://qrcode.onl.jp/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;grodno{It&#39;s_h4rd_t0_l1ve_without_R33d-S0l0m0n_c0d3s!}&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;bel_money-part_1-100&#34;&gt;Bel_money (part_1) (100)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The flag is hidden in the pdf document. Finf it&lt;br&gt;
+Bel_money_(paart_1).pdf&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;添付のpdfをtextに変換するとflagが得られた．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ apt install poppler-utils
+$ pdftotext -v
+$ pdftotext BelMoney_part_1.pdf -
+Первые банкноты Республики Беларусь. 1992 год
+The first banknotes of the Republic of Belarus. 1992
+Часть 1 / Part 1
+
+Все мелкие банкноты были посвящены значимым для страны
+животным и назывались в народе &amp;#34;зайчиками&amp;#34;.
+All small banknotes were dedicated to animals significant for the
+country and were popularly called &amp;#34;bunnies&amp;#34;.
+
+part1: grodno{More_details_at:_https://www.monetnik.ru/ob
+
+Банкнота в 50 копеек, на которой изображена белка, была довольно оригинальным решением, ведь куда чаще деньги подобного номинала выпускаются в виде монет. Партию таких
+купюр впервые напечатали в мае 1992 года и они использовались до 1994 года.
+Обратим внимание на отсутствие серии и номера банкноты.
+A 50-kopeck banknote with a squirrel on it was a rather original
+solution, since money of this denomination is often issued in the
+form of coins. A batch of such banknotes was first printed in May
+1992 and they were used until 1994.
+Note the absence of a series and banknote number.
+
+
+part2: uchenie/bonistika/banknoty-belorussii-1992-2000/}
+
+Именно банкноте в 1 рубль мы обязаны столь необычным
+названием белорусских денег 90-х годов. На лицевой стороне
+изобразили зайца-русака, типичного представителя животного
+мира Европы и Беларуси.
+Заметим, что на купюрах от 1 рубля и выше имеются серия и
+номер.
+«Зайчик» продержался в обороте чуть дольше «Белочки», до
+1995 года.
+It is the 1 ruble banknote that gave the Belarusian money of the
+90s such an unusual name. On the front side is a hare, a typical
+representative of the animal world of Europe and Belarus.
+Note that banknotes of 1 ruble and above have a series and number.
+&amp;#34;Bunny&amp;#34; remained in circulation a little longer than &amp;#34;Squirrel&amp;#34;, until 1995.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;grodno{More_details_at:_https://www.monetnik.ru/obuchenie/bonistika/banknoty-belorussii-1992-2000/}&lt;/code&gt;&lt;/p&gt;
 &lt;h3 id=&#34;rsa-for-9-687&#34;&gt;RSA for 9+ (687)&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;All you need to do is decrypt the secret encrypted using the RSA (Rivest-Shamir-Adleman) algorithm.&lt;br&gt;
@@ -241,7 +298,13 @@ Y29va2llX2Nvb2tpbmdfY29vcGVyYXRpb24=
 grodno{2c64b0Take_y0urself_the_b1ggest_candydfac0d}
 &lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;ppc&#34;&gt;PPC&lt;/h2&gt;
 &lt;h3 id=&#34;my-best-regards-100&#34;&gt;My best regards (100)&lt;/h3&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;spawn nc ctf.mf.grsu.by 9031
+&lt;blockquote&gt;
+&lt;p&gt;To receive a gift from Ded Moroz (the Belarusian Santa Claus), one must read 50 New Year&amp;rsquo;s greetings recorded in QR codes.&lt;br&gt;
+However, the QR codes are slightly &amp;lsquo;damaged&amp;rsquo;&lt;br&gt;
+nc ~&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;ncでサーバにアクセスすると，以下が表示され，5秒後にタイムアウトする．値はランダムに変化する．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ nc ~
 
 ██████╗ ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ██╗     ██████╗ ██████╗
 ██╔══██╗██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗  ██║    ██╔═══██╗██╔══██╗
@@ -267,22 +330,115 @@ QR-code (base64): iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAADEklEQVR4nO3aTW
 
 Your answer:
 
-Wishing_you_prosperity_and_happiness_in_the_year_ahead!
-Правильно / Good answer: Wishing_you_prosperity_and_happiness_in_the_year_ahead!
+Time Out...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;まず，QRコードの復号をPythonで作成．&lt;/p&gt;
 
-(省略)
 
+
+&lt;figure class=&#34;xCodeBlock&#34;&gt;
+&lt;figcaption class=&#34;xCodeBlock_title&#34;&gt;test.py&lt;/figcaption&gt;
+&lt;div class=&#34;xCodeBlock_code&#34;&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;base64&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;cv2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;pyzbar.pyzbar&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decode&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;base64_data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAC/klEQVR4nO3aSW7rMAyAYQE+QI7kq/tIPkAAvoSjPHSwlQd08WvRurE+dUNQIpUmI2NpcDgcDofD4fC/xJuPyZ5enzz9k/n1JLK+Plv0xdryBRw+xvUPWV98tqmT+NTH01aLt5N0Ag4f4e+p9m6NyF3e8v1DX2zeTnD4B7nmxk2CfKHloVN9DTj843z1+RGlsV9rDv05aOHwX3P9tcbHOd/Dt06JP+7vcPhvuY9Iht/8iKlw+CDvRh0Gm+3N76f4M0I6J8PhI9yLXLG0GOfAOBbqkpogY7UZDh/lWnhkzWHtljgR1inRD43HVAmHX+de33rN29UmLaUuucRGHgwOv8ut5tDYrK6yZknvvrS2f4LDB3m/GWdY6tR84Zt2LH5MlXD4Vf4QiYUqIlurc2Bt3x7NcPggtzokz4GyRVmgaKieFiNw+FVu7zQZSpwNrecy+/Ldd1mkBhw+wP22rPUZUdZKixXDVRvD4YM8wtAvL7K1PMcaddMWOzccPsg3bbxovERurBjO/wWHf4BHqGr1YbwuOSx9xpJ95QKH3+U+IlRbdf/0KTt9rbW8+IDDB3nFYY5ul7bqVy/UJM+GcPgY9+p3y+veVtYK1Wfu3HD4ED8L2i5V2pMl0v74CIcP8LOgFcm0uOR5sbVqRsPhY3w+01LbsvShWgMO/y/cipFsvFgJvL9Qg8Nv8Nai0tiNJXKjVyTbKXD4fS52eRFt5H5CBGhwHYcKGg6/zuuktx+RGwM9++QKh9/nfaVxMqxAztuPdrK/w+FXuTX05jMZO7eN95SuXobD7/PNtwV245n3trnGsfECh1/m3w8L2mzBdMdHOPw+92iMDbrbqq0Y0QuNR61xuMaFw6/zWX/ZbdnUbcG+Nz9E4n4t8yocPsrrjjY7LZ4Rg+s826DzH8Lhn+DNvoBn3b8WnZY6L9qUL06VcPgtvkmVLj1VKlq9Gf1lzMPhv+YRkTYru8r7YYF8rKDh8Ovcx9SvodyqX536kEykcPg4vzvgcDgcDofD4X+F/wOUtm/WGicMDwAAAABJRU5ErkJggg==&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;image_data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;base64&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b64decode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base64_data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;decoded_qr_code.png&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;wb&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;image_data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;imread&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;decoded_qr_code.png&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;qr_codes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qr&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qr_codes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;qr_data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;utf-8&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;qr_data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Happy_New_Year_-_may_it_be_your_best_year_yet!&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/figure&gt;
+&lt;p&gt;次に，LinuxのCLIコマンドを自動化するExpectを用いて，自動化する．
+&lt;code&gt;-re {([^\n]+)}&lt;/code&gt;は改行以外の任意の文字列にマッチする．
+&lt;code&gt;set e_val [string map {\r &amp;quot;&amp;quot;} $e_val]&lt;/code&gt;でキャリッジリターンを削除する．
+Pythonコード中では「&amp;quot;」は使うことができないので「&amp;rsquo;」を必ず使うこと．&lt;/p&gt;
+&lt;p&gt;参考：
+&lt;a href=&#34;https://qiita.com/Mskmemory/items/013dff1a76e58fcdc364#expect%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://qiita.com/Mskmemory/items/013dff1a76e58fcdc364#expect%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6&lt;/a&gt;&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;xCodeBlock&#34;&gt;
+&lt;figcaption class=&#34;xCodeBlock_title&#34;&gt;main.sh&lt;/figcaption&gt;
+&lt;div class=&#34;xCodeBlock_code&#34;&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/usr/bin/expect
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;spawn nc ctf.mf.grsu.by &lt;span class=&#34;m&#34;&gt;9031&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; i 0&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$i&lt;/span&gt; &amp;lt; 50&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;incr i&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    expect &lt;span class=&#34;s2&#34;&gt;&amp;#34;QR-code (base64): &amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    expect -re &lt;span class=&#34;o&#34;&gt;{([&lt;/span&gt;^&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;)}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; data &lt;span class=&#34;nv&#34;&gt;$expect_out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0,string&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; data &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;string map &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\r&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    expect &lt;span class=&#34;s2&#34;&gt;&amp;#34;Your answer:&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; result &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; python3 -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;import base64
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;import cv2
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;from pyzbar.pyzbar import decode
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;base64_data = &amp;#39;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$data&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;image_data = base64.b64decode(base64_data)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;with open(&amp;#39;decoded_qr_code.png&amp;#39;, &amp;#39;wb&amp;#39;) as file:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    file.write(image_data)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;image = cv2.imread(&amp;#39;decoded_qr_code.png&amp;#39;)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;qr_codes = decode(image)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;for qr in qr_codes:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    qr_data = qr.data.decode(&amp;#39;utf-8&amp;#39;)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    print(qr_data)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    &amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    send -- &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$result&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;\r&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;send &lt;span class=&#34;s2&#34;&gt;&amp;#34;exit\r&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;expect eof&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/figure&gt;
+&lt;p&gt;実行する前に，実行権限を付与しておく．
+このスクリプトを実行すると，flagが得られる．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ chmod +x main.sh
+$ ./main.sh
+（省略）
 Round 50/50
 QR-code (base64): iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAADBElEQVR4nO3aQY6zMAyGYUscoEfi6hypB0DK38af7bSwgfSXZvFmwTBDnszGcmKDtZmxGRwOh8PhcDj8L3HTWF53jxaX91ifi9+9Zu2vyzOmrnD4JO+/tPfU9TVLz2KhGn21QcDhM/ypAO1h+ZJ9jd1qflPQ9hhe4PAfck+LWw/Vp31u33D4f+JrzDqkSg9pOPxnPCaMR8DvMWZOOHyaayxNkftx0fBfYyocPsmHsdk7S74jdzOlxeLHyXD4BK9tebdxDCVwFCj22A9BC4df51H46jBoOgLWiBbg2QYNh9/gPQ6VIB/57KvTF0fFuoPD53hTllyfy2nQVgmsAyIcPsf9MKhnZudHQN+5+4OvoIXD73D9ZY9zYCykHPrY804LweE/4R6RWYyMKEI6du6zWgYOv8gzGGOrjtPfZmryaY2mQyMcPsvjhVrUwRnDH4WHDakSDp/lvkZvrShAtVoVw4rmzKFw+Czf4jBoqn6VG32rVvc5FhrWhcMneKXFZ9xV4eEx3LRpK7jh8FnuQassGcfCnN/DN1NltWXg8PvcfGS5q0v8LatfU5Xc4PBf8CUutVX7Zlx7c1/IvFSBw2d5bdB6oRYN5SpQvj7Ug8NneeRBszoRmsqSaPJZHBCPJTAcfoNHChzvam9WqvxMpHD4JO9T62uVyo3xxfsSPI6KcPg011sN5Uvt1xmbrdaNjww8wOHwCW65I2/Ox0ucEvfcm+HweR5Fbsso7ai1oclsQ0fwtFsIh1/i6q98h2p/pijVjuwHRDts0HD4Vd5nKQ969aE6uOVWXanyrASGwy/zsfHiXwbsfhdP4+VtDv+fcPh9XsPrWz8gfjRetHiLM+QKh8/xCEX1VwJlV7kq4mjG+D+Dwyd4D8GO2rHTN8rWxo4MHD7D80WtojQq3S2bMer5vcfjrFsIh9/lsQXvMWtYNwPZa2M4/Ef8NGhbLqnFv4+FcPgd3n/0Dbqq3zgbWn6PHJMPqRIOv841xIdOX77fGE6Exw0aDr/O7w44HA6Hw+Fw+F/h/wBy9nPVFCU1wwAAAABJRU5ErkJggg==
 
 Your answer:
 
 Wishing_you_a_year_of_health,_happiness,_and_success!
-exit
 Правильно / Good answer: Wishing_you_a_year_of_health,_happiness,_and_success!
 
 grodno{0b83b0345f4a71809cbee57f2ce9}
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;osint&#34;&gt;OSINT&lt;/h2&gt;
+&lt;h3 id=&#34;beer--books-100&#34;&gt;Beer &amp;amp; Books (100)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;（問題文を保存し忘れたため省略．添付画像の緯度経度をgrodno{52.221,21.016}のフォーマットで求める問題．）&lt;br&gt;
+chall_photo.jpg&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;添付の画像は以下．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/chall_photo.jpg&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;Googleレンズで画像検索すると，似た写真が出てきた．&lt;a href=&#34;https://www.otodom.pl/pl/oferta/kawalerka-inwestycja-niski-czynsz-ID4umPV&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;三つ目のサイト&lt;/a&gt;はまさに同じ場所．
+このサイトに地図も載っていた．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/im03.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/im04.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;また，添付画像には看板が写っており「Plac Konstytucji」と書かれている．
+Googleマップで検索すると，先ほどのサイトの地図と同じ場所が出てきた．この周辺で会っていそう．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/im05.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;すぐ下の交差点だとわかった．&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/im06.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/im07.png&#34;
+        alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;grodno{52.221, 21.016}&lt;/code&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -292,8 +448,93 @@ grodno{0b83b0345f4a71809cbee57f2ce9}
       
       <guid>http://localhost:1313/starknote/post/uoftctf-2025/</guid>
       <description>&lt;p&gt;2025/1/11 09:00(JST) - 2025/1/13 09:00(JST)で開催された UoftCTF 2025 に参加した．&lt;/p&gt;
-&lt;p&gt;個人で参加し，結果は，- 点で - チーム中 - 位だった．&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://ctf-spcs.mf.grsu.by/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;http://ctf-spcs.mf.grsu.by/&lt;/a&gt;&lt;/p&gt;</description>
+&lt;p&gt;チームで参加し，結果は，700 点で 897 チーム中 236 位だった．&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://ctf.uoftctf.org/&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://ctf.uoftctf.org/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;公式Writeup：
+&lt;a href=&#34;https://github.com/UofTCTF/uoftctf-2025-chals-public&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://github.com/UofTCTF/uoftctf-2025-chals-public&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;crypto&#34;&gt;Crypto&lt;/h2&gt;
+&lt;h3 id=&#34;funny-cipher-100&#34;&gt;funny-cipher (100)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A wheelbarrow ran over the flag. Can you fix it?&lt;br&gt;
+cipher.txt&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+
+&lt;figure class=&#34;xCodeBlock&#34;&gt;
+&lt;figcaption class=&#34;xCodeBlock_title&#34;&gt;cipher.txt&lt;/figcaption&gt;
+&lt;div class=&#34;xCodeBlock_code&#34;&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;60_ZMZ_GBWKNREM_KRA__LQM}WEPRGQL__Q_{RWW_M_KIAGPMNMRXDLM_FMWLDQ0BOIAMNPG&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/figure&gt;
+&lt;p&gt;問題文を検索すると，以下のサイトがヒット．昨年も同じような問題が出題されたようだ．&lt;br&gt;
+&lt;a href=&#34;https://ctftime.org/writeup/38474&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://ctftime.org/writeup/38474&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.dcode.fr/burrows-wheeler-transform&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Burrow&amp;rsquo;s Wheeler Transform&lt;/a&gt; というサイトで復号できるらしい．&lt;/p&gt;
+&lt;p&gt;復号結果は以下のようになった．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;LWPMGMP{NRN_XWL_BDWO_MZA_PRIQM_QLKQMRMLMRWD_GRFZAI_NEMAQ_KEGB_MW_600_KG}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;まだflagにはなっていないが，LWPMGMP=&amp;gt;uotfctfに置換できそう．&lt;br&gt;
+しかしながら，規則性は見つからない．とりあえず，確定している置換を行うと以下になる．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;uoftctf{???_?ou_??o?_t??_f???t_?u??t?tut?o?_c?????_??t??_??c?_to_600_?c}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;真ん中の長い単語の部分を考えてみる．同じ文字は同じ文字に置換されることを踏まえると，&lt;br&gt;
+QLKQMRMLMRWD=&amp;gt;substitutionになりそう．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;uoftctf{?i?_?ou_?no?_t??_fi?st_substitution_ci????_??t?s_b?c?_to_600_bc}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;だんだん見えてきた．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;uoftctf{did_you_know_the_first_substitution_ci?her_d?tes_b?ck_to_600_bc}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以下がflagである．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;uoftctf{did_you_know_the_first_substitution_cipher_dates_back_to_600_bc}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;uoftctf{did_you_know_the_first_substitution_cipher_dates_back_to_600_bc}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;misc&#34;&gt;Misc&lt;/h2&gt;
+&lt;h3 id=&#34;math-test-100&#34;&gt;Math Test (100)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;nc ~&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;ncコマンドでサーバにアクセスすると，以下が表示される．計算式はランダムに変化する．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ nc ~
+Welcome to a simple math test.
+If you solve these basic math questions, I will give you the flag.&amp;#34;
+Good Luck
+Question: 1 + 4 // 5
+
+Answer: 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;そこで，LinuxのCLIコマンドを自動化するExpectを用いて，自動化する．
+&lt;code&gt;-re {([^\n]+)}&lt;/code&gt;は改行以外の任意の文字列にマッチする．
+send コマンドには，&lt;code&gt;--&lt;/code&gt;オプションがあり，これ以降の引数をすべて文字列として解釈する．
+これがないと，負の数送るときに，&lt;code&gt;-&lt;/code&gt;がフラグとして間違えられてエラーになる．&lt;/p&gt;
+&lt;p&gt;参考：
+&lt;a href=&#34;https://qiita.com/Mskmemory/items/013dff1a76e58fcdc364#expect%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://qiita.com/Mskmemory/items/013dff1a76e58fcdc364#expect%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6&lt;/a&gt;
+&lt;a href=&#34;https://manpages.ubuntu.com/manpages/focal/ja/man1/expect.1.html&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://manpages.ubuntu.com/manpages/focal/ja/man1/expect.1.html&lt;/a&gt;&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;xCodeBlock&#34;&gt;
+&lt;figcaption class=&#34;xCodeBlock_title&#34;&gt;main.sh&lt;/figcaption&gt;
+&lt;div class=&#34;xCodeBlock_code&#34;&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/usr/bin/expect
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;spawn nc 34.66.235.106 &lt;span class=&#34;m&#34;&gt;5000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; i 0&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$i&lt;/span&gt; &amp;lt; 1000&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;incr i&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    expect &lt;span class=&#34;s2&#34;&gt;&amp;#34;Question:&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    expect -re &lt;span class=&#34;o&#34;&gt;{([&lt;/span&gt;^&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;)}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; expression &lt;span class=&#34;nv&#34;&gt;$expect_out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1,string&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    expect &lt;span class=&#34;s2&#34;&gt;&amp;#34;Answer:&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; result &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; python3 -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;print(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$expression&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;)&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    send -- &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$result&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;\r&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;send &lt;span class=&#34;s2&#34;&gt;&amp;#34;exit\r&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;expect eof&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/figure&gt;
+&lt;p&gt;実行する前に，実行権限を付与しておく．
+このスクリプトを実行すると，flagが得られる．&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ chmod +x main.sh
+$ ./main.sh
+spawn nc ~
+
+（省略）
+
+Correct 1000/1000
+
+Congratz! Here is the flag uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357}&lt;/code&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
