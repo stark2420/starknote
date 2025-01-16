@@ -66,7 +66,8 @@ uoftctf{did_you_know_the_first_substitution_cipher_dates_back_to_600_bc}
 
 ## Misc
 ### Math Test (100)
-> nc ~
+> Complete this simple math test to get the flag.  
+nc ~
 
 ncコマンドでサーバにアクセスすると，以下が表示される．計算式はランダムに変化する．
 ```
@@ -125,3 +126,64 @@ Congratz! Here is the flag uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357
 `uoftctf{7h15_15_b451c_10_7357_d16u153d_45_4_m47h_7357}`
 
 
+## web
+### Scavenger Hunt (100)
+> You know what to do.  
+Visit the website here
+
+webサイトのどこかに隠された7つのflagの断片を探す問題．以下では，開催後にローカルで実行した画像を使用する．
+
+1. ソースコードに，コメントとして記載．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im01.png) 
+
+2. レスポンスヘッダーに含まれている．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im02.png) 
+
+3. `localhost:3000/robots.txt`にアクセス．
+```
+User-agent: *
+Disallow: /hidden_admin_panel
+# part4=411_7h3_
+```
+
+4. robots.txtに書かれていた`localhost:3000/hidden_admin_panel`にアクセス．Cookieにフラグが追加される．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im03.png) 
+
+5. styles.cssに，コメントとして記載．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im04.png) 
+
+6. Cookieの`user:guest`を`user:admin`に書き換えて，`localhost:3000/hidden_admin_panel`にアクセス．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im07.png) 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im06.png) 
+
+7. app.min.jsの最下部にあるように，`localhost:3000/app.min.js.map`へアクセス．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im05.png) 
+```
+{
+    "version": 3,
+    "file": "app.js.map",
+    "sources": [
+        "app.js"
+    ],
+    "names": [
+        "document",
+        "addEventListener",
+        "startButton",
+        "getElementById",
+        "scrollIntoView",
+        "behavior",
+        "style",
+        "display"
+    ],
+    "mappings": "AAAAA,SAASC,iBAAiB,mBAAmB,KAAK,MAAMC,YAAYF,SAASG,eAAe,aAAa,EAAE,GAAGD,YAAY,CACtHA,YAAYD,iBAAiB,QAAQ,KACjCD,SAASG,eAAe,MAAM,EAAEC,eAAe,CAACC,SAAS,QAAQ,CAAC,EAClEL,SAASG,eAAe,eAAe,EAAEG,MAAMC,QAAU,OAC7D,CAAC,CACL,CAAC,CAAC",
+    "part7": "c0d3!!}"
+}
+```
+
+`uoftctf{ju57_k33p_c4lm_4nd_1n5p3c7_411_7h3_4pp5_50urc3_c0d3!!}`

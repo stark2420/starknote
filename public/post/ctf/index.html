@@ -24,11 +24,50 @@ $ pdftotext -v
 </code></pre><pre tabindex="0"><code>$ pdftotext file.pdf
 $ pdftotext file.pdf -
 </code></pre><ul>
-<li>defalt：name.txtが作成される</li>
+<li>default：name.txtが作成される</li>
 <li><code>-</code>：標準出力にそのまま出力</li>
 </ul>
 <p>問題例：
-<a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#rsa-for-9-687"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#rsa-for-9-687</a></p></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+<a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#bel_money-part_1-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#bel_money-part_1-100</a></p>
+<h3 id="qrコード">QRコード</h3>
+<ul>
+<li>QRazyBox: <a href="https://merri.cx/qrazybox/"target="_blank" rel="noopener noreferrer">https://merri.cx/qrazybox/</a></li>
+<li>QRコード読み取り: <a href="https://qrcode.onl.jp/"target="_blank" rel="noopener noreferrer">https://qrcode.onl.jp/</a></li>
+</ul>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">qr.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">opencv</span><span class="o">-</span><span class="n">python</span>
+</span></span><span class="line"><span class="cl"><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyzbar</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base64</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">cv2</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pyzbar.pyzbar</span> <span class="kn">import</span> <span class="n">decode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">base64_data</span> <span class="o">=</span> <span class="s2">&#34;iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAC/klEQVR4nO3aSW7rMAyAYQE+QI7kq/tIPkAAvoSjPHSwlQd08WvRurE+dUNQIpUmI2NpcDgcDofD4fC/xJuPyZ5enzz9k/n1JLK+Plv0xdryBRw+xvUPWV98tqmT+NTH01aLt5N0Ag4f4e+p9m6NyF3e8v1DX2zeTnD4B7nmxk2CfKHloVN9DTj843z1+RGlsV9rDv05aOHwX3P9tcbHOd/Dt06JP+7vcPhvuY9Iht/8iKlw+CDvRh0Gm+3N76f4M0I6J8PhI9yLXLG0GOfAOBbqkpogY7UZDh/lWnhkzWHtljgR1inRD43HVAmHX+de33rN29UmLaUuucRGHgwOv8ut5tDYrK6yZknvvrS2f4LDB3m/GWdY6tR84Zt2LH5MlXD4Vf4QiYUqIlurc2Bt3x7NcPggtzokz4GyRVmgaKieFiNw+FVu7zQZSpwNrecy+/Ldd1mkBhw+wP22rPUZUdZKixXDVRvD4YM8wtAvL7K1PMcaddMWOzccPsg3bbxovERurBjO/wWHf4BHqGr1YbwuOSx9xpJ95QKH3+U+IlRbdf/0KTt9rbW8+IDDB3nFYY5ul7bqVy/UJM+GcPgY9+p3y+veVtYK1Wfu3HD4ED8L2i5V2pMl0v74CIcP8LOgFcm0uOR5sbVqRsPhY3w+01LbsvShWgMO/y/cipFsvFgJvL9Qg8Nv8Nai0tiNJXKjVyTbKXD4fS52eRFt5H5CBGhwHYcKGg6/zuuktx+RGwM9++QKh9/nfaVxMqxAztuPdrK/w+FXuTX05jMZO7eN95SuXobD7/PNtwV245n3trnGsfECh1/m3w8L2mzBdMdHOPw+92iMDbrbqq0Y0QuNR61xuMaFw6/zWX/ZbdnUbcG+Nz9E4n4t8yocPsrrjjY7LZ4Rg+s826DzH8Lhn+DNvoBn3b8WnZY6L9qUL06VcPgtvkmVLj1VKlq9Gf1lzMPhv+YRkTYru8r7YYF8rKDh8Ovcx9SvodyqX536kEykcPg4vzvgcDgcDofD4X+F/wOUtm/WGicMDwAAAABJRU5ErkJggg==&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">image_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">base64_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;decoded_qr_code.png&#34;</span><span class="p">,</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;decoded_qr_code.png&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">qr_codes</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">qr</span> <span class="ow">in</span> <span class="n">qr_codes</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qr_data</span> <span class="o">=</span> <span class="n">qr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">qr_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Happy_New_Year_-_may_it_be_your_best_year_yet!</span></span></span></code></pre></div></div>
+</figure>
+<p>問題例：
+<a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100</a><br>
+<a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100</a></p>
+<h2 id="web">Web</h2>
+<h3 id="ffuf">FFUF</h3>
+<p>WEBファジングツール．</p>
+<pre tabindex="0"><code>ffuf -w wordlists.txt -u http://example.com/FUZZ
+</code></pre><p><a href="https://jpn.nec.com/cybersecurity/blog/210604/index.html"target="_blank" rel="noopener noreferrer">https://jpn.nec.com/cybersecurity/blog/210604/index.html</a><br>
+<a href="https://qiita.com/kk0128/items/5186cbe6062e0f887e3b"target="_blank" rel="noopener noreferrer">https://qiita.com/kk0128/items/5186cbe6062e0f887e3b</a></p></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
 </section>
 </div>
 
@@ -45,6 +84,12 @@ $ pdftotext file.pdf -
       <ul>
         <li><a href="#exiftool">exiftool</a></li>
         <li><a href="#pdftotext">pdftotext</a></li>
+        <li><a href="#qrコード">QRコード</a></li>
+      </ul>
+    </li>
+    <li><a href="#web">Web</a>
+      <ul>
+        <li><a href="#ffuf">FFUF</a></li>
       </ul>
     </li>
   </ul>
