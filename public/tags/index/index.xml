@@ -75,7 +75,17 @@ $ pdftotext file.pdf -
 &lt;p&gt;WEBファジングツール．&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ffuf -w wordlists.txt -u http://example.com/FUZZ
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a href=&#34;https://jpn.nec.com/cybersecurity/blog/210604/index.html&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://jpn.nec.com/cybersecurity/blog/210604/index.html&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://qiita.com/kk0128/items/5186cbe6062e0f887e3b&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://qiita.com/kk0128/items/5186cbe6062e0f887e3b&lt;/a&gt;&lt;/p&gt;</description>
+&lt;a href=&#34;https://qiita.com/kk0128/items/5186cbe6062e0f887e3b&#34;target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;https://qiita.com/kk0128/items/5186cbe6062e0f887e3b&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;探索&#34;&gt;探索&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;ソースコードのコメント&lt;/li&gt;
+&lt;li&gt;リスポンスヘッダー&lt;/li&gt;
+&lt;li&gt;robots.txt&lt;/li&gt;
+&lt;li&gt;robots.txtのDisallowに指定されたディレクトリ&lt;/li&gt;
+&lt;li&gt;ソースマップ（.mapの拡張子で終わるJSONのファイル）&lt;code&gt;app.js.map&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Cookie&lt;/li&gt;
+&lt;li&gt;Cookieの&lt;code&gt;user:guest&lt;/code&gt;に対して&lt;code&gt;user:admin&lt;/code&gt;で制限された特定のディレクトリへアクセス&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -598,12 +608,12 @@ Visit the website here&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;ソースコードに，コメントとして記載．&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im01.png&#34;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im01.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;ol start=&#34;2&#34;&gt;
 &lt;li&gt;レスポンスヘッダーに含まれている．&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im02.png&#34;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im02.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;ol start=&#34;3&#34;&gt;
 &lt;li&gt;&lt;code&gt;localhost:3000/robots.txt&lt;/code&gt;にアクセス．&lt;/li&gt;
@@ -614,24 +624,24 @@ Disallow: /hidden_admin_panel
 &lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
 &lt;li&gt;robots.txtに書かれていた&lt;code&gt;localhost:3000/hidden_admin_panel&lt;/code&gt;にアクセス．Cookieにフラグが追加される．&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im03.png&#34;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im03.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;ol start=&#34;5&#34;&gt;
 &lt;li&gt;styles.cssに，コメントとして記載．&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im04.png&#34;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im04.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;ol start=&#34;6&#34;&gt;
 &lt;li&gt;Cookieの&lt;code&gt;user:guest&lt;/code&gt;を&lt;code&gt;user:admin&lt;/code&gt;に書き換えて，&lt;code&gt;localhost:3000/hidden_admin_panel&lt;/code&gt;にアクセス．&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im07.png&#34;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im07.png&#34;
         alt=&#34;This is a image&#34;/&gt;
-&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im06.png&#34;
+&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im06.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;ol start=&#34;7&#34;&gt;
 &lt;li&gt;app.min.jsの最下部にあるように，&lt;code&gt;localhost:3000/app.min.js.map&lt;/code&gt;へアクセス．&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uotfctf-2025/im05.png&#34;
+&lt;p&gt;&lt;img  src=&#34;https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/uoftctf-2025/im05.png&#34;
         alt=&#34;This is a image&#34;/&gt;&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{
     &amp;#34;version&amp;#34;: 3,
