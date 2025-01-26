@@ -21,18 +21,16 @@ https://qiita.com/knqyf263/items/6ebf06e27be7c48aab2e
 ### exiftool
 画像や動画のExif情報．
 ```
-$ sudo apt-get install exiftool
-```
-```
 $ exiftool image.png
 ```
+<details><summary>install</summary>
+{{< code lang="" title="" hl_lines="" >}}
+$ sudo apt-get install exiftool
+{{< /code >}}
+</details>
 
 ### pdftotext
 PDFをテキストに変換．
-```
-$ apt install poppler-utils
-$ pdftotext -v
-```
 ```
 $ pdftotext file.pdf
 $ pdftotext file.pdf -
@@ -42,6 +40,13 @@ $ pdftotext file.pdf -
 
 問題例：
 https://stark2420.github.io/starknote/post/new-year-ctf-2025/#bel_money-part_1-100
+
+<details><summary>install</summary>
+{{< code lang="" title="" hl_lines="" >}}
+$ apt install poppler-utils
+$ pdftotext -v
+{{< /code >}}
+</details>
 
 ### QRコード
 - QRazyBox: https://merri.cx/qrazybox/
@@ -90,3 +95,45 @@ https://qiita.com/kk0128/items/5186cbe6062e0f887e3b
 - ソースマップ（.mapの拡張子で終わるJSONのファイル）`app.js.map`
 - Cookie
 - Cookieの`user:guest`に対して`user:admin`で制限された特定のディレクトリへアクセス
+
+
+## Crypto
+### 何の暗号かを調べる
+- https://www.dcode.fr/cipher-identifier
+
+### 国際信号旗
+- https://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E4%BF%A1%E5%8F%B7%E6%97%97
+
+　例題：
+https://qiita.com/samohan/items/412e62a7c981e1c20ea2
+
+### モールス信号
+- https://morsedecoder.com/
+- https://www.morsecode-translator.com/ja
+- (音声も復号) https://morsecode.world/international/decoder/audio-decoder-adaptive.html
+
+### シーザー暗号
+- http://www.net.c.dendai.ac.jp/crypto/caesar2.html
+
+### 単一換字式暗号
+- https://quipqiup.com/
+
+### ビジュネル暗号
+- https://www.guballa.de/vigenere-solver (鍵も推測する)
+- https://www.dcode.fr/chiffre-vigenere (鍵も推測する)
+- https://cryptii.com/pipes/vigenere-cipher
+
+### 素因数分解
+- http://factordb.com/ (既知のNを分解)
+- https://www.alpertron.com.ar/ECM.HTM
+
+### CyberChef
+- https://gchq.github.io/CyberChef/
+
+### 脆弱なRSA暗号
+- (RSA暗号でやってはいけない $n$ のこと) https://www.slideshare.net/slideshow/rsa-n-ssmjp/72368516#1
+- $N$ が既知で，暗号化オラクルあり，平文が既知で暗号文を求める場合
+- $N$ が未知で，暗号化オラクルあり，平文が既知で暗号文を求める場合
+
+参考：
+https://zenn.dev/asusn/articles/6bb19c694e94ce#%E6%B1%8E%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB

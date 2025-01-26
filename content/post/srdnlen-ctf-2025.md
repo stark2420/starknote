@@ -1,7 +1,7 @@
 +++
 author = "Hugo Authors"
 title = "Srdnlen CTF 2025"
-date = "2025-01-15"
+date = "2025-01-20"
 description = ""
 tags = [
     "CTF",
