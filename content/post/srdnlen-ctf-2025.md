@@ -21,7 +21,11 @@ image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/s
 開催期間後に解いた問題をまとめる．
 
 https://ctf.srdnlen.it/
+
 https://ctftime.org/event/2576
+
+公式Writeup：
+https://github.com/srdnlen/srdnlenctf-2025_public
 
 ## MISC
 ### SSPJ 

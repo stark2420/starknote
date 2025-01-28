@@ -107,6 +107,12 @@ https://qiita.com/kk0128/items/5186cbe6062e0f887e3b
 　例題：
 https://qiita.com/samohan/items/412e62a7c981e1c20ea2
 
+### Burrows-Wheeler変換 (BWT)，ブロックソート
+https://www.dcode.fr/burrows-wheeler-transform
+
+　例題：
+https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100
+
 ### モールス信号
 - https://morsedecoder.com/
 - https://www.morsecode-translator.com/ja
@@ -137,3 +143,232 @@ https://qiita.com/samohan/items/412e62a7c981e1c20ea2
 
 参考：
 https://zenn.dev/asusn/articles/6bb19c694e94ce#%E6%B1%8E%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB
+
+
+## Misc
+### ターミナルの入出力の自動化
+- 一行ずつ読み取る場合：`p.recvline()`
+``` 
+$ nc 127.0.0.1 4649
+Add and answer in decimal.
+0x1a87
+0b1010100001100
+0o6221
+0o4054
+0xae2
+answer: 
+```
+
+{{< code lang="python" title="Solver.py" hl_lines="" >}}
+from pwn import *
+import re
+
+# p = process(["python", "main.py"])　# ローカルでプログラムを実行
+p = remote("127.0.0.1", 4649)
+
+numbers = []
+sum = 0
+
+print(p.recvline().strip().decode()) # 一行取得，改行削除，byte列 -> 文字列 
+for _ in range(5):
+    s = p.recvline().strip().decode()
+    print(s)
+    numbers.append(s)
+
+for i in numbers:
+    if re.match('^0b', i):
+        cast = int(i[2:], 2)
+    elif re.match('^0x', i):
+        cast = int(i[2:], 16)  
+    else:
+        cast = int(i[2:], 8)
+    sum += cast
+
+print(p.recvuntil(b'answer: ').strip().decode())
+print(str(sum))
+
+p.sendline(str(sum).encode()) # ターミナルへ書き込む(byte列で与える)
+
+print(p.recvall().decode()) # 全てのレスポンスを表示
+{{< /code >}}
+
+- 変数ごとに読み取る場合：`p.recvuntil(b'n = ')`
+```
+$ nc 127.0.0.1 4649
+Multiply and answer in decimal.
+a = 4290
+b = 1777
+c = 6279
+answer: 
+```
+{{< code lang="python" title="Solver.py" hl_lines="" >}}
+from pwn import *
+
+# p = process(["python", "main.py"])　# ローカルでプログラムを実行
+p = remote("127.0.0.1", 4649)
+
+print(p.recvline().strip().decode()) # 一行取得，改行削除，byte列 -> 文字列 
+
+print(p.recvuntil(b'a = ').strip().decode()) # 'a = 'まで読み取る
+a = p.recvline().strip().decode() # 一行読み取る
+print(a)
+
+print(p.recvuntil(b'b = ').strip().decode())
+b = p.recvline().strip().decode()
+print(b)
+
+print(p.recvuntil(b'c = ').strip().decode())
+c = p.recvline().strip().decode()
+print(c)
+
+print(p.recvuntil(b': ').decode())
+ans = int(a)*int(b)*int(c)
+print(str(ans))
+
+p.sendline(str(ans).encode()) # ターミナルへ書き込む(byte列で与える)
+
+print(p.recvall().decode()) # 全てのレスポンスを表示
+{{< /code >}}
+
+<details><summary>Dockerで試してみる場合の手順</summary>
+
+#### まずは，以下の四つのファイルを作成．
+
+{{< code lang="" title="dockerfile" hl_lines="" >}}
+FROM python:3.12.4-slim
+
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get install -y socat && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -d /home/admin -s /bin/bash admin
+
+WORKDIR /home/admin
+
+COPY --chown=root:admin --chmod=050 ./main.py ./main.py
+COPY --chown=root:admin --chmod=040 ./flag.py ./flag.py
+
+USER admin
+
+EXPOSE 4649
+
+ENTRYPOINT ["socat", "-t", "300", "-T", "30", "TCP-LISTEN:4649,reuseaddr,nodelay,fork", "EXEC:python3 main.py"]
+{{< /code >}}
+
+{{< code lang="" title="docker-compose.yml" hl_lines="" >}}
+services:
+  admin:
+    build: .
+    container_name: "Terminal-Hack"
+    ports:
+      - "0.0.0.0:4649:4649"
+    restart: unless-stopped
+{{< /code >}}
+
+{{< code lang="python" title="main.py" hl_lines="" >}}
+from flag import FLAG
+import random
+
+def add():
+    print("Add and answer in decimal.")
+    sum = 0
+    for _ in range(5):
+        num = random.randint(1, 10000)
+        sum += num
+        if num % 3 == 0:
+            print(bin(num))
+        elif num % 3 == 1:
+            print(oct(num))
+        else:
+            print(hex(num))
+
+    num = int(input("answer: "))
+    if num == sum:
+        print("Corect! " + FLAG)
+    else:
+        print("It's not right.")
+
+def mult():
+    print("Multiply and answer in decimal.")
+    ans = 1
+    s = ['a', 'b', 'c']
+    for i in range(3):
+        num = random.randint(1, 10000)
+        ans *= num
+        print(f"{s[i]} = {num}")
+
+    num = int(input("answer: "))
+    if num == ans:
+        print("Corect! " + FLAG)
+    else:
+        print("It's not right.")
+
+if __name__ == "__main__":
+    add()
+    # mult()
+{{< /code >}}
+
+{{< code lang="python" title="flag.py" hl_lines="" >}}
+FLAG = "flag{good_job!}"
+{{< /code >}}
+
+#### ファイルのあるディレクトリで以下を実行
+```
+$ docker-compose up
+```
+<br>
+　手動でアクセスする場合は以下のように．  
+<br><br>
+
+```
+$ nc 127.0.0.1 4649
+```
+<br>
+　Solver.py を実行する場合は以下のように．
+<br><br>
+
+```
+$ python Solver.py
+[x] Opening connection to 127.0.0.1 on port 4649
+[x] Opening connection to 127.0.0.1 on port 4649: Trying 127.0.0.1
+[+] Opening connection to 127.0.0.1 on port 4649: Done
+Add and answer in decimal.
+0xa7c
+0o7217
+0b10000110101110
+0xc8
+0b110110111111
+answer:
+18752
+[x] Receiving all data
+[x] Receiving all data: 0B
+[x] Receiving all data: 24B
+[+] Receiving all data: Done (24B)
+[*] Closed connection to 127.0.0.1 port 4649
+Corect! flag{good_job!}
+
+$ python Solver.py
+[x] Opening connection to 127.0.0.1 on port 4649
+[x] Opening connection to 127.0.0.1 on port 4649: Trying 127.0.0.1
+[+] Opening connection to 127.0.0.1 on port 4649: Done
+Multiply and answer in decimal.
+a =
+3811
+b =
+6188
+c =
+6282
+answer:
+148145063976
+[x] Receiving all data
+[x] Receiving all data: 0B
+[x] Receiving all data: 24B
+[+] Receiving all data: Done (24B)
+[*] Closed connection to 127.0.0.1 port 4649
+Corect! flag{good_job!}
+```
+
+</details>
+
+
