@@ -74,9 +74,9 @@ for qr in qr_codes:
 # Happy_New_Year_-_may_it_be_your_best_year_yet!
 {{< /code >}}
 
-問題例：
-https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100  
-https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100
+問題例:  
+&emsp;- https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100  
+&emsp;- https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100
 
 ## Web
 ### FFUF
@@ -84,8 +84,15 @@ WEBファジングツール．
 ```
 ffuf -w wordlists.txt -u http://example.com/FUZZ
 ```
-https://jpn.nec.com/cybersecurity/blog/210604/index.html  
-https://qiita.com/kk0128/items/5186cbe6062e0f887e3b
+
+**Wordlistsのダウンロード先:**
+- (公式) http://ffuf.me/wordlists
+- (シンプルで使いやすい) https://github.com/Bo0oM/fuzz.txt
+
+参考:  
+&emsp;- https://jpn.nec.com/cybersecurity/blog/210604/index.html   
+&emsp;- https://breezebird.net/ffuf/   
+&emsp;- https://qiita.com/kk0128/items/5186cbe6062e0f887e3b  
 
 ### 探索
 - ソースコードのコメント
@@ -94,7 +101,10 @@ https://qiita.com/kk0128/items/5186cbe6062e0f887e3b
 - robots.txtのDisallowに指定されたディレクトリ
 - ソースマップ（.mapの拡張子で終わるJSONのファイル）`app.js.map`
 - Cookie
-- Cookieの`user:guest`に対して`user:admin`で制限された特定のディレクトリへアクセス
+- Cookieの`user:guest`を`user:admin`にする
+- Cookieの`admin:False`を`admin:True`にする
+- .htaccess
+- .DS_Store
 
 
 ## Crypto
