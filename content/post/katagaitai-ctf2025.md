@@ -13,7 +13,6 @@ categories = [
     "Programming",
 ]
 image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/srdnlen-ctf-2025/cover.png"
-draft = true
 +++
 
 2025/1/25 15:00(JST) - 2025/1/25 22:00(JST)で開催された Katagaitai CTF2025 に参加した．
