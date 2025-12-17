@@ -218,6 +218,8 @@ breaking_out.tar.gz
 $ python -m http.server 8000
 ```
 
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/seccon-ctf-14/im01.png)
+
 問題文よりステージ100に到達することがゴールであると推測されるが，ステージ番号をいじっても何も起こらない．
 ステージ番号とステージ情報の読み込みは独立で行われているらしい．
 
@@ -245,8 +247,10 @@ async[a0_0x9638eb(0x211)]() {
 ```
 
 Chrome DevToolsでブレークポイントを設定して値を確認すると，
-ステージ情報らしきものが格納される変数`this[_0x4fab65(0x23e)]`に次のステージURLを表す`next`が確認できる．
-また，ステージURLは`this[_0x4fab65(0x259)]`に格納される．
+ステージ情報が格納されると思われる変数`this[_0x4fab65(0x23e)]`に，次のステージ情報の暗号化であると思われる`next`が確認できる．
+また，この暗号化された次のステージ情報は`this[_0x4fab65(0x259)]`に格納される．
+
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/seccon-ctf-14/im02.png)
 
 ```
 this[_0x4fab65(0x23e)]: Object
@@ -262,11 +266,11 @@ rows: 10
 
 この`async[a0_0x9638eb(0x211)]()`関数は，次のように構成されている．
 - 3行目：`_0x59b60c`に鍵のようなデータを格納．
-- 4行目：次ステージのURLをもつ`this[_0x4fab65(0x259)]`と鍵`_0x59b60c`から，次ステージ情報を取得し`this[_0x4fab65(0x23e)]`に格納．
-- 5行目：次ステージ情報`this[_0x4fab65(0x23e)]`から，さらにその次のステージのURLを`this[_0x4fab65(0x259)]`に格納しておく．
+- 4行目：暗号化された次のステージ情報をもつ`this[_0x4fab65(0x259)]`と鍵`_0x59b60c`から，次のステージ情報を復号し`this[_0x4fab65(0x23e)]`に格納．
+- 5行目：次のステージ情報`this[_0x4fab65(0x23e)]`から，さらにその次の暗号化されたステージ情報を`this[_0x4fab65(0x259)]`に格納しておく．
 
-次ステージ情報を取得する関数`async[a0_0x9638eb(0x256)]`をみると，鍵`_0x59b60c`が正しくないときにはエラーが発生し，nullが返される．
-その場合，次のステージのURL`this[_0x4fab65(0x259)]`に`''`が格納されるので，そのステージが最終ステージと判断されてしまい，ゲームが終了してしまう．
+次ステージ情報を復号する関数`async[a0_0x9638eb(0x256)]`をみると，鍵`_0x59b60c`が正しくないときにはエラーが発生し，nullが返される．
+その場合，`this[_0x4fab65(0x259)]`に`''`が格納されるので，そのステージが最終ステージと判断されてしまい，ゲームが終了してしまう．
 
 ```
 async[a0_0x9638eb(0x256)](_0x24a27d, _0xca68ea) {
@@ -310,7 +314,7 @@ async[a0_0x9638eb(0x256)](_0x24a27d, _0xca68ea) {
 }
 ```
 
-以上より，ステージ1から一気にステージ100に行くためには，`正しい鍵の値`と`ステージ100のURL`の二つが必要である．
+以上より，ステージ1から一気にステージ100に行くためには，`正しい鍵の値`と`ステージ100の暗号化されたステージ情報`の二つが必要である．
 
 そこで次の手順でこれらを取得することにする．
 1. ボールのサイズを巨大にする
@@ -331,7 +335,7 @@ async[a0_0x9638eb(0x256)](_0x24a27d, _0xca68ea) {
 }
 ```
 
-最終付近の値は以下のとおりである．このことから，ステージ100のURLは`"c4lLtX0sR4Dpy7cj5roxyF54G6EcJxilM5k3IgbValyGUTNNfUppqstDkpPN/ZTriLf6qhFrnp6S6jhUQX5YEJX8XgLTiB+e0UpmImiU4dzEuIHM6l2FxTrWOEopW8fn+0n7Rc2dBFBBJv7vkknPaCg3S5pu9z9CD+3H7VFZ/MIsuqDQxka7Iv2VqDJ5ZZ+bIUv0oLGXOGn07q8IZnrAPRY92ZJ7NiG/zBoPJzRI8X0zmhtEcGDRbNsf0Dn5hHcD/bKUMDcaT9vvdUXlmJnY/Yy+i+39ahllJtmLkJuOTQ4oFLz1na9SKE0GGHUDQK148CNlTQszRgtctjYoSGiBbBastWXdIr6wAUSo4ZscWyofbfXhk/d4jRqipC82zcDC9EbqZbFkoW83ljoRTAV74GUvlZZ2zRUz5+mkgvXQqGJhDWreFZ935juvr+SFPNmVxZcha9/6U+BK8H7uj+3x++zA4zoMLep2b+1AbJCWv6r6WSRbDn4X8ZZ+ZXtAQA=="`
+最終付近の値は以下のとおりである．このことから，ステージ100の暗号化されたステージ情報は`"c4lLtX0sR4Dpy7cj5roxyF54G6EcJxilM5k3IgbValyGUTNNfUppqstDkpPN/ZTriLf6qhFrnp6S6jhUQX5YEJX8XgLTiB+e0UpmImiU4dzEuIHM6l2FxTrWOEopW8fn+0n7Rc2dBFBBJv7vkknPaCg3S5pu9z9CD+3H7VFZ/MIsuqDQxka7Iv2VqDJ5ZZ+bIUv0oLGXOGn07q8IZnrAPRY92ZJ7NiG/zBoPJzRI8X0zmhtEcGDRbNsf0Dn5hHcD/bKUMDcaT9vvdUXlmJnY/Yy+i+39ahllJtmLkJuOTQ4oFLz1na9SKE0GGHUDQK148CNlTQszRgtctjYoSGiBbBastWXdIr6wAUSo4ZscWyofbfXhk/d4jRqipC82zcDC9EbqZbFkoW83ljoRTAV74GUvlZZ2zRUz5+mkgvXQqGJhDWreFZ935juvr+SFPNmVxZcha9/6U+BK8H7uj+3x++zA4zoMLep2b+1AbJCWv6r6WSRbDn4X8ZZ+ZXtAQA=="`
 ，鍵は`"e918e6d505494c3cadb93697"`であることがわかる．
 
 ```
