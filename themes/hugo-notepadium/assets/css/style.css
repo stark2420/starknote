@@ -377,8 +377,8 @@ b {
 
 .note.list .item {
   width: 100%;
-  margin-top: 16px;
-  padding: 32px;
+  margin-top: 10px; /* 16px */
+  padding: 4px 30px 4px 30px; /* 36px */
   background-color: #fff;
   border-radius: 6px;
   box-shadow: inset -1px 0 0 0 rgba(224, 227, 231, .6),
@@ -817,7 +817,7 @@ b {
 @media (max-width: 1012px) {
   .note.list .item,
   .article-container {
-    padding: 24px;
+    padding: 4px 24px 4px 24px; /* 24px */
     border-radius: 0;
     box-shadow: none;
   }
@@ -878,4 +878,12 @@ b {
 
 .article.markdown-body .lntable tr>:first-child {
   border-right: 1px dashed #e6e6e6;
+}
+
+.article.markdown-body details > summary {
+  cursor: pointer;
+}
+
+.article.markdown-body details > summary:hover {
+  color: #1e90ff;
 }

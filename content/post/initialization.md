@@ -232,3 +232,7 @@ $ git commit -m "message"
 $ git push
 ```
 リモートだけ変更した場合，`git pull`でローカルに，リモートの更新を反映できる．
+
+### Githubへの除外設定
+
+`./.git/info/exclude` の中に記載のフォルダ・ファイルはGithubへpushされない．
