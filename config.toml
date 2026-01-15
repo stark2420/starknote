@@ -19,7 +19,7 @@ enableRobotsTXT = true
 shortname = "starknote" # Disqus shortname
 
 # [services.googleAnalytics]
-# id = 'G-W1PPPTDK5L' # Google tag ID
+id = 'G-W1PPPTDK5L' # Google tag ID
 
 ignoreErrors = ["error-remote-getjson"]
 
