@@ -117,6 +117,8 @@ https://commons.wikimedia.org/wiki/File:National_Diet_Building_Competition_Submi
 しかし、この画像は2025年の別の日に撮影された写真のようで、事実とは異なるようです。 この写真が本当に撮影された日を YYYY/MM/DD の形式で解答してください。  
 ただし、撮影日は日本時間（JST）を基準とします。 例えば、答えが2025年6月8日の場合、Flagは SWIMMER{2025/06/08} となります。  
 
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">さっき関西着いた<br>週末までこっち居ます <a href="https://t.co/7Am8zjo2x4">pic.twitter.com/7Am8zjo2x4</a></p>&mdash; brutorain (@bruto_rain) <a href="https://twitter.com/bruto_rain/status/2004085702469075019?ref_src=twsrc%5Etfw">December 25, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 この画像は大阪城ホールであるとわかる．
 
 画像の中央辺りに看板が写っている．
@@ -125,7 +127,7 @@ https://commons.wikimedia.org/wiki/File:National_Diet_Building_Competition_Submi
 
 画像検索すると，画像には「10000 Freude」というテキストが記載されていると判明．
 
-![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/swimmer-osint-ctf-2026/im11.png)
+![This is a image](https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/swimmer-osint-ctf-2026/im12.png)
 
 「大阪城ホール 過去イベント 10000」で検索すると，12月7日（日）サントリー1万人の第九のイベントが出てきた．
 
@@ -575,7 +577,7 @@ https://travel.watch.impress.co.jp/docs/news/1050316.html
 とあるので，伊丹空港に隣接するMRO Japanの場所を調べる．
 しかし，MRO Japanは現在は那覇に移転されており，伊丹空港からはなくなっていたため，場所がわからない．
 
-上記サイトに記載の動画（https://youtu.be/Ko0SRkR00F0）をみると，塗装が行われたであろう建物が写っている．
+上記サイトに記載の動画（ https://youtu.be/Ko0SRkR00F0 ）をみると，塗装が行われたであろう建物が写っている．
 
 Google Earth で2017/5/18の航空写真から探してみると，おそらく以下だと特定．
 
