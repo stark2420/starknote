@@ -1,7 +1,7 @@
 +++
 author = "Hugo Authors"
 title = "📌CTF&HTB Tools まとめ"
-date = "2025-11-11"
+date = "2026-01-18"
 weight = -2
 description = ""
 tags = [
@@ -222,6 +222,50 @@ curl -X POST http://amiable-citadel.picoctf.net:59204/login -d email="ctf-player
 - Cookieの`admin:False`を`admin:True`にする
 - .htaccess
 - .DS_Store
+
+
+## Osint
+### 検索方法
+- "" で囲むと必須検索になる
+- 検索の期間指定で「何日以前のみ」の検索も可
+
+### 国立国会図書館デジタルコレクション
+古い画像などの検索．
+- https://dl.ndl.go.jp/
+
+### ウェブアーカイブ
+- https://web.archive.org/
+- https://archive.md/
+
+### WHOIS検索(ドメイン取得日など)
+- https://tech-unlimited.com/whois.html
+
+### ホスティングサービス
+- DNSで「正引き」と「逆引き」を行う．
+```
+$ nslookup www.example.com
+Server:         10.255.255.254
+Address:        10.255.255.254#53
+
+Non-authoritative answer:
+Name:   www.example.com
+Address: 104.18.26.120
+
+$ nslookup 104.18.26.120
+```
+
+### 11foot8
+この鉄道橋は，高さ制限が低いため，多くのトラックが屋根を削られる事故が起きたことで有名になり，専用のウェブサイトが運営されているらしい．
+- https://11foot8.com/about/the-documentary/
+
+### Google Earth 
+- 過去の航空写真を利用できる
+- 撮影日時もわかる
+
+### Gmailアドレス
+Googleカレンダーの情報などが得られる．
+- https://epieos.com/
+
 
 
 ## Crypto

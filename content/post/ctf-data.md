@@ -142,6 +142,15 @@ th.sortable.desc {
       <td>2026-01-14</td>
       <td></td>
     </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#base-length-medium">Base Length</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Misc</span></td>
+      <td>Medium</td>
+      <td>Base64, Base32</td>
+      <td>2026-01-17</td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
 

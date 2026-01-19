@@ -115,7 +115,75 @@ Hi!
 
 </details>
 
+---
 
+<details class="article markdown-body"><summary><u>
+2026-01-17 Base Length [Medium]
+</u></summary>
+
+### Base Length [Medium]
+> Base32 より Base64 のほうが効率的って聞きました！  
+
+#### 概要
+Base64とBase32．  
+pythonの`base64.b64decode`関数の仕様を利用して，同じ復号結果で，base32 よりも base64 の文字数を大きくする．
+
+#### 解法
+
+同じ復号結果で，base32 よりも base64 の方が文字数が大きくなればいい．
+
+しかし，Base32は5bitで1文字，Base64は6bitで1文字に変換するので，通常はbase32の方が長くなる．
+
+さらに，パディングで利用できる`=`も0個であることが要求されている．
+
+{{< code lang="python" title="chal.py" hl_lines="" >}}
+from base64 import b32decode, b64decode
+
+b32 = input("Base32: ")
+b64 = input("Base64: ")
+
+assert b32.count("=") == 0 and b64.count("=") == 0, "Don't use padding!"
+assert b32decode(b32) == b64decode(b64), "Decoded values are not equal!"
+
+# Base32: 5 bits -> 1 char,
+# Base64: 6 bits -> 1 char, so ...
+if len(b32) >= len(b64):
+    print("Expected :)")
+else:
+    # never reach here :)
+    print("Wow... The flag is Alpaca{**** REDACTED ****}")
+{{< /code >}}
+
+Python公式リファレンス (https://docs.python.org/ja/3.13/library/base64.html) によると，
+> base64.b64decode(s, altchars=None, validate=False)  
+> 　validate が False (デフォルト) の場合、標準の base64 アルファベットでも代替文字でもない文字はパディングチェックの前に無視されます。 validate が True の場合、入力に base64 アルファベット以外の文字があると binascii.Error を発生させます。
+
+すなわち，Base64の末尾にアルファベットでも代替文字でもない文字である`スペース`を沢山入れた場合，その`スペース`は無視される．
+
+これを利用して，Base64の末尾に`スペース`を沢山入れれば，base32 よりも Base64の方が文字数を大きくできる．
+
+パディングの`=`は0個である必要があるので，適当に30文字を符号化する．
+
+```
+from base64 import b32encode, b64encode
+
+payload = b"A" * 30
+print(b32encode(payload))
+print(b64encode(payload))
+# b'IFAUCQKBIFAUCQKBIFAUCQKBIFAUCQKBIFAUCQKBIFAUCQKB'
+# b'QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB'
+```
+
+あとは，Base64の末尾に`スペース`を9個以上入力すれば，flagが得られる．
+
+```
+$ nc 34.170.146.252 60350
+Base32: IFAUCQKBIFAUCQKBIFAUCQKBIFAUCQKBIFAUCQKBIFAUCQKB
+Base64: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB         
+Wow... The flag is Alpaca{BASE32ISSUPERIOR}
+```
+
+</details>
 
 ## Web
 
