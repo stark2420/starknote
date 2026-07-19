@@ -174,7 +174,7 @@ Press ENTER when your listener is ready...
 Cleanup webshell and cron job? [y/N]
 ```
 
-その結果，シェル取が取得できる．
+その結果，シェルが取得できる．
 
 ```
 $ nc -lvvp 4444
