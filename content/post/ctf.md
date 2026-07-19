@@ -574,6 +574,17 @@ Initialization Sequence Completed
 ```
 前後に色々ログが出るが，Initialization Sequence Completed が出れば成功．
 
+#### openvpnのプロセスが複数残った場合
+`sudo openvpn ***.ovpn `を`Ctrl + C`などで正しく終了させないと，openvpnのプロセスが複数残ってしまう場合がある．
+```
+pgrep -a openvpn
+```
+で複数プロセスが存在する場合，ルーティングテーブルがバグってしまう場合があり，うまくつながらなくなるので，
+```
+sudo pkill openvpn
+```
+ですべて終了させた後，再度接続するようにする．
+
 ### nmap
 ```
 $ nmap -Pn -T4 -sV -sC -A [IPアドレス]
