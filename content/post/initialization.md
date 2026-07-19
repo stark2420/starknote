@@ -29,6 +29,16 @@ $ hugo -help
 ```
 が正しければ成功．
 
+### Hugoのインストール（20260719更新）
+Windows ターミナルまたはPowerShell で以下を入力．
+```
+winget install Hugo.Hugo.Extended
+```
+インストール確認．
+```
+hugo version
+```
+
 ## Hugoでsiteを作成
 ```
 $ hugo new site example
@@ -47,6 +57,23 @@ $ hugo server または $ hugo server -D
 これでテーマの適用が完了．
 
 参考：[公式に載っていないHugoのインストール方法](https://qiita.com/utibori1/items/46fde79958ec9202d6c4)
+
+### 新しいバージョンで実行したらエラーになる（20260719更新）
+以下のエラーが出た．
+```
+WARN deprecated: .Site.LanguageCode was deprecated in Hugo v0.158.0 and will be removed in a future release. Use .Site.Language.Locale instead. Built in 281 ms ERROR error building site: render: [ja v1.0.0 guest] failed to render pages: render of "C:/Users/krimm/Desktop/blog/starknote/content/post/_index.md" failed: "C:\Users\krimm\Desktop\blog\starknote\themes\hugo-notepadium\layouts\_default\rss.xml:7:50": execute of template failed: template: rss.xml:7:50: executing "rss.xml" at <.Site.Author.email>: can't evaluate field Author in type page.Site
+```
+`themes\hugo-notepadium\layouts\_default\rss.xml`において，以下のように修正．
+```
+{{ .Site.Author.email }} -> {{ .Site.Params.author.email }}
+{{ $.Site.Author.name }} -> {{ $.Site.Params.author.name }}
+```
+また，`starknote\config.toml`に以下を追加．
+```
+[params.author]
+  name = "Stark"
+  email = "your-email@example.com"
+```
 
 ## サイト編集
 `config.toml`が設定ファイルになる．サイトのタイトルなどの設定を行う．  

