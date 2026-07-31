@@ -1,11 +1,10 @@
-{{ define "main" }}
-
 <h1>検索</h1>
 
 <div id="search"></div>
 
-<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-<script src="/pagefind/pagefind-ui.js"></script>
+<link rel="stylesheet" href="{{ "pagefind/pagefind-ui.css" | relURL }}">
+
+<script src="{{ "pagefind/pagefind-ui.js" | relURL }}"></script>
 
 <script>
 window.addEventListener('DOMContentLoaded', () => {
@@ -15,5 +14,3 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-
-{{ end }}
