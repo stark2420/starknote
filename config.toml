@@ -87,4 +87,4 @@ url = "/starknote/about/"
 
 [[params.nav.custom]]
 title = "Search"
-url = "/search/"
+url = "/starknote/search/"
