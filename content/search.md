@@ -3,9 +3,9 @@ title: "検索"
 layout: "single"
 ---
 
-<!-- PagefindのCSSとJSを読み込む -->
-<link href="/_pagefind/pagefind-ui.css" rel="stylesheet">
-<script src="/_pagefind/pagefind-ui.js"></script>
+<!-- 💡 パスの先頭に /starknote を追加 -->
+<link href="/starknote/_pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/starknote/_pagefind/pagefind-ui.js"></script>
 
 <!-- 検索ボックスが表示される要素 -->
 <div id="search"></div>
@@ -15,6 +15,8 @@ layout: "single"
         new PagefindUI({ 
             element: "#search", 
             showImages: false,
+            // 💡 サブディレクトリ配下でも正しく検索できるようにbundlePathを指定
+            bundlePath: "/starknote/_pagefind/",
             translations: {
                 placeholder: "キーワードを入力...",
                 clear_search: "消去",
