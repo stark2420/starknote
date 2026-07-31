@@ -1,5 +1,4 @@
 baseURL = 'http://stark2420.github.io/starknote'
-# baseURL = 'http://localhost:8000/'
 
 title = "しゅたるくの備忘録"
 theme = "hugo-notepadium"
