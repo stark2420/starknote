@@ -57,10 +57,8 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
       
-      - name: Install Pagefind
-        run: npm install -D pagefind
-      - name: Build Pagefind index
-        run: npx pagefind --site public
+      - name: Generate Pagefind Search Index
+        run: npx -y pagefind --site public
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -84,3 +84,7 @@ url = "/starknote/about/"
 [[params.nav.custom]]
 # title = "Hugo"
 # url = "https://gohugo.io/"
+
+[[params.nav.custom]]
+title = "Search"
+url = "/search/"
