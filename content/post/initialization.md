@@ -39,6 +39,11 @@ winget install Hugo.Hugo.Extended
 hugo version
 ```
 
+ついでにNode.jsをインストール.
+```
+winget install OpenJS.NodeJS.LTS
+```
+
 ## Hugoでsiteを作成
 ```
 $ hugo new site example
@@ -74,6 +79,82 @@ WARN deprecated: .Site.LanguageCode was deprecated in Hugo v0.158.0 and will be 
   name = "Stark"
   email = "your-email@example.com"
 ```
+
+## Pagefindテーマを導入し，検索機能実装
+
+設定ファイルの [[params.nav.custom]] セクションに以下を追加．
+```
+[[params.nav.custom]]
+title = "Search"
+url = "/starknote/search/"
+```
+
+`.github/workflows/` 内のYAMLファイル`hugo.yml`に以下を追記．
+```
+# 👇 【追加】Pagefindのインデックスを生成するステップ
+- name: Generate Pagefind Search Index
+  run: npx -y pagefind --site public
+```
+
+`content/search.md` を作成．
+```
+---
+title: "検索"
+layout: "single"
+---
+
+<!-- 💡 パスの先頭に /starknote を追加 -->
+<link href="/starknote/_pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/starknote/_pagefind/pagefind-ui.js"></script>
+
+<!-- 検索ボックスが表示される要素 -->
+<div id="search"></div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({ 
+            element: "#search", 
+            showImages: false,
+            bundlePath: "/starknote/_pagefind/",
+            // 👇 以下の2行を追加
+            showSubResults: true,       // 該当する複数のセクションを表示
+            highlightParam: "h",        // URLにハイライト用のパラメータを付与
+            translations: {
+                placeholder: "キーワードを入力...",
+                clear_search: "消去",
+                load_more: "もっと見る",
+                search_label: "このサイトを検索",
+                filters_label: "フィルター",
+                zero_results: "[WARN] 「[SEARCH_TERM]」を検出できませんでした。",
+                many_results: "[SEARCH_COUNT] 件の検索結果が見つかりました。",
+                one_result: "[SEARCH_COUNT] 件の検索結果が見つかりました。",
+                alt_search: "「[SEARCH_TERM]」の代わりに「[ORIGINAL_TERM]」を検索しています。",
+                search_suggestion: "もしかして: [DERIVED_TERM]",
+                searching: "検索中..."
+            }
+        });
+    });
+</script>
+```
+
+
+`./.git/info/exclude` の中に以下を追記．
+
+```
+static/_pagefind
+```
+
+ローカルでの実行は以下．
+```
+# 1. ローカルに一度静的ファイルを出力する
+$ hugo
+
+# 2. 生成されたファイルを元に、static/ フォルダ内へPagefindのデータを書き出す
+$ npx -y pagefind --site public --output-subdir ../static/_pagefind
+
+$ hugo server または $ hugo server -D
+```
+
 
 ## サイト編集
 `config.toml`が設定ファイルになる．サイトのタイトルなどの設定を行う．  
