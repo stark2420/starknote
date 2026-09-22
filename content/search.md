@@ -24,41 +24,76 @@ layout: "single"
                 search_label: "このサイトを検索",
                 filters_label: "フィルター",
                 zero_results: "[WARN] 「[SEARCH_TERM]」を検出できませんでした。",
-                many_results: "[SEARCH_COUNT] 件の検索結果が見つかりました。",
-                one_result: "[SEARCH_COUNT] 件の検索結果が見つかりました。",
+                many_results: "[COUNT] 件の検索結果が見つかりました。", // [COUNT] に修正
+                one_result: "[COUNT] 件の検索結果が見つかりました。",   // [COUNT] に修正
                 alt_search: "「[SEARCH_TERM]」の代わりに「[ORIGINAL_TERM]」を検索しています。",
                 search_suggestion: "もしかして: [DERIVED_TERM]",
                 searching: "検索中..."
             }
         });
 
-        // 2. 「戻る」で戻ってきたときにURLからキーワードを復元する
+        // URLパラメータを取得
         const urlParams = new URLSearchParams(window.location.search);
-        const savedQuery = urlParams.get('q'); // URLの ?q=XXX を取得
-        
+        const savedQuery = urlParams.get('q');
+        const savedCount = parseInt(urlParams.get('c'), 10) || 0;
+
+        // 2. 検索実行と「もっと見る」の自動復元
         if (savedQuery) {
-            // Pagefindの検索窓に文字を入力して検索を実行
             pf.triggerSearch(savedQuery);
+
+            if (savedCount > 0) {
+                const searchContainer = document.querySelector('#search');
+                
+                const observer = new MutationObserver(() => {
+                    const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
+                    const currentItems = searchContainer.querySelectorAll('.pagefind-ui__result').length;
+
+                    if (loadMoreBtn && currentItems < savedCount) {
+                        loadMoreBtn.click();
+                    } else if (currentItems >= savedCount || !loadMoreBtn) {
+                        observer.disconnect();
+                    }
+                });
+
+                observer.observe(searchContainer, { childList: true, subtree: true });
+            }
         }
 
-        // 3. 入力中にリアルタイムでURLを更新する（ブラウザ履歴を汚さないリプレイス）
-        // 読者がタイピングするたびに作動します
+        // 3. 入力およびクリック時にURLパラメータ（q と c）を更新する設定
         setTimeout(() => {
-            const searchInput = document.querySelector('#search input');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    const currentQuery = e.target.value;
-                    const url = new URL(window.location.href);
-                    
-                    if (currentQuery) {
-                        url.searchParams.set('q', currentQuery);
+            const searchContainer = document.querySelector('#search');
+            
+            const updateURL = () => {
+                const searchInput = searchContainer.querySelector('input');
+                const currentQuery = searchInput ? searchInput.value : '';
+                const currentCount = searchContainer.querySelectorAll('.pagefind-ui__result').length;
+                
+                const url = new URL(window.location.href);
+                
+                if (currentQuery) {
+                    url.searchParams.set('q', currentQuery);
+                    if (currentCount > 0) {
+                        url.searchParams.set('c', currentCount);
                     } else {
-                        url.searchParams.delete('q');
+                        url.searchParams.delete('c');
                     }
-                    // 履歴を増やさずに現在のURLだけを書き換える
-                    window.history.replaceState({}, '', url.toString());
+                } else {
+                    url.searchParams.delete('q');
+                    url.searchParams.delete('c');
+                }
+                
+                window.history.replaceState({}, '', url.toString());
+            };
+
+            if (searchContainer) {
+                searchContainer.addEventListener('input', updateURL);
+                
+                searchContainer.addEventListener('click', (e) => {
+                    if (e.target && e.target.classList.contains('pagefind-ui__button')) {
+                        setTimeout(updateURL, 100);
+                    }
                 });
             }
-        }, 100); // フォームが生成されるのを僅かに待つ
+        }, 100);
     });
 </script>
