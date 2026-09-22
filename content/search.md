@@ -24,76 +24,88 @@ layout: "single"
                 search_label: "このサイトを検索",
                 filters_label: "フィルター",
                 zero_results: "[WARN] 「[SEARCH_TERM]」を検出できませんでした。",
-                many_results: "[COUNT] 件の検索結果が見つかりました。", // [COUNT] に修正
-                one_result: "[COUNT] 件の検索結果が見つかりました。",   // [COUNT] に修正
+                many_results: "[COUNT] 件の検索結果が見つかりました。",
+                one_result: "[COUNT] 件の検索結果が見つかりました。",
                 alt_search: "「[SEARCH_TERM]」の代わりに「[ORIGINAL_TERM]」を検索しています。",
                 search_suggestion: "もしかして: [DERIVED_TERM]",
                 searching: "検索中..."
             }
         });
 
-        // URLパラメータを取得
+        const searchContainer = document.querySelector('#search');
         const urlParams = new URLSearchParams(window.location.search);
         const savedQuery = urlParams.get('q');
         const savedCount = parseInt(urlParams.get('c'), 10) || 0;
 
-        // 2. 検索実行と「もっと見る」の自動復元
-        if (savedQuery) {
-            pf.triggerSearch(savedQuery);
+        let lastQuery = null;
+        let lastCount = null;
 
-            if (savedCount > 0) {
-                const searchContainer = document.querySelector('#search');
-                
-                const observer = new MutationObserver(() => {
-                    const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
-                    const currentItems = searchContainer.querySelectorAll('.pagefind-ui__result').length;
+        // 2. 検索キーワードや表示件数が変化した際にURLを更新する関数
+        const updateURL = () => {
+            const searchInput = searchContainer.querySelector('input');
+            const currentQuery = searchInput ? searchInput.value.trim() : '';
+            const currentCount = searchContainer.querySelectorAll('.pagefind-ui__result').length;
 
-                    if (loadMoreBtn && currentItems < savedCount) {
-                        loadMoreBtn.click();
-                    } else if (currentItems >= savedCount || !loadMoreBtn) {
-                        observer.disconnect();
-                    }
-                });
-
-                observer.observe(searchContainer, { childList: true, subtree: true });
-            }
-        }
-
-        // 3. 入力およびクリック時にURLパラメータ（q と c）を更新する設定
-        setTimeout(() => {
-            const searchContainer = document.querySelector('#search');
+            // 前回と状態が変わっていなければ何もしない（無駄な更新を防止）
+            if (currentQuery === lastQuery && currentCount === lastCount) return;
             
-            const updateURL = () => {
-                const searchInput = searchContainer.querySelector('input');
-                const currentQuery = searchInput ? searchInput.value : '';
-                const currentCount = searchContainer.querySelectorAll('.pagefind-ui__result').length;
-                
-                const url = new URL(window.location.href);
-                
-                if (currentQuery) {
-                    url.searchParams.set('q', currentQuery);
-                    if (currentCount > 0) {
-                        url.searchParams.set('c', currentCount);
-                    } else {
-                        url.searchParams.delete('c');
-                    }
+            lastQuery = currentQuery;
+            lastCount = currentCount;
+
+            const url = new URL(window.location.href);
+
+            if (currentQuery) {
+                url.searchParams.set('q', currentQuery);
+                if (currentCount > 0) {
+                    url.searchParams.set('c', currentCount);
                 } else {
-                    url.searchParams.delete('q');
                     url.searchParams.delete('c');
                 }
-                
-                window.history.replaceState({}, '', url.toString());
-            };
+            } else {
+                url.searchParams.delete('q');
+                url.searchParams.delete('c');
+            }
 
-            if (searchContainer) {
-                searchContainer.addEventListener('input', updateURL);
-                
-                searchContainer.addEventListener('click', (e) => {
-                    if (e.target && e.target.classList.contains('pagefind-ui__button')) {
-                        setTimeout(updateURL, 100);
+            window.history.replaceState({}, '', url.toString());
+        };
+
+        // 結果の描画や「もっと見る」でDOM（件数）が増えた瞬間を監視してURLを自動保存
+        const urlObserver = new MutationObserver(updateURL);
+        urlObserver.observe(searchContainer, { childList: true, subtree: true });
+
+        // キーボード入力時もURLを記録
+        searchContainer.addEventListener('input', updateURL);
+
+        // 3. 戻ってきたときの自動復元処理
+        if (savedQuery) {
+            if (savedCount > 0) {
+                let clicking = false;
+
+                const restoreObserver = new MutationObserver(() => {
+                    if (clicking) return; // 連打・重複処理の防止
+
+                    const currentItems = searchContainer.querySelectorAll('.pagefind-ui__result').length;
+                    const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
+
+                    // 表示件数が復元したい件数(savedCount)より少なければ「もっと見る」を押す
+                    if (currentItems > 0 && currentItems < savedCount && loadMoreBtn) {
+                        clicking = true;
+                        setTimeout(() => {
+                            const btn = searchContainer.querySelector('.pagefind-ui__button');
+                            if (btn) btn.click();
+                            clicking = false;
+                        }, 150);
+                    } else if (currentItems >= savedCount || (!loadMoreBtn && currentItems > 0)) {
+                        // 目標件数に達した、またはこれ以上結果がない場合は監視を終了
+                        restoreObserver.disconnect();
                     }
                 });
+
+                restoreObserver.observe(searchContainer, { childList: true, subtree: true });
             }
-        }, 100);
+
+            // 検索の実行
+            pf.triggerSearch(savedQuery);
+        }
     });
 </script>
