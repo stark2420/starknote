@@ -339,6 +339,7 @@ https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100
 - https://morsedecoder.com/
 - https://www.morsecode-translator.com/ja
 - (音声も復号) https://morsecode.world/international/decoder/audio-decoder-adaptive.html
+- https://rakkokeyword.com/techo/tool-morse-converter/ (欧文と和文も)
 
 ### シーザー暗号
 - http://www.net.c.dendai.ac.jp/crypto/caesar2.html
