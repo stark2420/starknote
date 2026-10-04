@@ -17,9 +17,16 @@ image = "https://raw.githubusercontent.com/stark2420/starknote/refs/heads/main/s
 
 CTFやHTBで利用できるツールを自分用にまとめておく．
 <!--more-->
+
+- https://fileanal.tikisan.xyz/ (CTF Toolkit)
+
 ## Forensics
-参考：
-https://qiita.com/knqyf263/items/6ebf06e27be7c48aab2e
+### 画像解析ツール
+- https://aperisolve.fr/ (Aperi'Solve)
+
+### Exif・メタデータ解析
+- https://p2.tikisan.space/tools/exif-analyzer (Exif・メタデータ解析)
+
 ### exiftool
 画像や動画のExif情報．
 ```
@@ -30,6 +37,9 @@ $ exiftool image.png
 $ sudo apt-get install exiftool
 {{< /code >}}
 </details>
+
+参考：
+https://qiita.com/knqyf263/items/6ebf06e27be7c48aab2e
 
 ### pdftotext
 PDFをテキストに変換．
@@ -211,18 +221,56 @@ curl -X POST http://amiable-citadel.picoctf.net:59204/login -d email="ctf-player
 &emsp;- https://onsecurity.io/article/server-side-template-injection-with-jinja2/  
 &emsp;- [CTFのWebセキュリティにおけるSSTIまとめ](https://blog.hamayanhamayan.com/entry/2021/12/15/225142)
 
+
+### JWT (JSON Web Token) デコード
+- https://www.jwt.io/ja (JSON Web Token（JWT）デバッガー)
+
+```
+eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMiIsIm5hbWUiOiJhZG1pbiIsImFkbWluIjp0cnVlLCJmbGFnIjoiZmxhZ3tqd3R9In0.tKA0edZffQXbm4RaDBpSHLYrK7pKRcSUnHkn0TFdSDigyWo4CiG1US-dblJCObQaSCq_OWppqftyQ9sS82_LbQ
+=>
+{
+  "sub": "22",
+  "name": "admin",
+  "admin": true,
+  "flag": "flag{jwt}"
+}
+```
+
 ### 探索
 - ソースコードのコメント
 - リスポンスヘッダー
-- robots.txt
-- robots.txtのDisallowに指定されたディレクトリ
+- /robots.txt
+- /robots.txt の Disallow に指定されたディレクトリ
 - ソースマップ（.mapの拡張子で終わるJSONのファイル）`app.js.map`
 - Cookie
 - Cookieの`user:guest`を`user:admin`にする
 - Cookieの`admin:False`を`admin:True`にする
-- .htaccess
-- .DS_Store
+- /.htaccess
+- /.DS_Store
+- /phpinfo.php
+- /database.sqlite
 
+### SQLi
+#### database.sqlite
+```
+$ sqlite3 database.sqlite
+SQLite version 3.37.2 2022-01-06 13:25:41
+Enter ".help" for usage hints.
+
+sqlite> .tables
+users
+
+sqlite> .schema
+CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT);
+
+sqlite> SELECT id, name, email, password FROM users;
+1|admin|admin@example.com|PssdfsdsfsT|
+2|ctfer|ctfer@ctf.com|Passw0rd123|
+
+sqlite> SELECT * FROM users;
+1|admin|admin@example.com|PssdfsdsfsT|
+2|ctfer|ctfer@ctf.com|Passw0rd123|
+```
 
 ## Osint
 ### 検索方法
@@ -278,6 +326,9 @@ Googleカレンダーの情報などが得られる．
 　例題：
 https://qiita.com/samohan/items/412e62a7c981e1c20ea2
 
+### シャーロック・ホームズの「踊る人形」暗号
+- https://ipusiron.github.io/dancingmen-cipherlab/ (DancingMen CipherLab)
+
 ### Burrows-Wheeler変換 (BWT)，ブロックソート
 https://www.dcode.fr/burrows-wheeler-transform
 
@@ -306,6 +357,9 @@ https://stark2420.github.io/starknote/post/uoftctf-2025/#funny-cipher-100
 
 ### CyberChef
 - https://gchq.github.io/CyberChef/
+
+### 色々デコードしてくれる
+- https://dencode.com/ja/
 
 ### ハッシュ値
 - https://crackstation.net/ (Free Password Hash Cracker)
